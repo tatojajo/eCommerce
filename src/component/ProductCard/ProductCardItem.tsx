@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import {
   ArrowLeft,
@@ -5,10 +7,10 @@ import {
   ShoppingCart,
   StarBorderOutlined,
 } from "@mui/icons-material";
-import React, { useState } from "react";
 import { CardContainer, CardImage, ImageWrapper } from "./ProductsCardStyle";
 
 const ProductCard = ({ product }) => {
+  console.log(product)
   const [productImage, setProductImage] = useState(0);
 
   const nextImage = () => {

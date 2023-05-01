@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Pagination, Stack } from "@mui/material";
-import { useProducts } from "../../Redux/ProductStore/ProductStroreContext";
+import { useProducts } from "../../StoreContext/ProductStore/ProductStroreContext";
 import { productsNextpage } from "../../Helpers/Services/products";
-import { nextPage } from "../../Redux/ProductStore/productsAction";
+import { nextPage } from "../../StoreContext/ProductStore/productsAction";
 import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
 import ProductCard from "../ProductCard";
 
@@ -31,7 +31,7 @@ const ProductsContainer = () => {
       <ProductContainer>
         {ProductsState.products.map((product) => {
           return (
-            <ProductCard product = {product}/>
+            <ProductCard product={product} />
             // <ProductCard
             //   style={{
             //     width: "100px",
@@ -46,7 +46,7 @@ const ProductsContainer = () => {
           );
         })}
       </ProductContainer>
-        
+
       <div>
         <Stack spacing={2}>
           <Pagination

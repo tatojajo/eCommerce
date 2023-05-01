@@ -7,7 +7,7 @@ import Carusel from 'react-material-ui-carousel'
 import SimpleImageSlider from 'react-simple-image-slider'
 
 // * conetxt
-import { useProducts } from '../../Redux/ProductStore/ProductStroreContext'
+import { useProducts } from '../../StoreContext/ProductStore/ProductStroreContext'
 
 import './Slider.scss'
 import Carousel from 'react-material-ui-carousel'

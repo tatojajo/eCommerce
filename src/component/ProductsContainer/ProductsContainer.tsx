@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Stack } from "@mui/material";
-import { useProducts } from "../../StoreContext/ProductStore/ProductStroreContext";
-import { productsNextpage } from "../../Helpers/Services/products";
-import { nextPage } from "../../StoreContext/ProductStore/productsAction";
-import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
+
+import { useDispatch } from "react-redux";
+import {
+  saveProductsData,
+  saveProductsTotalAmount,
+  saveSliderImages,
+  nextPage,
+} from "../../pages/Home/redux/actions";
+
 import ProductCard from "../ProductCard";
 
+import {
+  getAllProducts,
+  productsNextpage,
+} from "../../Helpers/Services/products";
+
+import { Pagination, Stack } from "@mui/material";
+import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
+import { ProductItem } from "../../@types/general";
+import { useAppSelector } from "../../redux/hooks";
+
 const ProductsContainer = () => {
-  const { ProductDdispatch, ProductsState } = useProducts();
+  const dispatch = useDispatch();
+
+  const { products, totalProducts } = useAppSelector(
+    (state) => state.homeReducer
+  );
+
   const [pageNumber, setPageNumber] = useState(1);
 
   const handleChangePage = (
@@ -17,21 +36,35 @@ const ProductsContainer = () => {
     setPageNumber(value);
   };
 
-  const startIndex = (pageNumber - 1) * ProductsState.products.length;
+  const startIndex = (pageNumber - 1) * 20;
 
   useEffect(() => {
-    const getNextpageproducts = async () => {
+    const getNextpageProducts = async () => {
       const { data } = await productsNextpage(startIndex);
-      ProductDdispatch(nextPage(data.products, data.total_found));
+      dispatch(nextPage(data.products));
     };
-    getNextpageproducts();
+    getNextpageProducts();
   }, [pageNumber]);
+
+  useEffect(() => {
+    try {
+      const getproducts = async () => {
+        const { data } = await getAllProducts();
+        dispatch(saveProductsData(data.products));
+        dispatch(saveProductsTotalAmount(data.total_found));
+        dispatch(saveSliderImages(data.products));
+      };
+      getproducts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <MainContainer>
       <ProductContainer>
-        {ProductsState.products.map((product) => {
+        {products.map((product: ProductItem) => {
           return (
-            <ProductCard product={product} />
+            <ProductCard key={product.id} product={product} />
             // <ProductCard
             //   style={{
             //     width: "100px",
@@ -50,7 +83,7 @@ const ProductsContainer = () => {
       <div>
         <Stack spacing={2}>
           <Pagination
-            count={Math.ceil(ProductsState.total_products / 20)}
+            count={Math.ceil(totalProducts / 20)}
             page={pageNumber}
             variant="outlined"
             shape="rounded"

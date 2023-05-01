@@ -10,7 +10,6 @@ import {
 import { CardContainer, CardImage, ImageWrapper } from "./ProductsCardStyle";
 
 const ProductCard = ({ product }) => {
-  console.log(product)
   const [productImage, setProductImage] = useState(0);
 
   const nextImage = () => {

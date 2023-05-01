@@ -12,6 +12,10 @@ type ProductItem = {
   title: string;
 };
 
+type TotalAmount = {
+  total_found: number
+}
+
 
 type HomeState = {
   products:ProductItem[] | null;

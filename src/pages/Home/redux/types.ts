@@ -1,6 +1,7 @@
 import { ProductItem, TotalAmount } from "../../../@types/general";
-import { NEXT_PAGE } from "../../../StoreContext/ProductStore/productsAction";
 import {
+  ADD_PRODUCT_CART,
+  NEXT_PAGE_DATA,
   SAVE_PRODUCTS_DATA,
   SAVE_PRODUCTS_TOTAL_AMOUNT,
   SAVE_SLIDER_IMAGES,
@@ -24,8 +25,13 @@ export type SAVE_SLIDER_IMAGES_ACTION = {
 };
 
 export type NEXT_PAGE_DATA_ACTION = {
-  type: typeof NEXT_PAGE;
+  type: typeof NEXT_PAGE_DATA;
   payload: ProductItem[];
+};
+
+export type ADD_PRODUCT_CART_ACTION = {
+  type: typeof ADD_PRODUCT_CART;
+  payload: ProductItem;
 };
 
 export type SET_LOADING_ACTION = {
@@ -43,5 +49,6 @@ export type HOME_ACTIONS =
   | SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION
   | SAVE_SLIDER_IMAGES_ACTION
   | NEXT_PAGE_DATA_ACTION
+  | ADD_PRODUCT_CART_ACTION
   | SET_LOADING_ACTION
   | SET_ERROR_ACTION;

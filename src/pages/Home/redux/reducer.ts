@@ -1,5 +1,6 @@
 import { HomeState } from "../../../@types/general";
 import {
+  ADD_PRODUCT_CART,
   NEXT_PAGE_DATA,
   SAVE_PRODUCTS_DATA,
   SAVE_PRODUCTS_TOTAL_AMOUNT,
@@ -11,10 +12,11 @@ import { HOME_ACTIONS } from "./types";
 
 const initialState: HomeState = {
   products: [],
-  loading: false,
-  error: null,
   sliderImages: [],
   totalProducts: 0,
+  cartItems: [],
+  loading: false,
+  error: null,
 };
 
 const homeReducer = (state = initialState, action: HOME_ACTIONS) => {
@@ -35,6 +37,30 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS) => {
       return { ...state, sliderImages: images };
     case NEXT_PAGE_DATA:
       return { ...state, products: action.payload };
+    case ADD_PRODUCT_CART:
+      const productToAdd = action.payload;
+      const cartItems = state.cartItems;
+      const existingProduct = cartItems.find(
+        (item) => item.id === productToAdd.id
+      );
+      if (!existingProduct) {
+        return {
+          ...state,
+          cartItems: [...cartItems, { ...productToAdd, quantity: 1 }],
+        };
+      }
+      if (existingProduct) {
+        const indexOfExistingProduct = cartItems.findIndex(
+          (item) => item.id === productToAdd.id
+        );
+        const sameProduct = cartItems[indexOfExistingProduct];
+        const updatePorductQuantity = {
+          ...sameProduct,
+          quantity: sameProduct.quantity + 1,
+        };
+        cartItems[indexOfExistingProduct] = updatePorductQuantity;
+        return { ...state, cartItems: cartItems };
+      }
     case SET_LOADING:
       return {
         ...state,

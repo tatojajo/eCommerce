@@ -1,4 +1,6 @@
 import React from "react";
+import { useAppSelector } from "../../redux/hooks";
+
 // * Mui component
 import {
   AppBar,
@@ -8,6 +10,7 @@ import {
   InputAdornment,
   IconButton,
   Box,
+  Badge,
 } from "@mui/material";
 // *  styles
 import {
@@ -33,6 +36,7 @@ import {
 } from "@mui/icons-material";
 
 const Header = () => {
+  const {cartItems} = useAppSelector(state => state.homeReducer)
   return (
     <div>
       <AppBar position="sticky" color="primary">
@@ -83,10 +87,16 @@ const Header = () => {
 
           <FavCartContainer>
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <StarBorderOutlined />
+              <IconButton>
+                <StarBorderOutlined />
+              </IconButton>
             </Box>
             <Box>
-              <ShoppingCart />
+              <IconButton>
+                <Badge badgeContent={cartItems.length} color="error">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
             </Box>
           </FavCartContainer>
 

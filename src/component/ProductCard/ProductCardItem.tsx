@@ -8,8 +8,11 @@ import {
   StarBorderOutlined,
 } from "@mui/icons-material";
 import { CardContainer, CardImage, ImageWrapper } from "./ProductsCardStyle";
+import { useDispatch } from "react-redux";
+import { addProductCart } from "../../pages/Home/redux/actions";
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch()
   const [productImage, setProductImage] = useState(0);
 
   const nextImage = () => {
@@ -59,7 +62,7 @@ const ProductCard = ({ product }) => {
         </Typography>
       </Box>
       <Box>
-        <Button variant="contained">
+        <Button variant="contained" onClick={()=>dispatch(addProductCart(product))}>
           Add Cart
           <ShoppingCart />
         </Button>

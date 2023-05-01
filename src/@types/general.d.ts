@@ -13,14 +13,18 @@ type ProductItem = {
 };
 
 type TotalAmount = {
-  total_found: number
-}
-
+  total_found: number;
+};
 
 type HomeState = {
-  products:ProductItem[] | null;
-  sliderImages:[];
-  totalProducts:number;
-  loading:boolean;
-  error:any;
+  products: ProductItem[];
+  sliderImages: [];
+  totalProducts: number;
+  cartItems: CartProductItem[];
+  loading: boolean;
+  error: any;
+};
+
+type CartProductItem = ProductItem & {
+  quantity: number
 }

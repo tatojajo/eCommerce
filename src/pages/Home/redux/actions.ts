@@ -1,4 +1,4 @@
-import { ProductItem, TotalAmount } from "../../../@types/general";
+import { CartProductItem, ProductItem, TotalAmount } from "../../../@types/general";
 import {
   SAVE_PRODUCTS_DATA_ACTION,
   SET_LOADING_ACTION,
@@ -43,7 +43,7 @@ export const saveProductsTotalAmount = (
   payload: total,
 });
 
-export const addProductCart = (product:ProductItem):ADD_PRODUCT_CART_ACTION=>({
+export const addProductCart = (product:CartProductItem):ADD_PRODUCT_CART_ACTION=>({
   type: ADD_PRODUCT_CART,
   payload:product
 })

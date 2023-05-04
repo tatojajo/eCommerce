@@ -19,6 +19,7 @@ import { Pagination, Stack } from "@mui/material";
 import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
 import { ProductItem } from "../../@types/general";
 import { useAppSelector } from "../../redux/hooks";
+import Slider from "../Slider/Slider";
 
 const ProductsContainer = () => {
   const dispatch = useDispatch();
@@ -61,22 +62,21 @@ const ProductsContainer = () => {
   }, []);
   return (
     <MainContainer>
+      <Slider />
+      <div>
+        <Stack spacing={2} mt={4}>
+          <Pagination
+            count={Math.ceil(totalProducts / 20)}
+            page={pageNumber}
+            variant="outlined"
+            shape="rounded"
+            onChange={handleChangePage}
+          />
+        </Stack>
+      </div>
       <ProductContainer>
         {products.map((product: ProductItem) => {
-          return (
-            <ProductCard key={product.id} product={product} />
-            // <ProductCard
-            //   style={{
-            //     width: "100px",
-            //     height: "200px",
-            //     padding: "10px",
-            //   }}
-            // >
-            //   <img src={product.images[0]} alt="" width={200} height={100} />
-            //   <p>Brand: {product.brand}</p>
-            //   <p>price: ${product.price}</p>
-            // </ProductCard>
-          );
+          return <ProductCard key={product.id} product={product} />;
         })}
       </ProductContainer>
 

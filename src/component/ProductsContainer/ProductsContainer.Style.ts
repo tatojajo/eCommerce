@@ -8,14 +8,18 @@ export const MainContainer = styled("div")`
   background: #ff5f5;
 `;
 export const ProductContainer = styled("div")`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  row-gap:10px;
+  // display: grid;
+  // grid-template-columns: repeat(4, 1fr);
+  // align-items: center;
+  // justify-content: space-between;
+  gap: 10px;
   width: 80%;
   margin: auto;
-  align-items: center;
-  justify-content: space-between;
   padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
 `;
 
 export const ProductCard = styled("div")`

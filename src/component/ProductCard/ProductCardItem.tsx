@@ -10,9 +10,10 @@ import {
 import { CardContainer, CardImage, ImageWrapper } from "./ProductsCardStyle";
 import { useDispatch } from "react-redux";
 import { addProductCart } from "../../pages/Home/redux/actions";
+import { ProductCartProps } from "../../@types/ProductCartProps";
 
-const ProductCard = ({ product }) => {
-  const dispatch = useDispatch()
+const ProductCard = ({ product }: ProductCartProps) => {
+  const dispatch = useDispatch();
   const [productImage, setProductImage] = useState(0);
 
   const nextImage = () => {
@@ -62,7 +63,10 @@ const ProductCard = ({ product }) => {
         </Typography>
       </Box>
       <Box>
-        <Button variant="contained" onClick={()=>dispatch(addProductCart(product))}>
+        <Button
+          variant="contained"
+          onClick={() => dispatch(addProductCart(product))}
+        >
           Add Cart
           <ShoppingCart />
         </Button>

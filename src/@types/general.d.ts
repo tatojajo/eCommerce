@@ -2,7 +2,7 @@ import { BackdropProps } from "@mui/material";
 
 type ProductItem = {
   amount: string;
-  barnd: string;
+  brand: string;
   category: string;
   description: string;
   id: string;
@@ -21,10 +21,11 @@ type HomeState = {
   sliderImages: [];
   totalProducts: number;
   cartItems: CartProductItem[];
+  searchResults: ProductItem[] | null;
   loading: boolean;
   error: any;
 };
 
 type CartProductItem = ProductItem & {
-  quantity: number
-}
+  quantity: number;
+};

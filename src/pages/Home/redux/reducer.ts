@@ -17,6 +17,7 @@ const initialState: HomeState = {
   cartItems: [],
   loading: false,
   error: null,
+  searchResults: null
 };
 
 const homeReducer = (state = initialState, action: HOME_ACTIONS) => {

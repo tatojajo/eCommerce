@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 
 // * Mui component
@@ -34,17 +35,31 @@ import {
   StarBorderOutlined,
   ShoppingCart,
 } from "@mui/icons-material";
+import SignIn from "../../pages/SignIn";
 
 const Header = () => {
-  const {cartItems} = useAppSelector(state => state.homeReducer)
+  const [open, setOpen] = useState(false);
+  const { cartItems } = useAppSelector((state) => state.homeReducer);
+  const navigate = useNavigate();
+
+  const handleSignIn = () => {
+    const toggle = setOpen((prev) => !prev);
+    return toggle;
+  };
+
   return (
     <div>
       <AppBar position="sticky" color="primary">
         {/* <Container maxWidth="xl"> */}
         <HeaderWraper>
-          <LogoTitle sx={{ display: { xs: "none", md: "flex" } }}>
-            <Home />
-            <Typography variant="h5" color="white">
+          <LogoTitle
+            sx={{ display: { xs: "none", md: "flex" } }}
+            onClick={() => navigate("/")}
+          >
+            <IconButton>
+              <Home />
+            </IconButton>
+            <Typography variant="h5" color="white" sx={{ cursor: "pointer" }}>
               T-shop
             </Typography>
           </LogoTitle>
@@ -72,8 +87,8 @@ const Header = () => {
               id=""
               label=""
               variant="standard"
-              //   value={}
-              //   onChange={}
+              // value={searchValue}
+              // onChange={handleSearch}
 
               InputProps={{
                 startAdornment: (
@@ -102,7 +117,12 @@ const Header = () => {
 
           <UserContainer>
             <PersonOutlined />
-            <Typography variant="subtitle2" color="initial">
+            <Typography
+              variant="subtitle2"
+              color="initial"
+              onClick={handleSignIn}
+            >
+              <SignIn open={open} />
               SignIn
             </Typography>
           </UserContainer>

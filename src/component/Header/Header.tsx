@@ -49,7 +49,7 @@ const Header = () => {
 
   return (
     <div>
-      <AppBar position="sticky" color="primary">
+      <AppBar position='static' color="primary">
         {/* <Container maxWidth="xl"> */}
         <HeaderWraper>
           <LogoTitle

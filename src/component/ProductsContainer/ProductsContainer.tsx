@@ -6,6 +6,7 @@ import {
   saveProductsTotalAmount,
   saveSliderImages,
   nextPage,
+  saveCategories,
 } from "../../pages/Home/redux/actions";
 
 import ProductCard from "../ProductCard";
@@ -17,14 +18,14 @@ import {
 
 import { Pagination, Stack } from "@mui/material";
 import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
-import { ProductItem } from "../../@types/general";
+import { HomeState, ProductItem } from "../../@types/general";
 import { useAppSelector } from "../../redux/hooks";
 import Slider from "../Slider/Slider";
 
 const ProductsContainer = () => {
   const dispatch = useDispatch();
 
-  const { products, totalProducts } = useAppSelector(
+  const { products, totalProducts } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
 
@@ -51,6 +52,7 @@ const ProductsContainer = () => {
     try {
       const getproducts = async () => {
         const { data } = await getAllProducts();
+        console.log(data)
         dispatch(saveProductsData(data.products));
         dispatch(saveProductsTotalAmount(data.total_found));
         dispatch(saveSliderImages(data.products));

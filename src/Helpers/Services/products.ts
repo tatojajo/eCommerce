@@ -13,10 +13,12 @@ export const productsNextpage = (startingIndex: number) =>
     page_number: startingIndex,
   });
 
-export const getSearchedProducts = (value: string) =>
-  ajax.post("products", { keyword: value, page_size: 20, page_number: 0 });
+  // export const productInfo = (productId:number)=>ajax.post(`product/${productId}`)
 
-export const deleteProduct = (productId: number) =>
-  ajax.delete(`products/${productId}`);
+// export const getSearchedProducts = (value: string) =>
+//   ajax.post("products", { keyword: value, page_size: 20, page_number: 0 });
 
-export const getProductsCategories = () => ajax.get("products/categories");
+// export const deleteProduct = (productId: number) =>
+//   ajax.delete(`products/${productId}`);
+
+// export const getProductsCategories = () => ajax.get("products/categories");

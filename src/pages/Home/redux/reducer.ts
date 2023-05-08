@@ -1,6 +1,7 @@
 import { HomeState } from "../../../@types/general";
 import {
   ADD_PRODUCT_CART,
+  MOVE_TO_PRODUCT_PAGE,
   NEXT_PAGE_DATA,
   SAVE_PRODUCTS_DATA,
   SAVE_PRODUCTS_TOTAL_AMOUNT,
@@ -15,9 +16,11 @@ const initialState: HomeState = {
   sliderImages: [],
   totalProducts: 0,
   cartItems: [],
+  categories:[],
+  searchResults: null,
+  selectedProduct:null ,
   loading: false,
   error: null,
-  searchResults: null
 };
 
 const homeReducer = (state = initialState, action: HOME_ACTIONS) => {
@@ -25,21 +28,23 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS) => {
     case SAVE_PRODUCTS_DATA:
       return {
         ...state,
-        products: action.payload,
+        products: action.products,
       };
     case SAVE_PRODUCTS_TOTAL_AMOUNT:
       return {
         ...state,
-        totalProducts: action.payload,
+        totalProducts: action.total,
       };
     case SAVE_SLIDER_IMAGES:
-      const products = action.payload;
+      const products = action.products;
       const images = products.map((product) => product.images[0]);
       return { ...state, sliderImages: images };
+      // case SAVE_CATEGORIES:
+
     case NEXT_PAGE_DATA:
-      return { ...state, products: action.payload };
+      return { ...state, products: action.products };
     case ADD_PRODUCT_CART:
-      const productToAdd = action.payload;
+      const productToAdd = action.product;
       const cartItems = state.cartItems;
       const existingProduct = cartItems.find(
         (item) => item.id === productToAdd.id
@@ -62,15 +67,18 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS) => {
         cartItems[indexOfExistingProduct] = updatePorductQuantity;
         return { ...state, cartItems: cartItems };
       }
+      case MOVE_TO_PRODUCT_PAGE:
+       return {...state, selectedProduct: action.product}
+
     case SET_LOADING:
       return {
         ...state,
-        loading: action.payload,
+        loading: action.type
       };
     case SET_ERROR:
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
       };
     default:
       return state;

@@ -6,8 +6,7 @@ import {
   saveProductsTotalAmount,
   saveSliderImages,
   nextPage,
-  saveCategories,
-} from "../../pages/Home/redux/actions";
+} from "../../redux/HomeActions/HomeActions";
 
 import ProductCard from "../ProductCard";
 
@@ -26,7 +25,7 @@ const ProductsContainer = () => {
   const dispatch = useDispatch();
 
   const { products, totalProducts } = useAppSelector<HomeState>(
-    (state) => state.homeReducer
+    (state) => state
   );
 
   const [pageNumber, setPageNumber] = useState(1);
@@ -52,7 +51,7 @@ const ProductsContainer = () => {
     try {
       const getproducts = async () => {
         const { data } = await getAllProducts();
-        console.log(data)
+        console.log(data);
         dispatch(saveProductsData(data.products));
         dispatch(saveProductsTotalAmount(data.total_found));
         dispatch(saveSliderImages(data.products));

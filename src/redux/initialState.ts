@@ -1,4 +1,4 @@
-import { CartProductItem, ProductItem } from "../../../@types/general";
+import { CartProductItem, ProductItem } from "../@types/general";
 
 export const PRODUCT_INITIAL_INFO: ProductItem={
     amount: "",

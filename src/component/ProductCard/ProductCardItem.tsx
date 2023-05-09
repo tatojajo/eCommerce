@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import {
   addProductCart,
   moveToProductPage,
-} from "../../pages/Home/redux/actions";
+} from "../../redux/HomeActions/HomeActions";
 
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import {

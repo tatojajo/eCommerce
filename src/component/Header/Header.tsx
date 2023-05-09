@@ -6,7 +6,6 @@ import { useAppSelector } from "../../redux/hooks";
 import {
   AppBar,
   Typography,
-  Container,
   TextField,
   InputAdornment,
   IconButton,
@@ -39,7 +38,7 @@ import SignIn from "../../pages/SignIn";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const { cartItems } = useAppSelector((state) => state.homeReducer);
+  const cartItems = useAppSelector((state) => state.cartItems);
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -48,8 +47,8 @@ const Header = () => {
   };
 
   return (
-    <div>
-      <AppBar position='static' color="primary">
+    <Box>
+      <AppBar color="primary" >
         {/* <Container maxWidth="xl"> */}
         <HeaderWraper>
           <LogoTitle
@@ -107,7 +106,7 @@ const Header = () => {
               </IconButton>
             </Box>
             <Box>
-              <IconButton>
+              <IconButton onClick={() => navigate("/cart")}>
                 <Badge badgeContent={cartItems.length} color="error">
                   <ShoppingCart />
                 </Badge>
@@ -140,7 +139,7 @@ const Header = () => {
         </LinksContainer>
       </Box>
 
-      <Box className="directionsBox" sx={{ backgroundColor: "red" }}>
+      <Box className="directionsBox" sx={{ backgroundColor: "red", marginTop:'64px' }}>
         <div>Links</div>
         <FavCartContainer sx={{ display: { xs: "flex", md: "none" } }}>
           <Box>
@@ -148,7 +147,7 @@ const Header = () => {
           </Box>
         </FavCartContainer>
       </Box>
-    </div>
+    </Box>
   );
 };
 

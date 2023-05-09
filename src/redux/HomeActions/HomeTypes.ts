@@ -1,4 +1,4 @@
-import { ProductItem, TotalAmount } from "../../../@types/general";
+import { ProductItem } from "../../@types/general";
 import {
   ADD_PRODUCT_CART,
   MOVE_TO_PRODUCT_PAGE,
@@ -9,7 +9,7 @@ import {
   SAVE_SLIDER_IMAGES,
   SET_ERROR,
   SET_LOADING,
-} from "./actions";
+} from "./HomeActions";
 
 export type SAVE_PRODUCTS_DATA_ACTION = {
   type: typeof SAVE_PRODUCTS_DATA;
@@ -18,7 +18,7 @@ export type SAVE_PRODUCTS_DATA_ACTION = {
 
 export type SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION = {
   type: typeof SAVE_PRODUCTS_TOTAL_AMOUNT;
-  total: TotalAmount;
+  total: number;
 };
 
 export type SAVE_SLIDER_IMAGES_ACTION = {

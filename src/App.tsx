@@ -6,14 +6,12 @@ import Header from "./component/Header";
 import Footer from "./component/Footer";
 import Home from "./pages/Home";
 import Product from "./pages/Product";
-import SignIn from "./pages/SignIn";
+import Cart from "./pages/Cart";
 import Register from "./pages/Register";
 import { HomeState } from "./@types/general";
 
 const App = () => {
-  const { selectedProduct } = useAppSelector<HomeState>(
-    (state) => state.homeReducer
-  );
+  const { selectedProduct } = useAppSelector<HomeState>((state) => state);
 
   return (
     <>
@@ -26,6 +24,7 @@ const App = () => {
           element={<Product />}
         />
         <Route path="/register" element={<Register />} />
+        <Route path="/cart" element={<Cart/>}/>
       </Routes>
 
       <Footer />
@@ -34,5 +33,3 @@ const App = () => {
 };
 
 export default App;
-
-

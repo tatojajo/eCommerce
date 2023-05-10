@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import "yup-phone";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
 import { Box, Paper, Typography, TextField, Grid, Button } from "@mui/material";
 
 const registerValidationSchema = yup.object().shape({
@@ -30,6 +31,7 @@ const registerValidationSchema = yup.object().shape({
 });
 
 const Register = () => {
+  const {t} = useTranslation()
   const {
     register,
     handleSubmit,
@@ -72,7 +74,7 @@ const Register = () => {
           }}
         >
           <Typography variant="h5" color="initial">
-            Create T-shop Account
+            {t("global.create_T-shop_Account")}
           </Typography>
         </Box>
 
@@ -81,12 +83,12 @@ const Register = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                  First Name
+                {t('global.firstName')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label={t('global.firstName')}
                   {...register("firstName")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -95,12 +97,12 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                  Last Name
+                {t('global.lastName')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label={t('global.lastName')}
                   {...register("lastName")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -109,12 +111,12 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography mb={2} variant="body2" color="initial">
-                  Mobile
+                {t('global.phone')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="mobile"
-                  label="Mobile"
+                  label={t('global.phone')}
                   {...register("mobile")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -124,12 +126,12 @@ const Register = () => {
 
               <Grid item xs={12}>
                 <Typography mb={2} variant="body2" color="initial">
-                  E-mail
+                {t('global.email')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="email"
-                  label="E-mail"
+                  label={t('global.email')}
                   {...register("email")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -139,12 +141,12 @@ const Register = () => {
 
               <Grid item xs={12} sm={4}>
                 <Typography mb={2} variant="body2" color="initial">
-                  City
+                {t('global.city')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="city"
-                  label="City"
+                  label={t('global.city')}
                   {...register("city")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -153,13 +155,13 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={4}>
                 <Typography mb={2} variant="body2" color="initial">
-                  Postal Code
+                {t('global.postal_code')}
                 </Typography>
 
                 <TextField
                   fullWidth
                   id="postalCode"
-                  label="Postal Code"
+                  label={t('global.postal_code')}
                   {...register("postCode")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -168,12 +170,12 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={4}>
                 <Typography mb={2} variant="body2" color="initial">
-                  Address
+                {t('global.address')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="address"
-                  label="Address"
+                  label={t('global.address')}
                   {...register("address")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -183,12 +185,12 @@ const Register = () => {
 
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                  Password
+                {t('global.password')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="password"
-                  label="Password"
+                  label={t('global.password')}
                   {...register("password")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -197,12 +199,12 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                  Confirm Password
+                {t('global.confirm_password')}
                 </Typography>
                 <TextField
                   fullWidth
                   id="confirmPassword"
-                  label="Confirm Password"
+                  label={t('global.confirm_password')}
                   {...register("confirmPassword")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -216,7 +218,7 @@ const Register = () => {
                   variant="outlined"
                   color="secondary"
                 >
-                  Submit
+                  {t('global.submit')}
                 </Button>
               </Grid>
             </Grid>

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
-// import Carousel from "react-material-ui-carousel";
-import Carousel from "react-gallery-carousel";
+import { useTranslation } from "react-i18next";
 import "react-gallery-carousel/dist/index.css";
 import { HomeState } from "../../@types/general";
 import { Box, Typography, Container, IconButton } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 
 const Product = () => {
+  const {t} = useTranslation()
   const [productImage, setProductImage] = useState(0);
   const { selectedProduct } = useAppSelector<HomeState>((state) => state);
   const prevImage = () => {
@@ -52,16 +52,16 @@ const Product = () => {
           }}
         >
           <Typography variant="h3" color="initial">
-            Brand: {selectedProduct?.brand}
+            {t('global.brand')}: {selectedProduct?.brand}
           </Typography>
           <Typography variant="h5" color="initial">
-            Model: {selectedProduct?.title}
+          {t('global.model')}: {selectedProduct?.title}
           </Typography>
           <Typography variant="h6" color="initial">
-            Category: {selectedProduct?.category}
+            {t('global.category')}: {selectedProduct?.category}
           </Typography>
           <Typography variant="h6" color="initial">
-            Price: ${selectedProduct?.price}
+            {t("global.price")}: ${selectedProduct?.price}
           </Typography>
         </Box>
       </Box>
@@ -89,8 +89,8 @@ const Product = () => {
             {selectedProduct?.images.map((image, index) => {
               return (
                 <img
-                  src={image}
                   key={index}
+                  src={image}
                   onClick={() => setProductImage(index)}
                   alt="image"
                   style={{

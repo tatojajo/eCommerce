@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
 import { Box, Modal, Typography, TextField, Button } from "@mui/material";
 import { ModalBox, SignInContainer, TextFieldContainer } from "./SignInSyled";
 import { adminLogin } from "../../Helpers/Services/adminLogin";
@@ -14,14 +15,15 @@ interface SignInProps {
 const signInValidationSchema = yup.object().shape({
   userName: yup.string().required("Username Required"),
   password: yup
-    .string()
+  .string()
     .required("Password Is Required")
     .min(4, "Password length should be at least 6 characters")
     .max(12, "Password length cannot exceed more than 12 characters"),
-});
-
-const SignIn = ({ open }: SignInProps) => {
-  const {
+  });
+  
+  const SignIn = ({ open }: SignInProps) => {
+    const {t} = useTranslation()
+    const {
     register,
     handleSubmit,
     formState: { errors },
@@ -52,20 +54,20 @@ const SignIn = ({ open }: SignInProps) => {
             }}
           >
             <Typography variant="h4" color="initial">
-              SignIn
+              {t('global.login')}
             </Typography>
           </Box>
           <TextFieldContainer>
             <TextField
               autoFocus
               id="userName"
-              label="UserName"
+              label={t('global.username')}
               {...register("userName")}
             />
             <TextField
               type="password"
               id="password"
-              label="Password"
+              label={t('global.password')}
               {...register("password")}
             />
             <Box>
@@ -74,14 +76,14 @@ const SignIn = ({ open }: SignInProps) => {
                 color="success"
                 onClick={handleSubmit(onSubmit)}
               >
-                Sign In
+                {t('global.login')}
               </Button>
             </Box>
           </TextFieldContainer>
           <Box>
             <Typography variant="subtitle1" color="initial">
-              Don't have an account?
-              <Link to="/register">Register here</Link>
+              {t("global.don't_have_an_account")}?
+              <Link to="/register">{t('global.register')}</Link>
             </Typography>
           </Box>
         </SignInContainer>

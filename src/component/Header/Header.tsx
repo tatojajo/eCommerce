@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
+import { useTranslation } from "react-i18next";
+import SignIn from "../../pages/SignIn";
 
 // * Mui component
 import {
@@ -11,6 +13,9 @@ import {
   IconButton,
   Box,
   Badge,
+  FormControl,
+  
+  NativeSelect,
 } from "@mui/material";
 // *  styles
 import {
@@ -34,9 +39,12 @@ import {
   StarBorderOutlined,
   ShoppingCart,
 } from "@mui/icons-material";
-import SignIn from "../../pages/SignIn";
+import US from "../../images/us.svg";
+import GE from "../../images/ge.svg";
+import i18next from "i18next";
 
 const Header = () => {
+  const {t} = useTranslation()
   const [open, setOpen] = useState(false);
   const cartItems = useAppSelector((state) => state.cartItems);
   const navigate = useNavigate();
@@ -48,7 +56,7 @@ const Header = () => {
 
   return (
     <Box>
-      <AppBar color="primary" >
+      <AppBar color="primary">
         {/* <Container maxWidth="xl"> */}
         <HeaderWraper>
           <LogoTitle
@@ -70,13 +78,13 @@ const Header = () => {
           </Box>
 
           <LinksContainer sx={{ display: { xs: "none", md: "flex" } }}>
-            <NavbarLink to="/">Contact</NavbarLink>
-            <NavbarLink to="/">About US</NavbarLink>
+            <NavbarLink to="/">{t("global.contact")}</NavbarLink>
+            <NavbarLink to="/">{t("global.about")}</NavbarLink>
           </LinksContainer>
 
           <CategoriesBtn sx={{ display: { xs: "none", md: "flex" } }}>
             <Typography variant="subtitle2" color="black">
-              Categories
+              {t('global.category')}
             </Typography>
             <ArrowDownwardOutlined />
           </CategoriesBtn>
@@ -114,6 +122,27 @@ const Header = () => {
             </Box>
           </FavCartContainer>
 
+          <Box sx={{ minWidth: 50 }}>
+            <FormControl fullWidth>
+              <NativeSelect
+                title="Select Language"
+                
+                defaultValue="ENG"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === "ENG") {
+                    i18next.changeLanguage("en");
+                  } else if (value === "GEO") {
+                    i18next.changeLanguage("ge");
+                  }
+                }}
+              >
+                <option value="ENG">ENG</option>
+                <option value="GEO">GEO</option>
+              </NativeSelect>
+            </FormControl>
+          </Box>
+
           <UserContainer>
             <PersonOutlined />
             <Typography
@@ -122,7 +151,7 @@ const Header = () => {
               onClick={handleSignIn}
             >
               <SignIn open={open} />
-              SignIn
+              {t('global.login')}
             </Typography>
           </UserContainer>
         </HeaderWraper>
@@ -131,15 +160,18 @@ const Header = () => {
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <LinksContainer>
           <NavbarLink style={{ color: "black" }} to="/">
-            Contact
+          {t("global.contact")}
           </NavbarLink>
           <NavbarLink style={{ color: "black" }} to="/">
-            About US
+          {t("global.about")}
           </NavbarLink>
         </LinksContainer>
       </Box>
 
-      <Box className="directionsBox" sx={{ backgroundColor: "red", marginTop:'64px' }}>
+      <Box
+        className="directionsBox"
+        sx={{ backgroundColor: "red", marginTop: "64px" }}
+      >
         <div>Links</div>
         <FavCartContainer sx={{ display: { xs: "flex", md: "none" } }}>
           <Box>

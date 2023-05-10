@@ -80,8 +80,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
         </Link>
 
         <Typography variant="subtitle1" color="error">
-          {t('global.price')}
-          Price: ${product.price}
+          {t("global.price")}: ${product.price}
         </Typography>
       </Box>
       <Box>
@@ -89,7 +88,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
           variant="contained"
           onClick={() => dispatch(addProductCart(product))}
         >
-          Add Cart
+          {t("global.add")}
           <ShoppingCart />
         </Button>
         <Button sx={{ backgroundColor: "yellow" }}>

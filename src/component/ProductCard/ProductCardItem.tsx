@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
+import { useTranslation } from "react-i18next";
 import { ProductCartProps } from "../../@types/ProductCartProps";
 import { useDispatch } from "react-redux";
 import {
@@ -19,6 +19,7 @@ import { CardContainer, CardImage, ImageWrapper } from "./ProductsCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
   // console.log(product)
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [productImage, setProductImage] = useState(0);
@@ -30,6 +31,8 @@ const ProductCard = ({ product }: ProductCartProps) => {
       (prev) => (prev - 1 + product.images.length) % product.images.length
     );
   };
+  const translate = t("ge.price");
+  console.log(translate);
 
   return (
     <CardContainer>
@@ -64,11 +67,11 @@ const ProductCard = ({ product }: ProductCartProps) => {
         }}
       >
         {/* <Button onClick={()=>{
-          navigate(`/product/${product.id}`)
-          dispatch(moveToProductPage(product))
-        }}>
-          {product.title}
-        </Button> */}
+            navigate(`/product/${product.id}`)
+            dispatch(moveToProductPage(product))
+          }}>
+            {product.title}
+          </Button> */}
         <Link
           to={`/product/${product.id}/${product.title}`}
           onClick={() => dispatch(moveToProductPage(product))}
@@ -77,6 +80,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
         </Link>
 
         <Typography variant="subtitle1" color="error">
+          {t('global.price')}
           Price: ${product.price}
         </Typography>
       </Box>

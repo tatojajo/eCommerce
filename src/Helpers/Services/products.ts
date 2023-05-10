@@ -13,7 +13,7 @@ export const productsNextpage = (startingIndex: number) =>
     page_number: startingIndex,
   });
 
-  // export const productInfo = (productId:number)=>ajax.post(`product/${productId}`)
+  export const productInfo = (productId:number)=>ajax.post(`product/${productId}`)
 
 // export const getSearchedProducts = (value: string) =>
 //   ajax.post("products", { keyword: value, page_size: 20, page_number: 0 });

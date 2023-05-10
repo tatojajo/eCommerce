@@ -7,21 +7,24 @@ type ProductItem = {
   description: string;
   id: string;
   images: string[];
-  price: string;
+  price: number;
   rating: string;
   title: string;
 };
 
-type selectedProduct = ProductItem  | CartProductItem
+type selectedProduct = ProductItem | CartProductItem;
 
 type HomeState = {
   products: ProductItem[];
   sliderImages: [];
-  totalProducts: number;
   cartItems: CartProductItem[];
-  categories:string[]
+  categories: string[];
   searchResults: ProductItem[] | null;
-  selectedProduct:selectedProduct | null;
+  mobiles: ProductItem[];
+  television:ProductItem[];
+  totalProducts: number;
+  totalAmount: number;
+  selectedProduct: selectedProduct | null;
   loading: boolean;
   error: any;
 };

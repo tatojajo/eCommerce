@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { useAppDispatch } from "../../redux/hooks";
-import { decreaseQuantity, increaseQuantity } from "../../redux/CartActions/CartActions";
+import {
+  decreaseQuantity,
+  increaseQuantity,
+} from "../../redux/CartActions/CartActions";
 import {
   Box,
-
   Table,
   TableBody,
   TableCell,
@@ -17,7 +19,15 @@ import {
   TextField,
   Button,
 } from "@mui/material";
-import { Add, Clear, Delete, DeleteOutline, DeleteSweep, Remove, RemoveDone } from "@mui/icons-material";
+import {
+  Add,
+  Clear,
+  Delete,
+  DeleteOutline,
+  DeleteSweep,
+  Remove,
+  RemoveDone,
+} from "@mui/icons-material";
 import {
   AmountInfo,
   CartItemName,
@@ -31,7 +41,16 @@ import {
 
 const Cart = () => {
   const cartItems = useAppSelector((state) => state.cartItems);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
+
+  const totalAmount = useMemo(
+    () =>
+      cartItems.reduce(
+        (acc, corrent) => acc + Number(corrent.price) * corrent.quantity,
+        0
+      ),
+    [cartItems]
+  );
   return (
     <Box>
       <CartTitle>
@@ -59,9 +78,9 @@ const Cart = () => {
                   >
                     <TableCell align="left" component="th" scope="row">
                       <CartItemName>
-                      <IconButton color='error'>
-                        <Clear/>
-                      </IconButton>
+                        <IconButton color="error">
+                          <Clear />
+                        </IconButton>
                         <img
                           src={item.images[0]}
                           width="50px"
@@ -80,16 +99,23 @@ const Cart = () => {
                     <TableCell align="left">${item.price}</TableCell>
                     <TableCell align="left">
                       <ItemQUantity>
-                        <IconButton onClick={()=>dispatch(decreaseQuantity(item))}>
+                        <IconButton
+                          onClick={() => dispatch(decreaseQuantity(item))}
+                        >
                           <Remove />
                         </IconButton>
                         <Typography variant="subtitle2" color="initial">
                           {item.quantity}
                         </Typography>
-                        <IconButton onClick={()=>dispatch(increaseQuantity(item))}>
+                        <IconButton
+                          onClick={() => dispatch(increaseQuantity(item))}
+                        >
                           <Add />
                         </IconButton>
                       </ItemQUantity>
+                    </TableCell>
+                    <TableCell align="left">
+                      ${(item.quantity * item.price).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -99,7 +125,12 @@ const Cart = () => {
         </CartItems>
         <SummaryContainer>
           <Paper sx={{ padding: "20px" }}>
-            <Typography textAlign="center" mb='20px' variant="h5" color="initial">
+            <Typography
+              textAlign="center"
+              mb="20px"
+              variant="h5"
+              color="initial"
+            >
               Summery
             </Typography>
             {/* <Box mb='20px'>
@@ -129,11 +160,13 @@ const Cart = () => {
                 TOTAL AMOUNT:
               </Typography>
               <Typography variant="body1" color="initial">
-                ${105}
+                ${totalAmount.toFixed(3)}
               </Typography>
             </AmountInfo>
             <CheckoutBtn>
-              <Button variant='outlined' color='success'>CHECKOUT</Button>
+              <Button variant="outlined" color="success">
+                CHECKOUT
+              </Button>
             </CheckoutBtn>
           </Paper>
         </SummaryContainer>

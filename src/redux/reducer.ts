@@ -22,10 +22,13 @@ const initialState: HomeState = {
   totalProducts: 0,
   cartItems: [],
   categories: [],
-  searchResults: null,
+  totalAmount: 0,
+  searchResults: [],
   selectedProduct: null,
   loading: false,
   error: null,
+  mobiles: [],
+  television: []
 };
 
 const homeReducer = (

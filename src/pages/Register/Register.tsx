@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import "yup-phone";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import { Box, Paper, Typography, TextField, Grid, Button } from "@mui/material";
+import { registerUser } from "../../Helpers/Services/register";
+import { userlogin } from "../../Helpers/Services/userLogin";
 
 const registerValidationSchema = yup.object().shape({
   firstName: yup.string().required("Firstname is required"),
   lastName: yup.string().required("Lastname is required"),
-  city: yup.string().required("City is required"),
-  postCode: yup.number().required("Postal Code is required"),
-  address: yup.string().required("Address is required"),
+  // city: yup.string().required("City is required"),
+  // postCode: yup.number().required("Postal Code is required"),
+  // address: yup.string().required("Address is required"),
   email: yup.string().email("Invalid Email").required("Email is required"),
-  mobile: yup
+  phoneNumber: yup
     .string()
     .phone("Invalid Mobile Number")
     .required("mobile reuired"),
@@ -22,16 +24,16 @@ const registerValidationSchema = yup.object().shape({
     .required("Password Is Required")
     .min(5, "Password length should be at least 6 characters")
     .max(12, "Password length cannot exceed more than 12 characters"),
-  confirmPassword: yup
-    .string()
-    .required("Confirm Password is required")
-    .min(5, "Password length should be at least 6 characters")
-    .max(12, "Password length cannot exceed more than 12 characters")
-    .oneOf([yup.ref("password")], "Pasword do not match"),
+  // confirmPassword: yup
+  //   .string()
+  //   .required("Confirm Password is required")
+  //   .min(5, "Password length should be at least 6 characters")
+  //   .max(12, "Password length cannot exceed more than 12 characters")
+  //   .oneOf([yup.ref("password")], "Pasword do not match"),
 });
 
 const Register = () => {
-  const {t} = useTranslation()
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -41,8 +43,13 @@ const Register = () => {
     resolver: yupResolver(registerValidationSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterInitialValue> = (data) => {
-    return console.log(data);
+  const onSubmit: SubmitHandler<RegisterInitialValue> = async (user) => {
+    try {
+      const { data } = await registerUser(user);
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -83,12 +90,12 @@ const Register = () => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.firstName')}
+                  {t("global.firstName")}
                 </Typography>
                 <TextField
                   fullWidth
                   id="firstName"
-                  label={t('global.firstName')}
+                  label={t("global.firstName")}
                   {...register("firstName")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -97,12 +104,12 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.lastName')}
+                  {t("global.lastName")}
                 </Typography>
                 <TextField
                   fullWidth
                   id="lastName"
-                  label={t('global.lastName')}
+                  label={t("global.lastName")}
                   {...register("lastName")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -111,27 +118,27 @@ const Register = () => {
               </Grid>
               <Grid item xs={12}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.phone')}
+                  {t("global.phone")}
                 </Typography>
                 <TextField
                   fullWidth
-                  id="mobile"
-                  label={t('global.phone')}
-                  {...register("mobile")}
+                  id="phoneNumber"
+                  label={t("global.phone")}
+                  {...register("phoneNumber")}
                 />
                 <Typography variant="subtitle2" color="error">
-                  {errors.mobile?.message}
+                  {errors.phoneNumber?.message}
                 </Typography>
               </Grid>
 
               <Grid item xs={12}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.email')}
+                  {t("global.email")}
                 </Typography>
                 <TextField
                   fullWidth
                   id="email"
-                  label={t('global.email')}
+                  label={t("global.email")}
                   {...register("email")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -141,56 +148,58 @@ const Register = () => {
 
               <Grid item xs={12} sm={4}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.city')}
+                  {t("global.city")}
                 </Typography>
                 <TextField
                   fullWidth
                   id="city"
-                  label={t('global.city')}
-                  {...register("city")}
+                  label={t("global.city")}
+                  // {...register("city")}
                 />
                 <Typography variant="subtitle2" color="error">
-                  {errors.city?.message}
+                  {/* {errors.city?.message} */}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.postal_code')}
+                  {t("global.postal_code")}
                 </Typography>
 
                 <TextField
+                  disabled
                   fullWidth
                   id="postalCode"
-                  label={t('global.postal_code')}
-                  {...register("postCode")}
+                  label={t("global.postal_code")}
+                  // {...register("postCode")}
                 />
                 <Typography variant="subtitle2" color="error">
-                  {errors.postCode?.message}
+                  {/* {errors.postCode?.message} */}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={4}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.address')}
+                  {t("global.address")}
                 </Typography>
                 <TextField
+                  disabled
                   fullWidth
                   id="address"
-                  label={t('global.address')}
-                  {...register("address")}
+                  label={t("global.address")}
+                  // {...register("address")}
                 />
                 <Typography variant="subtitle2" color="error">
-                  {errors.address?.message}
+                  {/* {errors.address?.message} */}
                 </Typography>
               </Grid>
 
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.password')}
+                  {t("global.password")}
                 </Typography>
                 <TextField
                   fullWidth
                   id="password"
-                  label={t('global.password')}
+                  label={t("global.password")}
                   {...register("password")}
                 />
                 <Typography variant="subtitle2" color="error">
@@ -199,16 +208,17 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography mb={2} variant="body2" color="initial">
-                {t('global.confirm_password')}
+                  {t("global.confirm_password")}
                 </Typography>
                 <TextField
+                  disabled
                   fullWidth
                   id="confirmPassword"
-                  label={t('global.confirm_password')}
-                  {...register("confirmPassword")}
+                  label={t("global.confirm_password")}
+                  // {...register("confirmPassword")}
                 />
                 <Typography variant="subtitle2" color="error">
-                  {errors.confirmPassword?.message}
+                  {/* {errors.confirmPassword?.message} */}
                 </Typography>
               </Grid>
               <Grid item xs={12} mt={3}>
@@ -218,7 +228,7 @@ const Register = () => {
                   variant="outlined"
                   color="secondary"
                 >
-                  {t('global.submit')}
+                  {t("global.submit")}
                 </Button>
               </Grid>
             </Grid>

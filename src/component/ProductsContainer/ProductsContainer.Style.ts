@@ -12,7 +12,7 @@ export const ProductContainer = styled("div")`
   // grid-template-columns: repeat(4, 1fr);
   // align-items: center;
   // justify-content: space-between;
-  gap: 10px;
+  gap: 3rem;
   width: 80%;
   margin: auto;
   padding: 20px;

@@ -1,5 +1,6 @@
 import {
   CartProductItem,
+  HomeState,
   ProductItem,
   selectedProduct,
 } from "../../@types/general";
@@ -14,7 +15,9 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_ERROR = "SET_ERROR";
 export const MOVE_TO_PRODUCT_PAGE = "MOVE_TO_PRODUCT_PAGE";
 export const SAVE_CATEGORIES = "SAVE_CATEGORIES";
-
+export const SAVE_SEARCHED_PRODUCTS = "SAVE_SEARCHED_PRODUCTS";
+export const SEARCHED_PRODUCTS_NEXT_PAGE_DATA =
+  "SEARCHED_PRODUCTS_NEXT_PAGE_DATA";
 export const saveProductsData = (products: ProductItem[]): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_DATA,
   products,
@@ -58,4 +61,20 @@ export const setLoading = (loading: boolean): HOME_ACTIONS => ({
 export const setError = (error: string): HOME_ACTIONS => ({
   type: SET_ERROR,
   error,
+});
+
+export const saveSearchedProducts = (
+  products: ProductItem[],
+  total_found: number
+): HOME_ACTIONS => ({
+  type: SAVE_SEARCHED_PRODUCTS,
+  products,
+  total_found,
+});
+
+export const searchedProductsNextPage = (
+  products: ProductItem[]
+): HOME_ACTIONS => ({
+  type: SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
+  products,
 });

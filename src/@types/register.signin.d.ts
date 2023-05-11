@@ -1,18 +1,17 @@
 type RegisterInitialValue = {
   firstName: string;
   lastName: string;
-  mobile: number | string;
+  phoneNumber: number | string;
   email: string;
-  city: string;
-  postCode: number | string;
-  address: string;
+  // city: string;
+  // postCode: number | string;
+  // address: string;
   password: string;
-  confirmPassword: string;
+  // confirmPassword: string;
 };
 
 
 type SignInInitialValue = {
-  userName:string;
+  email:string;
   password:string
-
 }

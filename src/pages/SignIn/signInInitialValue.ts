@@ -1,4 +1,4 @@
 export const signInInitialValue:SignInInitialValue = {
-    userName:'',
+    email:'',
     password:''
 }

@@ -24,9 +24,8 @@ import Slider from "../Slider/Slider";
 const ProductsContainer = () => {
   const dispatch = useDispatch();
 
-  const { products, totalProducts } = useAppSelector<HomeState>(
-    (state) => state
-  );
+  const { products, totalProducts, searchedResults } =
+    useAppSelector<HomeState>((state) => state);
 
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -48,26 +47,29 @@ const ProductsContainer = () => {
   }, [pageNumber]);
 
   useEffect(() => {
-    try {
-      const getproducts = async () => {
-        const { data } = await getAllProducts();
-        console.log(data);
-        dispatch(saveProductsData(data.products));
-        dispatch(saveProductsTotalAmount(data.total_found));
-        dispatch(saveSliderImages(data.products));
-      };
-      getproducts();
-    } catch (error) {
-      console.log(error);
-    }
+    if (searchedResults.length === 0)
+      try {
+        const getproducts = async () => {
+          const { data } = await getAllProducts();
+          // console.log(data);
+          dispatch(saveProductsData(data.products));
+          dispatch(saveProductsTotalAmount(data.total_found));
+          dispatch(saveSliderImages(data.products));
+        };
+        getproducts();
+      } catch (error) {
+        console.log(error);
+      }
   }, []);
+  // console.log(searchedResults, "searched");
+  // console.log(products, "products");
   return (
     <MainContainer>
       <Slider />
       <div>
         <Stack spacing={2} mt={4}>
           <Pagination
-            count={Math.ceil(totalProducts / 20)}
+            count={Math.ceil(totalProducts / 12)}
             page={pageNumber}
             variant="outlined"
             shape="rounded"
@@ -76,15 +78,17 @@ const ProductsContainer = () => {
         </Stack>
       </div>
       <ProductContainer>
-        {products.map((product: ProductItem) => {
-          return <ProductCard key={product.id} product={product} />;
-        })}
+        {(searchedResults.length === 0 ? products : searchedResults).map(
+          (product: ProductItem) => {
+            return <ProductCard key={product.id} product={product} />;
+          }
+        )}
       </ProductContainer>
 
       <div>
         <Stack spacing={2}>
           <Pagination
-            count={Math.ceil(totalProducts / 20)}
+            count={Math.ceil(totalProducts / 12)}
             page={pageNumber}
             variant="outlined"
             shape="rounded"

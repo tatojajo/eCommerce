@@ -1,19 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
-import { Box, Modal, Typography, TextField, Button } from "@mui/material";
-import { ModalBox, SignInContainer, TextFieldContainer } from "./SignInSyled";
+import { Box,  Typography, TextField, Button, DialogActions } from "@mui/material";
+import { LoginDialoglBox, SignInContainer, TextFieldContainer } from "./SignInSyled";
 import { adminLogin } from "../../Helpers/Services/adminLogin";
+import { userlogin } from "../../Helpers/Services/userLogin";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 interface SignInProps {
   open: boolean;
+  setOpen: Function
 }
 
 const signInValidationSchema = yup.object().shape({
-  userName: yup.string().required("Username Required"),
+  email: yup.string().required("Username Required"),
   password: yup
   .string()
     .required("Password Is Required")
@@ -21,7 +24,9 @@ const signInValidationSchema = yup.object().shape({
     .max(12, "Password length cannot exceed more than 12 characters"),
   });
   
-  const SignIn = ({ open }: SignInProps) => {
+  const SignIn = ({ open, setOpen }: SignInProps) => {
+
+    const navigate = useNavigate()
     const {t} = useTranslation()
     const {
     register,
@@ -29,25 +34,27 @@ const signInValidationSchema = yup.object().shape({
     formState: { errors },
     reset,
   } = useForm<SignInInitialValue>({ resolver: yupResolver(signInValidationSchema) });
-  const onSubmit: SubmitHandler<SignInInitialValue> = (data) =>{
-   adminLogin()
+  const onSubmit: SubmitHandler<SignInInitialValue> = async (user) =>{
+   try {
+    const {data} = await userlogin(user)
+    localStorage.setItem('AccessToken', data.AccessToken)
+   } catch (error) {
+    console.log(error)
+   }
   }
-  const handleTextFieldClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) => {
-    const tagName = (event.target as HTMLElement).tagName;
-    if (tagName !== "BUTTON" && tagName !== "A") {
-      event.stopPropagation();
-    }
-  };
+
+const handleClose = ()=>{
+  navigate('/')
+  setOpen(false)
+}
 
   return (
     <div>
-      <ModalBox
+      <LoginDialoglBox
         open={open}
-        // onClose={handleClose}
+        onClose={handleClose}
       >
-        <SignInContainer onClick={(e) => handleTextFieldClick(e)}>
+        <SignInContainer>
           <Box
             sx={{
               marginTop: "50px",
@@ -62,7 +69,7 @@ const signInValidationSchema = yup.object().shape({
               autoFocus
               id="userName"
               label={t('global.username')}
-              {...register("userName")}
+              {...register("email")}
             />
             <TextField
               type="password"
@@ -72,6 +79,7 @@ const signInValidationSchema = yup.object().shape({
             />
             <Box>
               <Button
+              type="submit"
                 variant="contained"
                 color="success"
                 onClick={handleSubmit(onSubmit)}
@@ -87,7 +95,7 @@ const signInValidationSchema = yup.object().shape({
             </Typography>
           </Box>
         </SignInContainer>
-      </ModalBox>
+      </LoginDialoglBox>
     </div>
   );
 };

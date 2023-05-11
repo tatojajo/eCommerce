@@ -1,10 +1,11 @@
-import { styled, Box, Modal } from "@mui/material";
+import { styled, Box, Modal, Dialog } from "@mui/material";
 import SignInImg from "../../images/sign_in.jpg";
 
-export const ModalBox = styled(Modal)`
+export const LoginDialoglBox = styled(Dialog)`
   display: flex;
   align-items: top;
   justify-content: flex-end;
+
 `;
 
 export const SignInContainer = styled(Box)`
@@ -19,10 +20,8 @@ export const SignInContainer = styled(Box)`
   transform: translate(-50%; -50%);
   width: 400px;
   height: 850px;
-  margin-top: 20px;
-  margin-right: 20px;
   border: 2px solid #000;
-  border-radius: 10px;
+  border-radius: 3px;
   padding: 30px;
 `;
 

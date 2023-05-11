@@ -1,11 +1,11 @@
 export const initialValues: RegisterInitialValue = {
     firstName: "",
     lastName: "",
-    mobile: "",
+    phoneNumber: "",
     email: "",
-    city: "",
-    postCode: "",
-    address: "",
+    // city: "",
+    // postCode: "",
+    // address: "",
     password: "",
-    confirmPassword: ""
+    // confirmPassword: ""
 }

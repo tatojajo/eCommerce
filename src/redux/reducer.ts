@@ -10,7 +10,9 @@ import {
   NEXT_PAGE_DATA,
   SAVE_PRODUCTS_DATA,
   SAVE_PRODUCTS_TOTAL_AMOUNT,
+  SAVE_SEARCHED_PRODUCTS,
   SAVE_SLIDER_IMAGES,
+  SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
   SET_ERROR,
   SET_LOADING,
 } from "./HomeActions/HomeActions";
@@ -20,10 +22,11 @@ const initialState: HomeState = {
   products: [],
   sliderImages: [],
   totalProducts: 0,
+  totalSearchedProducts:0,
   cartItems: [],
   categories: [],
   totalAmount: 0,
-  searchResults: [],
+  searchedResults: [],
   selectedProduct: null,
   loading: false,
   error: null,
@@ -120,6 +123,10 @@ const homeReducer = (
         return { ...state, cartItems: newItems };
       }
       return { ...state, cartItems: itemsAfterDecreaseing };
+      case SAVE_SEARCHED_PRODUCTS:
+        return{...state, searchedResults: action.products, totalSearchedProducts: action.total_found}
+        case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
+      return { ...state, searchedResults: action.products };
     default:
       return state;
   }

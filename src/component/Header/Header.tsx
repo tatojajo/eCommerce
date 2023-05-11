@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 import SignIn from "../../pages/SignIn";
 
@@ -14,8 +14,8 @@ import {
   Box,
   Badge,
   FormControl,
-  
   NativeSelect,
+  Button,
 } from "@mui/material";
 // *  styles
 import {
@@ -42,17 +42,54 @@ import {
 import US from "../../images/us.svg";
 import GE from "../../images/ge.svg";
 import i18next from "i18next";
+import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
+import {
+  getSearchedProducts,
+  getSearchedProductsNextPage,
+} from "../../Helpers/Services/products";
+import {
+  nextPage,
+  saveProductsData,
+  saveProductsTotalAmount,
+  saveSearchedProducts,
+  searchedProductsNextPage,
+} from "../../redux/HomeActions/HomeActions";
 
-const Header = () => {
-  const {t} = useTranslation()
-  const [open, setOpen] = useState(false);
+type NavbarProps = {
+  setOpen:Function
+}
+
+const Header = ({ setOpen }:NavbarProps) => {
+  // const [pageNumber, setPageNumber] = useState(1);
+  // const debouncedValue = useDebounce(searchValue);
+  // const [searchValue, setSearchValue] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const cartItems = useAppSelector((state) => state.cartItems);
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
-    const toggle = setOpen((prev) => !prev);
-    return toggle;
-  };
+  // const startIndex = (pageNumber - 1) * 12;
+
+  // useEffect(()=>{
+
+  //   const getSearchedNextpageProducts = async () => {
+  //     const { data } = await getSearchedProductsNextPage(debouncedValue, startIndex);
+  //     dispatch(searchedProductsNextPage(data.products));
+  //   };
+  //   getSearchedNextpageProducts();
+  // },[pageNumber])
+
+  // useEffect(() => {
+  //   if (debouncedValue.length < 2) dispatch(saveSearchedProducts([], 0));
+  //   if (debouncedValue.length > 2) {
+  //     const searchedproducts = async () => {
+  //       const { data } = await getSearchedProducts(debouncedValue);
+  //       // console.log(data)
+  //       dispatch(saveSearchedProducts(data.products, data.total_found));
+  //     };
+  //     searchedproducts();
+  //   }
+  // }, [debouncedValue]);
 
   return (
     <Box>
@@ -84,19 +121,26 @@ const Header = () => {
 
           <CategoriesBtn sx={{ display: { xs: "none", md: "flex" } }}>
             <Typography variant="subtitle2" color="black">
-              {t('global.category')}
+              {t("global.category")}
             </Typography>
             <ArrowDownwardOutlined />
           </CategoriesBtn>
 
           <SearchBar>
             <TextField
-              id=""
-              label=""
-              variant="standard"
+              size="small"
+              id="search"
+              label="Search..."
+              variant="outlined"
+              style={{
+                backgroundColor: "white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "5px",
+              }}
               // value={searchValue}
-              // onChange={handleSearch}
-
+              // onChange={(event) => setSearchValue(event.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -126,7 +170,6 @@ const Header = () => {
             <FormControl fullWidth>
               <NativeSelect
                 title="Select Language"
-                
                 defaultValue="ENG"
                 onChange={(e) => {
                   const value = e.target.value;
@@ -145,14 +188,16 @@ const Header = () => {
 
           <UserContainer>
             <PersonOutlined />
-            <Typography
-              variant="subtitle2"
-              color="initial"
-              onClick={handleSignIn}
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                navigate("/signin");
+                setOpen(true);
+              }}
             >
-              <SignIn open={open} />
-              {t('global.login')}
-            </Typography>
+              {t("global.login")}
+            </Button>
           </UserContainer>
         </HeaderWraper>
         {/* </Container> */}
@@ -160,10 +205,10 @@ const Header = () => {
       <Box sx={{ display: { xs: "flex", md: "none" } }}>
         <LinksContainer>
           <NavbarLink style={{ color: "black" }} to="/">
-          {t("global.contact")}
+            {t("global.contact")}
           </NavbarLink>
           <NavbarLink style={{ color: "black" }} to="/">
-          {t("global.about")}
+            {t("global.about")}
           </NavbarLink>
         </LinksContainer>
       </Box>

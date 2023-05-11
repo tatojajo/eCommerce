@@ -19,10 +19,11 @@ type HomeState = {
   sliderImages: [];
   cartItems: CartProductItem[];
   categories: string[];
-  searchResults: ProductItem[] | null;
+  searchedResults: ProductItem[];
   mobiles: ProductItem[];
-  television:ProductItem[];
+  television: ProductItem[];
   totalProducts: number;
+  totalSearchedProducts: number;
   totalAmount: number;
   selectedProduct: selectedProduct | null;
   loading: boolean;

@@ -1,17 +1,38 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { Routes, Route, Router } from "react-router-dom";
+import { useAppSelector } from "./redux/hooks";
 // * components
 import Header from "./component/Header";
 import Footer from "./component/Footer";
-import Slider from "./component/Slider/Slider";
 import Home from "./pages/Home";
-function App() {
-  return <div>
-    <Header/>
-    <Slider/>
-    <Home/>
-    <Footer/>
-  </div>;
-}
+import Product from "./pages/Product";
+import Cart from "./pages/Cart";
+import Register from "./pages/Register";
+import { HomeState } from "./@types/general";
+import SignIn from "./pages/SignIn";
+
+const App = () => {
+  const [open, setOpen] = useState(false)
+  const { selectedProduct } = useAppSelector<HomeState>((state) => state);
+
+  return (
+    <>
+      <Header  setOpen={setOpen} />
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn open={open} setOpen={setOpen} />}/>
+        <Route
+          path={`/product/:id/${selectedProduct?.title}`}
+          element={<Product />}
+        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/cart" element={<Cart/>}/>
+      </Routes>
+
+      <Footer />
+    </>
+  );
+};
 
 export default App;

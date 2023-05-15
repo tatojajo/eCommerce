@@ -5,7 +5,7 @@
     "username": "UserName",
     "firstName": "First Name",
     "lastName": "Last Name",
-    "sumbit": "SUMBIT",
+    "submit": "SUMBIT",
     "model":"Model",
     "price": "Price",
     "remove": "Remove",

@@ -25,7 +25,7 @@ import {
   ShoppingCart,
   StarBorderOutlined,
 } from "@mui/icons-material";
-import { CardContainer } from "./ProductsCardStyle";
+import { CardContainer } from "./ProductCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
   // console.log(product)
@@ -42,69 +42,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
     );
   };
 
-
   return (
-    // <CardContainer>
-    //   <ImageWrapper>
-    //     <IconButton
-    //       sx={{
-    //         position: "absolute",
-    //         top: "40%",
-    //         left: "-40px",
-    //         cursor: "pointer",
-    //       }}
-    //       onClick={prevImage}
-    //     >
-    //       <ArrowLeft />
-    //     </IconButton>
-    //     <CardImage src={product.images[productImage]} alt="" />
-    //     <IconButton
-    //       sx={{
-    //         position: "absolute",
-    //         top: "40%",
-    //         right: "-40px",
-    //         cursor: "pointer",
-    //       }}
-    //       onClick={nextImage}
-    //     >
-    //       <ArrowRight />
-    //     </IconButton>
-    //   </ImageWrapper>
-    //   <Box
-    //     sx={{
-    //       height: "130px",
-    //     }}
-    //   >
-    //     {/* <Button onClick={()=>{
-    //         navigate(`/product/${product.id}`)
-    //         dispatch(moveToProductPage(product))
-    //       }}>
-    //         {product.title}
-    //       </Button> */}
-    //     <Link
-    //       to={`/product/${product.id}/${product.title}`}
-    //       onClick={() => dispatch(moveToProductPage(product))}
-    //     >
-    //       {product.title}
-    //     </Link>
-
-    //     <Typography variant="subtitle1" color="error">
-    //       {t("global.price")}: ${product.price}
-    //     </Typography>
-    //   </Box>
-    //   <Box>
-    //     <Button
-    //       variant="contained"
-    //       onClick={() => dispatch(addProductCart(product))}
-    //     >
-    //       {t("global.add")}
-    //       <ShoppingCart />
-    //     </Button>
-    //     <Button sx={{ backgroundColor: "yellow" }}>
-    //       <StarBorderOutlined />
-    //     </Button>
-    //   </Box>
-    // </CardContainer>
     <Paper elevation={8}>
       <CardContainer>
         <Box sx={{ position: "relative" }}>

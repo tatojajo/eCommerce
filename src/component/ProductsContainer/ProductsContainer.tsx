@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import {
@@ -14,20 +14,50 @@ import {
   getAllProducts,
   productsNextpage,
 } from "../../Helpers/Services/products";
-
-import { Pagination, Stack } from "@mui/material";
 import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
 import { HomeState, ProductItem } from "../../@types/general";
 import { useAppSelector } from "../../redux/hooks";
 import Slider from "../Slider/Slider";
+import {
+  Pagination,
+  Stack,
+} from "@mui/material";
 
 const ProductsContainer = () => {
+  const [pageNumber, setPageNumber] = useState(1);
   const dispatch = useDispatch();
-
-  const { products, totalProducts, searchedResults } =
+  const { products, totalProducts, searchedResults, totalSearchedProducts } =
     useAppSelector<HomeState>((state) => state);
 
-  const [pageNumber, setPageNumber] = useState(1);
+  const startIndex = (pageNumber - 1) * 12;
+
+  // searchedResults &&
+  //   useEffect(() => {
+  //     const getSearchedNextpageProducts = async () => {
+  //       const { data } = await getSearchedProductsNextPage(
+  //         debouncedValue,
+  //         startIndex
+  //       );
+  //       dispatch(searchedProductsNextPage(data.products));
+  //     };
+  //     getSearchedNextpageProducts();
+  //   }, [pageNumber]);
+
+  // useEffect(() => {
+  //   if (debouncedValue.length < 2) {
+  //     dispatch(saveSearchedProducts([], 0));
+  //     setPageNumber(1);
+  //   }
+  //   if (debouncedValue.length > 2) {
+  //     setPageNumber(1);
+  //     const searchedproducts = async () => {
+  //       const { data } = await getSearchedProducts(debouncedValue);
+  //       console.log(data.products);
+  //       dispatch(saveSearchedProducts(data.products, data.total_found));
+  //     };
+  //     searchedproducts();
+  //   }
+  // }, [debouncedValue]);
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
@@ -36,47 +66,39 @@ const ProductsContainer = () => {
     setPageNumber(value);
   };
 
-  const startIndex = (pageNumber - 1) * 20;
-
   useEffect(() => {
-    const getNextpageProducts = async () => {
-      const { data } = await productsNextpage(startIndex);
-      dispatch(nextPage(data.products));
-    };
-    getNextpageProducts();
-  }, [pageNumber]);
-
-  useEffect(() => {
-    if (searchedResults.length === 0)
+    const fetchData = async () => {
       try {
-        const getproducts = async () => {
+        if (pageNumber > 1) {
+          const { data: nextPageData } = await productsNextpage(startIndex);
+          dispatch(nextPage(nextPageData.products));
+        } else {
           const { data } = await getAllProducts();
-          // console.log(data);
           dispatch(saveProductsData(data.products));
           dispatch(saveProductsTotalAmount(data.total_found));
           dispatch(saveSliderImages(data.products));
-        };
-        getproducts();
+        }
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching data:", error);
+        
       }
-  }, []);
-  // console.log(searchedResults, "searched");
-  // console.log(products, "products");
+    };
+
+    fetchData();
+  }, [pageNumber]);
+
   return (
     <MainContainer>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "20px",
+        }}
+      ></div>
       <Slider />
-      <div>
-        <Stack spacing={2} mt={4}>
-          <Pagination
-            count={Math.ceil(totalProducts / 12)}
-            page={pageNumber}
-            variant="outlined"
-            shape="rounded"
-            onChange={handleChangePage}
-          />
-        </Stack>
-      </div>
+
       <ProductContainer>
         {(searchedResults.length === 0 ? products : searchedResults).map(
           (product: ProductItem) => {
@@ -86,7 +108,7 @@ const ProductsContainer = () => {
       </ProductContainer>
 
       <div>
-        <Stack spacing={2}>
+        <Stack spacing={2} mt={4}>
           <Pagination
             count={Math.ceil(totalProducts / 12)}
             page={pageNumber}

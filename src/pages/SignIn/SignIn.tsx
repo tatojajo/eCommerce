@@ -94,7 +94,7 @@ const handleClose = ()=>{
           <Box>
             <Typography variant="subtitle1" color="initial">
               {t("global.don't_have_an_account")}?
-              <Link to="/register">{t('global.register')}</Link>
+              <Link to="/register" onClick={()=>setOpen(false)}>{t('global.register')}</Link>
             </Typography>
           </Box>
         </SignInContainer>

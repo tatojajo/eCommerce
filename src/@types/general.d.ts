@@ -16,7 +16,7 @@ type selectedProduct = ProductItem | CartProductItem;
 
 type HomeState = {
   products: ProductItem[];
-  sliderImages: [];
+  sliderImages: string[];
   cartItems: CartProductItem[];
   searchedResults: ProductItem[];
   pageNumber:number

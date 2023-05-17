@@ -7,12 +7,8 @@ margin-top:15px;
   background: #ff5f5;
 `;
 export const ProductContainer = styled(Box)`
-  // display: grid;
-  // grid-template-columns: repeat(4, 1fr);
-  // align-items: center;
-  // justify-content: space-between;
   gap: 3rem;
-  width: 100%;
+  width: 70%;
   margin: auto;
   padding: 20px;
   display: flex;

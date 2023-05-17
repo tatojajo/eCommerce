@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import {
   decreaseQuantity,
   increaseQuantity,
+  removeCartItem,
 } from "../../redux/CartActions/CartActions";
 import {
   Box,
@@ -39,6 +40,8 @@ const Cart = () => {
   const {t} = useTranslation()
   const cartItems = useAppSelector((state) => state.cartItems);
   const dispatch = useAppDispatch();
+
+  
 
   const totalAmount = useMemo(
     () =>
@@ -75,7 +78,7 @@ const Cart = () => {
                   >
                     <TableCell align="left" component="th" scope="row">
                       <CartItemName>
-                        <IconButton color="error">
+                        <IconButton color="error" onClick={()=>dispatch(removeCartItem(item))}>
                           <Clear />
                         </IconButton>
                         <img
@@ -93,7 +96,7 @@ const Cart = () => {
                         </Typography>
                       </CartItemName>
                     </TableCell>
-                    <TableCell align="left">${item.price}</TableCell>
+                    <TableCell align="left">${Number(item.price).toFixed(2)}</TableCell>
                     <TableCell align="left">
                       <ItemQUantity>
                         <IconButton
@@ -141,7 +144,7 @@ const Cart = () => {
                 {t('global.total')}:
               </Typography>
               <Typography variant="body1" color="initial">
-                ${totalAmount}
+                ${Number(totalAmount).toFixed(2)}
               </Typography>
             </AmountInfo>
             <AmountInfo>

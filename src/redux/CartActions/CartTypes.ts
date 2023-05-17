@@ -1,4 +1,4 @@
-import { DECREASE_QUANTITY, INCREASE_QUANTITY } from "./CartActions";
+import { DECREASE_QUANTITY, INCREASE_QUANTITY, REMOVE_CART_ITEM } from "./CartActions";
 import { CartProductItem } from "../../@types/general";
 
 
@@ -13,5 +13,10 @@ export type DECREASE_QUANTITY_ACTION = {
     product: CartProductItem
 }
 
+export type REMOVE_CART_ITEM_ACTION={
+    type: typeof REMOVE_CART_ITEM;
+    product:CartProductItem
+}
 
-export type CART_ACTIONS = INCREASE_QUANTITY_ACTION | DECREASE_QUANTITY_ACTION
+
+export type CART_ACTIONS = INCREASE_QUANTITY_ACTION | DECREASE_QUANTITY_ACTION | REMOVE_CART_ITEM_ACTION

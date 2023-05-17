@@ -1,15 +1,20 @@
 import React from "react";
 
 import ProductsContainer from "../../component/ProductsContainer";
+import { Box } from "@mui/material";
+import { WidthFull } from "@mui/icons-material";
 
 
 const Home = () => {
   return (
-    <div>
+    <Box sx={{
+      display:'flex',
+      width:'100%'
+    }}>
     
 
       <ProductsContainer />
-    </div>
+    </Box>
   );
 };
 

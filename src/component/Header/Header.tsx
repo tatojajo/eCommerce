@@ -45,6 +45,7 @@ import {
   getSearchedProductsNextPage,
 } from "../../Helpers/Services/products";
 import {
+  changePageNumber,
   saveSearchedProducts,
   searchedProductsNextPage,
 } from "../../redux/HomeActions/HomeActions";
@@ -81,11 +82,14 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { cartItems, pageNumber, searchedResults, favorites } =
-    useAppSelector((state) => state);
+  const { cartItems, pageNumber, searchedResults, favorites } = useAppSelector(
+    (state) => state
+  );
 
   const user: User = JSON.parse(localStorage.getItem("User") as string);
+
   const handleChange = (e: any) => {
+    if (searchValue.length > 2 || searchValue.length === 0) dispatch(changePageNumber(1));
     setSearchValue(e.target.value);
   };
   const handleSearchChange = (e: any) => {
@@ -96,6 +100,7 @@ const Header = () => {
     localStorage.removeItem("AccessToken");
     localStorage.removeItem("User");
   };
+  const startIndex = (pageNumber - 1) * 12;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -103,16 +108,14 @@ const Header = () => {
           const getSearchedNextpageProducts = async () => {
             const { data } = await getSearchedProductsNextPage(
               debouncedValue,
-              pageNumber
+              startIndex
             );
-
             dispatch(searchedProductsNextPage(data.products));
           };
           getSearchedNextpageProducts();
         } else if (debouncedValue.length > 2) {
           const searchedproducts = async () => {
             const { data } = await getSearchedProducts(debouncedValue);
-            console.log(data.products);
             dispatch(saveSearchedProducts(data.products, data.total_found));
           };
           searchedproducts();
@@ -122,11 +125,11 @@ const Header = () => {
       }
     };
     fetchData();
-  }, [debouncedValue, pageNumber]);
+  }, [debouncedValue, startIndex]);
 
   return (
     <Box>
-      <AppBar color='inherit'>
+      <AppBar color='secondary'>
         <Container maxWidth="xl">
           <HeaderWraper>
             <LogoTitle
@@ -195,7 +198,7 @@ const Header = () => {
                 }}
               >
                 <option disabled value="">
-                  {t('global.category')}
+                  {t("global.category")}
                 </option>
                 {categories.map((option) => (
                   <option key={option} value={option}>
@@ -227,9 +230,8 @@ const Header = () => {
               <FavCartContainer>
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
                   <IconButton>
-                    <Badge badgeContent={favorites.length} color="success" >
-                        {favorites.length > 0 ? <Star/> : <StarBorderOutlined />}
-                    
+                    <Badge badgeContent={favorites.length} color="success">
+                      {favorites.length > 0 ? <Star /> : <StarBorderOutlined />}
                     </Badge>
                   </IconButton>
                 </Box>
@@ -241,10 +243,14 @@ const Header = () => {
                   </IconButton>
                 </Box>
               </FavCartContainer>
-              <Box display="flex" alignItems="center" onClick={()=>{
-                if(isAuthenticated())navigate('/user')
-                if(!isAuthenticated())setOpen(true)
-              }}>
+              <Box
+                display="flex"
+                alignItems="center"
+                onClick={() => {
+                  if (isAuthenticated()) navigate("/user");
+                  if (!isAuthenticated()) setOpen(true);
+                }}
+              >
                 <IconButton>
                   <Avatar>{user?.firstName[0]}</Avatar>
                 </IconButton>

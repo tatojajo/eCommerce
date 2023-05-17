@@ -1,18 +1,10 @@
-import React, { useState } from "react";
-
 import { useAppSelector } from "../../redux/hooks";
-
-import { Box, Container } from "@mui/material";
-
-import Carusel from "react-material-ui-carousel";
-import SimpleImageSlider from "react-simple-image-slider";
 
 import "./Slider.scss";
 import Carousel from "react-material-ui-carousel";
 
 const Slider = () => {
-  const { sliderImages } = useAppSelector((state) => state.homeReducer);
-  const [imageIndex, setImageIndex] = useState(0);
+  const { sliderImages } = useAppSelector((state) => state);
 
   return (
     <div className="carusel__images-wrapper">

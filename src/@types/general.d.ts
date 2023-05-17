@@ -2,29 +2,34 @@ import { BackdropProps } from "@mui/material";
 
 type ProductItem = {
   amount: string;
-  barnd: string;
+  brand: string;
   category: string;
   description: string;
   id: string;
   images: string[];
-  price: string;
+  price: number;
   rating: string;
   title: string;
 };
 
-type TotalAmount = {
-  total_found: number;
-};
+type selectedProduct = ProductItem | CartProductItem;
 
 type HomeState = {
   products: ProductItem[];
   sliderImages: [];
-  totalProducts: number;
   cartItems: CartProductItem[];
+  categories: string[];
+  searchedResults: ProductItem[];
+  mobiles: ProductItem[];
+  television: ProductItem[];
+  totalProducts: number;
+  totalSearchedProducts: number;
+  totalAmount: number;
+  selectedProduct: selectedProduct | null;
   loading: boolean;
   error: any;
 };
 
 type CartProductItem = ProductItem & {
-  quantity: number
-}
+  quantity: number;
+};

@@ -9,12 +9,14 @@ import {
   CHANGE_PAGE_NUMBER,
   MOVE_TO_PRODUCT_PAGE,
   NEXT_PAGE_DATA,
+  REMOVE_FAVORITE_PRODUCT,
   SAVE_PRODUCTS_DATA,
   SAVE_PRODUCTS_TOTAL_AMOUNT,
   SAVE_SEARCHED_PRODUCTS,
   SAVE_SLIDER_IMAGES,
   SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
   SET_ERROR,
+  SET_FAVORITE_PRODUCTS,
   SET_LOADING,
   searchedProductsNextPage,
 } from "./HomeActions/HomeActions";
@@ -24,12 +26,13 @@ const initialState: HomeState = {
   products: [],
   sliderImages: [],
   totalProducts: 0,
-  totalSearchedProducts:0,
+  totalSearchedProducts: 0,
   cartItems: [],
   totalAmount: 0,
   searchedResults: [],
   selectedProduct: null,
-  pageNumber:1,
+  pageNumber: 1,
+  favorites: [],
   loading: false,
   error: null,
 };
@@ -64,8 +67,8 @@ const homeReducer = (
       const images = products.map((product) => product.images[0]);
       return { ...state, sliderImages: images };
     case CHANGE_PAGE_NUMBER:
-      console.log(action.value)
-      return{...state, pageNumber:action.value}
+      console.log(action.value);
+      return { ...state, pageNumber: action.value };
 
     case NEXT_PAGE_DATA:
       return { ...state, products: action.products };
@@ -125,13 +128,21 @@ const homeReducer = (
         return { ...state, cartItems: newItems };
       }
       return { ...state, cartItems: itemsAfterDecreaseing };
-      case SAVE_SEARCHED_PRODUCTS:
-        const total_found = action.total_found
-        const searchedProducts = action.products
-        return{...state, searchedResults: searchedProducts, totalSearchedProducts: total_found}
-        case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
-         
+    case SAVE_SEARCHED_PRODUCTS:
+      const total_found = action.total_found;
+      const searchedProducts = action.products;
+      return {
+        ...state,
+        searchedResults: searchedProducts,
+        totalSearchedProducts: total_found,
+      };
+    case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
       return { ...state, searchedResults: action.products };
+      case SET_FAVORITE_PRODUCTS:
+        return{...state, favorites: [...state.favorites, action.product]}
+        case REMOVE_FAVORITE_PRODUCT:
+          const myFavProducts = state.favorites.filter(item=>item.id !== action.product.id)
+          return{...state, favorites: myFavProducts}
     default:
       return state;
   }

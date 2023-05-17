@@ -36,6 +36,7 @@ import {
   StarBorderOutlined,
   ShoppingCart,
   Clear,
+  Star,
 } from "@mui/icons-material";
 import i18next from "i18next";
 import { useEffect, useState } from "react";
@@ -80,7 +81,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { cartItems, pageNumber, searchedResults, totalSearchedProducts } =
+  const { cartItems, pageNumber, searchedResults, favorites } =
     useAppSelector((state) => state);
 
   const user: User = JSON.parse(localStorage.getItem("User") as string);
@@ -125,7 +126,7 @@ const Header = () => {
 
   return (
     <Box>
-      <AppBar color="primary">
+      <AppBar color='inherit'>
         <Container maxWidth="xl">
           <HeaderWraper>
             <LogoTitle
@@ -190,11 +191,11 @@ const Header = () => {
                 }}
                 variant="standard"
                 style={{
-                  maxWidth: "100px",
+                  maxWidth: "110px",
                 }}
               >
                 <option disabled value="">
-                  Category
+                  {t('global.category')}
                 </option>
                 {categories.map((option) => (
                   <option key={option} value={option}>
@@ -226,7 +227,10 @@ const Header = () => {
               <FavCartContainer>
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
                   <IconButton>
-                    <StarBorderOutlined />
+                    <Badge badgeContent={favorites.length} color="success" >
+                        {favorites.length > 0 ? <Star/> : <StarBorderOutlined />}
+                    
+                    </Badge>
                   </IconButton>
                 </Box>
                 <Box>

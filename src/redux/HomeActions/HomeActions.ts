@@ -4,6 +4,7 @@ import {
   ProductItem,
   selectedProduct,
 } from "../../@types/general";
+import Product from "../../pages/Product";
 import { HOME_ACTIONS } from "./HomeTypes";
 
 export const SAVE_PRODUCTS_DATA = "SAVE_PRODUCTS_DATA";
@@ -19,6 +20,10 @@ export const SAVE_CATEGORIES = "SAVE_CATEGORIES";
 export const SAVE_SEARCHED_PRODUCTS = "SAVE_SEARCHED_PRODUCTS";
 export const SEARCHED_PRODUCTS_NEXT_PAGE_DATA =
   "SEARCHED_PRODUCTS_NEXT_PAGE_DATA";
+export const SET_FAVORITE_PRODUCTS = 'SET_FAVORITE_PRODUCTS'
+export const REMOVE_FAVORITE_PRODUCT = 'REMOVE_FAVORITE_PRODUCT'
+
+
 export const saveProductsData = (products: ProductItem[]): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_DATA,
   products,
@@ -84,3 +89,13 @@ export const searchedProductsNextPage = (
   type: SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
   products,
 });
+
+export const favoriteProduct = (product:ProductItem):HOME_ACTIONS=>({
+  type:SET_FAVORITE_PRODUCTS,
+  product
+})
+
+export const removeFavoriteProduct=(product:ProductItem):HOME_ACTIONS=>({
+  type: REMOVE_FAVORITE_PRODUCT,
+  product
+})

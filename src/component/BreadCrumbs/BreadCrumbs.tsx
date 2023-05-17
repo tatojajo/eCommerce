@@ -1,11 +1,15 @@
-import {  useNavigate, useLocation, useParams } from "react-router-dom";
-import { Breadcrumbs, Typography ,Link} from "@mui/material";
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import { Breadcrumbs, Typography, Link } from "@mui/material";
 const BreadCrumbs = () => {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
+
   const pathnames = pathname.split("/").filter((x) => x);
   return (
-    <Breadcrumbs sx={{marginTop:'64px', height:'10px'}}>
+    <Breadcrumbs sx={{ marginTop: "64px", height: "10px" }}>
       {pathnames.length > 0 ? (
         <Link onClick={() => navigate("/")}>Home</Link>
       ) : (

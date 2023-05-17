@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
 import { ProductCartProps } from "../../@types/ProductCartProps";
-import { useDispatch } from "react-redux";
+import { ProductItem } from "../../@types/general";
+
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   addProductCart,
   moveToProductPage,
+  removeFavoriteProduct,
+  favoriteProduct
 } from "../../redux/HomeActions/HomeActions";
 
 import {
-  Box,
-  Breadcrumbs,
   Button,
-  Card,
   CardActions,
   CardContent,
   CardMedia,
@@ -24,16 +26,34 @@ import {
   ArrowLeft,
   ArrowRight,
   ShoppingCart,
-  StarBorderOutlined,
+  Star,
+  StarBorder,
 } from "@mui/icons-material";
 import { CardContainer, ProductLink } from "./ProductCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
   // console.log(product)
+  const { favorites } = useAppSelector((state) => state);
+  const [isFavorite, setIsFavorite] = useState(false);
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [productImage, setProductImage] = useState(0);
+
+  const handleFavProduct = (product: ProductItem) => {
+    const isProductInFavorites = favorites.find((item) => item.id === product.id);
+
+    if (isProductInFavorites) {
+      dispatch(removeFavoriteProduct(product));
+    } else {
+      dispatch(favoriteProduct(product));
+      setIsFavorite(true);
+    }
+  };
+  
+  const handelFavIcon = ()=>{
+    setIsFavorite(prev=>!prev)
+  }
   const nextImage = () => {
     setProductImage((prev) => (prev + 1) % product.images.length);
   };
@@ -113,8 +133,15 @@ const ProductCard = ({ product }: ProductCartProps) => {
             <ShoppingCart />
           </Button>
 
-          <Button sx={{ backgroundColor: "yellow" }}>
-            <StarBorderOutlined />
+          <Button
+            sx={{ backgroundColor: "yellow" }}
+            onClick={() =>{
+              handelFavIcon();
+               handleFavProduct(product)
+              }}
+              
+          >
+            {isFavorite ? <Star /> : <StarBorder />}
           </Button>
         </CardActions>
       </CardContainer>

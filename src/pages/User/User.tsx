@@ -191,6 +191,7 @@ const User = () => {
                       onClick={() => {
                         if (disabled) handleEditMode();
                         if (!disabled) handleEditMode();
+                        
                       }}
                     >
                       {disabled ? t("global.edit") : t("global.save")}

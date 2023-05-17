@@ -31,3 +31,5 @@ type HomeState = {
 type CartProductItem = ProductItem & {
   quantity: number;
 };
+
+

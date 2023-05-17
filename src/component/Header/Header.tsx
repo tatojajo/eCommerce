@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 // * Mui component
 import {
@@ -16,11 +17,7 @@ import {
   NativeSelect,
   Button,
   Container,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
+  Avatar,
 } from "@mui/material";
 // *  styles
 import {
@@ -38,7 +35,6 @@ import {
   Menu,
   StarBorderOutlined,
   ShoppingCart,
-  Delete,
   Clear,
 } from "@mui/icons-material";
 import i18next from "i18next";
@@ -48,15 +44,10 @@ import {
   getSearchedProductsNextPage,
 } from "../../Helpers/Services/products";
 import {
-  changePageNumber,
-  nextPage,
-  saveCategories,
-  saveProductsData,
-  saveProductsTotalAmount,
   saveSearchedProducts,
   searchedProductsNextPage,
 } from "../../redux/HomeActions/HomeActions";
-import { Value } from "sass";
+import SignIn from "../../pages/SignIn";
 
 type NavbarProps = {
   setOpen: Function;
@@ -65,7 +56,6 @@ const categories = [
   "Mobile Phones",
   "Laptops",
   "Tablets",
-  "Televisions",
   "Headphones",
   "Cameras",
   "Gaming Consoles",
@@ -83,22 +73,28 @@ const categories = [
   "Audio Equipment",
 ];
 
-const Header = ({ setOpen }: NavbarProps) => {
+const Header = () => {
+  const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedValue = useDebounce(searchValue);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { cartItems, pageNumber, searchedResults, totalSearchedProducts } =
     useAppSelector((state) => state);
-  const navigate = useNavigate();
 
+  const user: User = JSON.parse(localStorage.getItem("User") as string);
   const handleChange = (e: any) => {
     setSearchValue(e.target.value);
   };
-  const handleSearchChange = (e:any) => {
+  const handleSearchChange = (e: any) => {
     setSearchValue(e.target.value);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("AccessToken");
+    localStorage.removeItem("User");
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,7 +104,7 @@ const Header = ({ setOpen }: NavbarProps) => {
               debouncedValue,
               pageNumber
             );
-            console.log(data);
+
             dispatch(searchedProductsNextPage(data.products));
           };
           getSearchedNextpageProducts();
@@ -241,34 +237,43 @@ const Header = ({ setOpen }: NavbarProps) => {
                   </IconButton>
                 </Box>
               </FavCartContainer>
-              <Box>
-                <PersonOutlined />
+              <Box display="flex" alignItems="center" onClick={()=>{
+                if(isAuthenticated())navigate('/user')
+                if(!isAuthenticated())setOpen(true)
+              }}>
+                <IconButton>
+                  <Avatar>{user?.firstName[0]}</Avatar>
+                </IconButton>
+                <Typography variant="body2">{user?.firstName}</Typography>
               </Box>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() => {
-                  navigate("/signin");
-                  setOpen(true);
-                }}
-              >
-                {t("global.login")}
-              </Button>
+              {isAuthenticated() ? (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => {
+                    handleLogout();
+                    navigate("/");
+                  }}
+                >
+                  {t("global.logout")}
+                </Button>
+              ) : (
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
+                  {t("global.login")}
+                </Button>
+              )}
+
+              <SignIn open={open} setOpen={setOpen} />
             </UserContainer>
           </HeaderWraper>
         </Container>
       </AppBar>
-
-      <Box
-        className="directionsBox"
-        sx={{ backgroundColor: "red", marginTop: "64px" }}
-      >
-        <FavCartContainer sx={{ display: { xs: "flex", md: "none" } }}>
-          <Box>
-            <StarBorderOutlined />
-          </Box>
-        </FavCartContainer>
-      </Box>
     </Box>
   );
 };

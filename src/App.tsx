@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import { HomeState } from "./@types/general";
 import SignIn from "./pages/SignIn";
 import BreadCrumbs from "./component/BreadCrumbs";
+import User from "./pages/User";
 
 const App = () => {
   const [open, setOpen] = useState(false)
@@ -18,19 +19,20 @@ const App = () => {
 
   return (
     <>
-      <Header  setOpen={setOpen} />
+      <Header   />
       <BreadCrumbs/>
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<SignIn open={open} setOpen={setOpen} />}/>
         <Route
           path={`/product/:id/${selectedProduct?.title}`}
           element={<Product />}
         />
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart/>}/>
+        <Route path="/user" element={<User/>}/>
       </Routes>
+
 
       <Footer />
     </>

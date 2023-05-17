@@ -6,9 +6,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import { Box,  Typography, TextField, Button, DialogActions } from "@mui/material";
 import { LoginDialoglBox, SignInContainer, TextFieldContainer } from "./SignInSyled";
-import { adminLogin } from "../../Helpers/Services/adminLogin";
 import { userlogin } from "../../Helpers/Services/userLogin";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
+import User from "../User";
 
 interface SignInProps {
   open: boolean;
@@ -38,6 +38,9 @@ const signInValidationSchema = yup.object().shape({
    try {
     const {data} = await userlogin(user)
     localStorage.setItem('AccessToken', data.AccessToken)
+    console.log()
+    localStorage.setItem('User',  JSON.stringify(data.User))
+    if(data.AccessToken) setOpen(false)
    } catch (error) {
     console.log(error)
    }

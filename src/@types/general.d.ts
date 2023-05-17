@@ -24,6 +24,7 @@ type HomeState = {
   totalSearchedProducts: number;
   totalAmount: number;
   selectedProduct: selectedProduct | null;
+  favorites:ProductItem[]
   loading: boolean;
   error: any;
 };

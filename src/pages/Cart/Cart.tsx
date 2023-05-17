@@ -1,6 +1,7 @@
-import React, { useMemo } from "react";
-import { useAppSelector } from "../../redux/hooks";
-import { useAppDispatch } from "../../redux/hooks";
+import { useMemo } from "react";
+import { useAppSelector,useAppDispatch } from "../../redux/hooks";
+import { useTranslation } from "react-i18next";
+
 import {
   decreaseQuantity,
   increaseQuantity,
@@ -16,17 +17,12 @@ import {
   Typography,
   IconButton,
   Paper,
-  TextField,
   Button,
 } from "@mui/material";
 import {
   Add,
   Clear,
-  Delete,
-  DeleteOutline,
-  DeleteSweep,
   Remove,
-  RemoveDone,
 } from "@mui/icons-material";
 import {
   AmountInfo,
@@ -40,6 +36,7 @@ import {
 } from "./CartStyle";
 
 const Cart = () => {
+  const {t} = useTranslation()
   const cartItems = useAppSelector((state) => state.cartItems);
   const dispatch = useAppDispatch();
 
@@ -64,10 +61,10 @@ const Cart = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align="left">Item</TableCell>
-                  <TableCell align="left">Price</TableCell>
-                  <TableCell align="left">Qiantity</TableCell>
-                  <TableCell align="left">Total</TableCell>
+                  <TableCell align="left">{t('global.product')}</TableCell>
+                  <TableCell align="left">{t('global.price')}</TableCell>
+                  <TableCell align="left">{t('global.quantity')}</TableCell>
+                  <TableCell align="left">{t('global.total')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -131,7 +128,7 @@ const Cart = () => {
               variant="h5"
               color="initial"
             >
-              Summery
+              {t('global.summary')}
             </Typography>
             {/* <Box mb='20px'>
               <TextField id="" label="Coupon Code" />
@@ -141,15 +138,15 @@ const Cart = () => {
             </Box> */}
             <AmountInfo>
               <Typography variant="body1" color="initial">
-                SUBTOTAL:
+                {t('global.total')}:
               </Typography>
               <Typography variant="body1" color="initial">
-                ${100}
+                ${totalAmount}
               </Typography>
             </AmountInfo>
             <AmountInfo>
               <Typography variant="body1" color="initial">
-                Shipping:
+                {t('global.shipping')}:
               </Typography>
               <Typography variant="body1" color="initial">
                 ${5}
@@ -157,7 +154,7 @@ const Cart = () => {
             </AmountInfo>
             <AmountInfo>
               <Typography variant="body1" color="initial">
-                TOTAL AMOUNT:
+                {t('global.subtotal')}:
               </Typography>
               <Typography variant="body1" color="initial">
                 ${totalAmount.toFixed(3)}
@@ -165,7 +162,7 @@ const Cart = () => {
             </AmountInfo>
             <CheckoutBtn>
               <Button variant="outlined" color="success">
-                CHECKOUT
+                {t('global.checkout')}
               </Button>
             </CheckoutBtn>
           </Paper>

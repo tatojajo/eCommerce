@@ -1,6 +1,6 @@
 {
   "en": {
-  
+  "summary":"Summary",
     "product": "Product",
     "username": "UserName",
     "firstName": "First Name",
@@ -60,6 +60,8 @@
     "save":"Save"
   },
   "ge": {
+
+    "summary":"შეჯამება",
     "product": "პროდუქტი",
     "username": "მომხმარებელი",
     "firstName": "სახელი",

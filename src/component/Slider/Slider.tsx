@@ -7,24 +7,17 @@ const Slider = () => {
   const { sliderImages } = useAppSelector((state) => state);
 
   return (
-    <div className="carusel__images-wrapper">
-      <Carousel
-        autoPlay={false}
-        indicators={false}
-        className="home__carousel"
-        navButtonsAlwaysVisible={true}
-        navButtonsAlwaysInvisible={false}
-      >
-        {sliderImages.map((item, i) => (
-          <img
-            key={i}
-            src={item}
-            alt={`Tshop ${i}`}
-            className="home__image"
-          />
-        ))}
-      </Carousel>
-    </div>
+    <Carousel
+      autoPlay={false}
+      indicators={false}
+      className="home__carousel"
+      navButtonsAlwaysVisible={true}
+      navButtonsAlwaysInvisible={false}
+    >
+      {sliderImages.map((item, i) => (
+        <img key={i} src={item} alt={`Tshop ${i}`} className="home__image" />
+      ))}
+    </Carousel>
   );
 };
 

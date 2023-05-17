@@ -20,7 +20,7 @@ export const FavCartContainer = styled(Box)`
 `;
 
 export const UserContainer = styled(Box)`
-  width: 100px;
+  width: 200px;
   display: flex;
   align-items: center;
   justify-content: space-between;

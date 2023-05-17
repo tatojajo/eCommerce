@@ -1,27 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
 // import ProductsProvider from "./StoreContext/ProductStore/ProductStroreContext";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import './Translation'
-
+import "./Translation";
 
 import App from "./App";
 
-
-
 import "./index.css";
-
-
-
+import AppTheme from "./theme/AppTheme";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <AppTheme>
+          <App />
+        </AppTheme>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

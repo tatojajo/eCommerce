@@ -2,6 +2,7 @@ import { HomeState } from "../@types/general";
 import {
   DECREASE_QUANTITY,
   INCREASE_QUANTITY,
+  REMOVE_CART_ITEM,
 } from "./CartActions/CartActions";
 import { CART_ACTIONS } from "./CartActions/CartTypes";
 import {
@@ -21,10 +22,11 @@ import {
   searchedProductsNextPage,
 } from "./HomeActions/HomeActions";
 import { HOME_ACTIONS } from "./HomeActions/HomeTypes";
+import sliderImage from '../images/slider_first_image.jpg'
 
 const initialState: HomeState = {
   products: [],
-  sliderImages: [],
+  sliderImages: [sliderImage],
   totalProducts: 0,
   totalSearchedProducts: 0,
   cartItems: [],
@@ -65,9 +67,9 @@ const homeReducer = (
     case SAVE_SLIDER_IMAGES:
       const products = action.products;
       const images = products.map((product) => product.images[0]);
-      return { ...state, sliderImages: images };
+      return { ...state, sliderImages: [...sliderImage, images] };
     case CHANGE_PAGE_NUMBER:
-      console.log(action.value);
+      console.log(action.value)
       return { ...state, pageNumber: action.value };
 
     case NEXT_PAGE_DATA:
@@ -128,7 +130,12 @@ const homeReducer = (
         return { ...state, cartItems: newItems };
       }
       return { ...state, cartItems: itemsAfterDecreaseing };
+      case REMOVE_CART_ITEM:
+        const myCart = state.cartItems.filter(item=>item.id !== action.product.id)
+        return{...state, cartItems: myCart}
+
     case SAVE_SEARCHED_PRODUCTS:
+      console.log(action.total_found, action.products)
       const total_found = action.total_found;
       const searchedProducts = action.products;
       return {

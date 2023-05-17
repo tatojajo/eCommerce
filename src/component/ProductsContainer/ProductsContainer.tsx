@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch } from "react-redux";
 import {
   saveProductsData,
   saveProductsTotalAmount,
-  saveSliderImages,
   nextPage,
   changePageNumber,
 } from "../../redux/HomeActions/HomeActions";
@@ -20,8 +19,6 @@ import { HomeState, ProductItem } from "../../@types/general";
 import { useAppSelector } from "../../redux/hooks";
 import Slider from "../Slider/Slider";
 import { Box, Pagination, Stack } from "@mui/material";
-import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
-import SideBar from "../Sidebar/Sidebar";
 
 const ProductsContainer = () => {
   const dispatch = useDispatch();
@@ -40,10 +37,10 @@ const ProductsContainer = () => {
     const fetchData = async () => {
       try {
         if (pageNumber > 1) {
+          console.log('hello')
           const { data } = await productsNextpage(startIndex);
           dispatch(nextPage(data.products));
         } else {
-          
           const { data } = await getAllProducts();
           dispatch(saveProductsData(data.products));
           dispatch(saveProductsTotalAmount(data.total_found));
@@ -54,8 +51,8 @@ const ProductsContainer = () => {
     };
 
     fetchData();
-  }, [pageNumber]);
-
+  }, [startIndex]);
+// console.log(pageNumber, startIndex)
   return (
     <MainContainer>
       <Box>

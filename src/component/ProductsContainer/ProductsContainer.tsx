@@ -43,10 +43,10 @@ const ProductsContainer = () => {
           const { data } = await productsNextpage(startIndex);
           dispatch(nextPage(data.products));
         } else {
+          
           const { data } = await getAllProducts();
           dispatch(saveProductsData(data.products));
           dispatch(saveProductsTotalAmount(data.total_found));
-          dispatch(saveSliderImages(data.products));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -58,10 +58,7 @@ const ProductsContainer = () => {
 
   return (
     <MainContainer>
-      <Box sx={{width:'20%'}}>
-        <SideBar />
-      </Box>
-      <Box sx={{width:'80%'}}>
+      <Box>
         <Slider />
 
         <ProductContainer>

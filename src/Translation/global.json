@@ -35,7 +35,7 @@
     "login": "Log In",
     "logout": "Logout",
     "register": "Register",
-    "address": "Address",
+    "my_address": "My Address",
     "city": "City",
     "country": "Country",
     "postal_code": "Postal Code",
@@ -51,7 +51,13 @@
     "about": "About",
     "newsletter": "Newsletter",
     "subscribe": "Subscribe",
-    "unsubscribe": "Unsubscribe"
+    "unsubscribe": "Unsubscribe",
+    "edit":"Edit",
+    "my_acount":"My Account",
+    "my_details": "My Details",
+    "my_orders":"My Orders",
+    "personal_information": "Personal Information",
+    "save":"Save"
   },
   "ge": {
     "product": "პროდუქტი",
@@ -88,7 +94,7 @@
     "login": "შესვლა",
     "logout": "გამოსვლა",
     "register": "რეგისტრაცია",
-    "address": "მისამართი",
+    "my_address": "მისამართი",
     "city": "ქალაქი",
     "country": "ქვეყანა",
     "postal_code": "საფოსტო კოდი",
@@ -99,6 +105,12 @@
     "contact": "კონტაქტი",
     "about": "ჩვენს შესახებ",
     "forgot_password": "დაგდავიწყდა პაროლი",
-    "reset_password": "პაროლის აღდგენა"
+    "reset_password": "პაროლის აღდგენა",
+    "edit":"რედაქტირება",
+    "my_acount":"ჩემი ვერდი",
+    "my_details":"დეტალები",
+    "my_orders":"შეკვეთები",
+    "personal_information":"პირადი ინფორმაცია",
+    "save":"შენახვა"
   }
 }

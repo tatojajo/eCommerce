@@ -1,6 +1,7 @@
 import { styled, Box } from "@mui/material";
 
 export const MainContainer = styled(Box)`
+margin-top:15px;
   display:flex;
   align-items:start;
   background: #ff5f5;

@@ -15,3 +15,11 @@ type SignInInitialValue = {
   email:string;
   password:string
 }
+
+type User = {
+  id:string
+  firstName:string
+  lastName:string
+  phoneNumber:string
+  email:string
+}

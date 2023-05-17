@@ -6,7 +6,7 @@ export const getAllProducts = (page_number = 0) =>
     page_size: 12,
     page_number: page_number,
     sort_by: "price",
-    sort_order: "asc"
+    sort_order: "asc",
   });
 export const productsNextpage = (startingIndex: number) =>
   ajax.post("products", {
@@ -14,9 +14,6 @@ export const productsNextpage = (startingIndex: number) =>
     page_size: 12,
     page_number: startingIndex,
   });
-
-export const productInfo = (productId: number) =>
-  ajax.post(`product/${productId}`);
 
 export const getSearchedProducts = (value: string) =>
   ajax.post("products", { keyword: value, page_size: 12, page_number: 0 });
@@ -31,6 +28,11 @@ export const getSearchedProductsNextPage = (
     page_number: page_number,
   });
 
+
+  export const sortidProductsPriceUpDown = ()=>  ajax.post("products")
+  
+// export const productInfo = (productId: number) =>
+//   ajax.post(`product/${productId}`);
 // export const deleteProduct = (productId: number) =>
 //   ajax.delete(`products/${productId}`);
 

@@ -5,6 +5,8 @@ export const getAllProducts = (page_number = 0) =>
     keyword: "",
     page_size: 12,
     page_number: page_number,
+    sort_by: "price",
+    sort_order: "asc"
   });
 export const productsNextpage = (startingIndex: number) =>
   ajax.post("products", {

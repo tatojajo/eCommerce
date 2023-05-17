@@ -18,10 +18,8 @@ type HomeState = {
   products: ProductItem[];
   sliderImages: [];
   cartItems: CartProductItem[];
-  categories: string[];
   searchedResults: ProductItem[];
-  mobiles: ProductItem[];
-  television: ProductItem[];
+  pageNumber:number
   totalProducts: number;
   totalSearchedProducts: number;
   totalAmount: number;

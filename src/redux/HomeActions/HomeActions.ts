@@ -8,6 +8,7 @@ import { HOME_ACTIONS } from "./HomeTypes";
 
 export const SAVE_PRODUCTS_DATA = "SAVE_PRODUCTS_DATA";
 export const SAVE_SLIDER_IMAGES = "SAVE_SLIDER_IMAGES";
+export const CHANGE_PAGE_NUMBER = 'CHANGE_PAGE_NUMBER'
 export const SAVE_PRODUCTS_TOTAL_AMOUNT = "SAVE_PRODUCTS_TOTAL_AMOUNT";
 export const NEXT_PAGE_DATA = "NEXT_PAGE";
 export const ADD_PRODUCT_CART = "ADD_PRODUCT_CART";
@@ -22,6 +23,11 @@ export const saveProductsData = (products: ProductItem[]): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_DATA,
   products,
 });
+
+export const changePageNumber = (value:number):HOME_ACTIONS=>({
+type:CHANGE_PAGE_NUMBER,
+value
+})
 
 export const nextPage = (products: ProductItem[]): HOME_ACTIONS => ({
   type: NEXT_PAGE_DATA,

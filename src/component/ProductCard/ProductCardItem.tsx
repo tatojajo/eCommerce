@@ -10,6 +10,7 @@ import {
 
 import {
   Box,
+  Breadcrumbs,
   Button,
   Card,
   CardActions,
@@ -44,62 +45,65 @@ const ProductCard = ({ product }: ProductCartProps) => {
 
   return (
     <Paper elevation={8}>
-      <CardContainer>
-        <Box sx={{ position: "relative" }}>
-          <IconButton
-            sx={{
-              position: "absolute",
-              top: "40%",
-              left: "-30px",
-              cursor: "pointer",
-            }}
-            onClick={prevImage}
-          >
-            <ArrowLeft />
-          </IconButton>
-          <CardMedia
-            sx={{ width: 280, height: 230 }}
-            image={product.images[productImage]}
-            title={product.title}
-          />
-          <IconButton
-            sx={{
-              position: "absolute",
-              top: "40%",
-              right: "-30px",
-              cursor: "pointer",
-            }}
-            onClick={nextImage}
-          >
-            <ArrowRight />
-          </IconButton>
-        </Box>
-        <CardContent>
-          <Link
-            to={`/product/${product.id}/${product.title}`}
-            onClick={() => dispatch(moveToProductPage(product))}
-          >
-            {product.title}
-          </Link>
-          <Typography variant="subtitle1" color="orange">
-            {t("global.price")}: ${product.price}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            onClick={() => dispatch(addProductCart(product))}
-          >
-            {t("global.add")}
-            <ShoppingCart />
-          </Button>
+        <CardContainer>
+          <Box sx={{ position: "relative" }}>
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "40%",
+                left: "-30px",
+                cursor: "pointer",
+              }}
+              onClick={prevImage}
+            >
+              <ArrowLeft />
+            </IconButton>
+            <CardMedia
+              sx={{ width: 280, height: 230 }}
+              image={product.images[productImage]}
+              title={product.title}
+            />
+            <IconButton
+              sx={{
+                position: "absolute",
+                top: "40%",
+                right: "-30px",
+                cursor: "pointer",
+              }}
+              onClick={nextImage}
+              >
+              <ArrowRight />
+            </IconButton>
+          </Box>
+          <CardContent>
+            
+            <Link
+              to={`/product/${product.id}/${product.title}`}
+              onClick={() => dispatch(moveToProductPage(product))}
+            >
+              {product.title}
+            </Link>
+            
+            <Typography variant="subtitle1" color="orange">
 
-          <Button sx={{ backgroundColor: "yellow" }}>
-            <StarBorderOutlined />
-          </Button>
-        </CardActions>
-      </CardContainer>
-    </Paper>
+              {t("global.price")}: ${Number(product.price).toFixed(2)} 
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button
+              variant="contained"
+              onClick={() => dispatch(addProductCart(product))}
+            >
+              {t("global.add")}
+              <ShoppingCart />
+            </Button>
+
+            <Button sx={{ backgroundColor: "yellow" }}>
+              <StarBorderOutlined />
+            </Button>
+          </CardActions>
+        </CardContainer>
+      </Paper>
   );
 };
 

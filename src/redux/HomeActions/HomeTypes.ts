@@ -1,6 +1,7 @@
 import { ProductItem } from "../../@types/general";
 import {
   ADD_PRODUCT_CART,
+  CHANGE_PAGE_NUMBER,
   MOVE_TO_PRODUCT_PAGE,
   NEXT_PAGE_DATA,
   SAVE_CATEGORIES,
@@ -38,6 +39,11 @@ export type NEXT_PAGE_DATA_ACTION = {
   products: ProductItem[];
 };
 
+export type CHANGE_PAGE_NUMBER_ACTION = {
+  type:typeof CHANGE_PAGE_NUMBER;
+  value:number
+}
+
 export type ADD_PRODUCT_CART_ACTION = {
   type: typeof ADD_PRODUCT_CART;
   product: ProductItem;
@@ -74,6 +80,7 @@ export type HOME_ACTIONS =
   | SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION
   | SAVE_SLIDER_IMAGES_ACTION
   | SAVE_CATEGORIES_ACTION
+  | CHANGE_PAGE_NUMBER_ACTION
   | NEXT_PAGE_DATA_ACTION
   | ADD_PRODUCT_CART_ACTION
   | SET_LOADING_ACTION

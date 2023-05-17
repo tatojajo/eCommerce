@@ -1,19 +1,17 @@
 import { styled, Box } from "@mui/material";
 
-export const MainContainer = styled("div")`
-  width:100%,
+export const MainContainer = styled(Box)`
   display:flex;
-  align-items:center;
-  justify-content:center;
+  align-items:start;
   background: #ff5f5;
 `;
-export const ProductContainer = styled("div")`
+export const ProductContainer = styled(Box)`
   // display: grid;
   // grid-template-columns: repeat(4, 1fr);
   // align-items: center;
   // justify-content: space-between;
   gap: 3rem;
-  width: 80%;
+  width: 100%;
   margin: auto;
   padding: 20px;
   display: flex;
@@ -22,7 +20,7 @@ export const ProductContainer = styled("div")`
   justify-content: space-between;
 `;
 
-export const ProductCard = styled("div")`
+export const ProductCard = styled(Box)`
   display: block;
   border-radius: 5px;
   background-color: #fff;

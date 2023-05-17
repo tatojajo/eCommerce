@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
+import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
 
 // * Mui component
 import {
@@ -15,6 +16,11 @@ import {
   NativeSelect,
   Button,
   Container,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 // *  styles
 import {
@@ -32,8 +38,25 @@ import {
   Menu,
   StarBorderOutlined,
   ShoppingCart,
+  Delete,
+  Clear,
 } from "@mui/icons-material";
 import i18next from "i18next";
+import { useEffect, useState } from "react";
+import {
+  getSearchedProducts,
+  getSearchedProductsNextPage,
+} from "../../Helpers/Services/products";
+import {
+  changePageNumber,
+  nextPage,
+  saveCategories,
+  saveProductsData,
+  saveProductsTotalAmount,
+  saveSearchedProducts,
+  searchedProductsNextPage,
+} from "../../redux/HomeActions/HomeActions";
+import { Value } from "sass";
 
 type NavbarProps = {
   setOpen: Function;
@@ -56,142 +79,190 @@ const categories = [
   "Smart Home Devices",
   "Wearable Devices",
   "Virtual Reality",
-  "Drones",
   "Car Electronics",
   "Audio Equipment",
 ];
 
 const Header = ({ setOpen }: NavbarProps) => {
-  // const [searchValue, setSearchValue] = useState<string>("");
-  // const debouncedValue = useDebounce(searchValue);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const debouncedValue = useDebounce(searchValue);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const cartItems = useAppSelector((state) => state.cartItems);
+  const { cartItems, pageNumber, searchedResults, totalSearchedProducts } =
+    useAppSelector((state) => state);
   const navigate = useNavigate();
 
-  // const startIndex = (pageNumber - 1) * 12;
+  const handleChange = (e: any) => {
+    setSearchValue(e.target.value);
+  };
+  const handleSearchChange = (e:any) => {
+    setSearchValue(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (searchedResults && pageNumber > 1) {
+          const getSearchedNextpageProducts = async () => {
+            const { data } = await getSearchedProductsNextPage(
+              debouncedValue,
+              pageNumber
+            );
+            console.log(data);
+            dispatch(searchedProductsNextPage(data.products));
+          };
+          getSearchedNextpageProducts();
+        } else if (debouncedValue.length > 2) {
+          const searchedproducts = async () => {
+            const { data } = await getSearchedProducts(debouncedValue);
+            console.log(data.products);
+            dispatch(saveSearchedProducts(data.products, data.total_found));
+          };
+          searchedproducts();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [debouncedValue, pageNumber]);
 
   return (
     <Box>
       <AppBar color="primary">
-        {/* <Container maxWidth='lg'> */}
-        <HeaderWraper>
-          <LogoTitle
-            sx={{ display: { xs: "none", md: "flex" } }}
-            onClick={() => navigate("/")}
-          >
-            <IconButton>
-              <Home />
-            </IconButton>
-            <Typography variant="h5" color="white" sx={{ cursor: "pointer" }}>
-              T-shop
-            </Typography>
-          </LogoTitle>
+        <Container maxWidth="xl">
+          <HeaderWraper>
+            <LogoTitle
+              sx={{ display: { xs: "none", md: "flex" } }}
+              onClick={() => navigate("/")}
+            >
+              <IconButton>
+                <Home />
+              </IconButton>
+              <Typography variant="h5" color="white" sx={{ cursor: "pointer" }}>
+                T-shop
+              </Typography>
+            </LogoTitle>
 
-          <Box>
-            <IconButton sx={{ display: { xs: "flex", md: "none" } }}>
-              <Menu />
-            </IconButton>
-          </Box>
+            <Box>
+              <IconButton sx={{ display: { xs: "flex", md: "none" } }}>
+                <Menu />
+              </IconButton>
+            </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              id="searcg"
-              placeholder="Search Product"
-              variant="standard"
-              // value={}
-              // onChange={}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              id="search category"
-              select
-              defaultValue=""
-              SelectProps={{
-                native: true,
-              }}
-              variant="standard"
-              style={{
-                maxWidth: "100px",
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              <option disabled value="">
-                Category
-              </option>
-              {categories.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </TextField>
-          </Box>
-
-          <FavCartContainer>
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <IconButton>
-                <StarBorderOutlined />
-              </IconButton>
-            </Box>
-            <Box>
-              <IconButton onClick={() => navigate("/cart")}>
-                <Badge badgeContent={cartItems.length} color="error">
-                  <ShoppingCart />
-                </Badge>
-              </IconButton>
-            </Box>
-          </FavCartContainer>
-          <Box sx={{ minWidth: 50 }}>
-            <FormControl fullWidth>
-              <NativeSelect
-                title="Select Language"
-                defaultValue="ENG"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value === "ENG") {
-                    i18next.changeLanguage("en");
-                  } else if (value === "GEO") {
-                    i18next.changeLanguage("ge");
-                  }
+              <TextField
+                id="searcg"
+                placeholder="Search Product"
+                variant="standard"
+                value={searchValue}
+                onChange={handleChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {debouncedValue ? (
+                        <IconButton
+                          onClick={() => {
+                            setSearchValue("");
+                            dispatch(saveSearchedProducts([], 0));
+                          }}
+                        >
+                          <Clear />
+                        </IconButton>
+                      ) : (
+                        <IconButton>
+                          <Search />
+                        </IconButton>
+                      )}
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                id="search category"
+                select
+                value={searchValue}
+                onChange={handleSearchChange}
+                defaultValue=""
+                SelectProps={{
+                  native: true,
+                }}
+                variant="standard"
+                style={{
+                  maxWidth: "100px",
                 }}
               >
-                <option value="ENG">ENG</option>
-                <option value="GEO">GEO</option>
-              </NativeSelect>
-            </FormControl>
-          </Box>
-          <UserContainer>
-            <PersonOutlined />
-            <Button
-              variant="text"
-              color="secondary"
-              onClick={() => {
-                navigate("/signin");
-                setOpen(true);
-              }}
-            >
-              {t("global.login")}
-            </Button>
-          </UserContainer>
-        </HeaderWraper>
-        {/* </Container> */}
+                <option disabled value="">
+                  Category
+                </option>
+                {categories.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </TextField>
+            </Box>
+            <Box sx={{ minWidth: 50 }}>
+              <FormControl fullWidth>
+                <NativeSelect
+                  title="Select Language"
+                  defaultValue="ENG"
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value === "ENG") {
+                      i18next.changeLanguage("en");
+                    } else if (value === "GEO") {
+                      i18next.changeLanguage("ge");
+                    }
+                  }}
+                >
+                  <option value="ENG">ENG</option>
+                  <option value="GEO">GEO</option>
+                </NativeSelect>
+              </FormControl>
+            </Box>
+            <UserContainer>
+              <FavCartContainer>
+                <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                  <IconButton>
+                    <StarBorderOutlined />
+                  </IconButton>
+                </Box>
+                <Box>
+                  <IconButton onClick={() => navigate("/cart")}>
+                    <Badge badgeContent={cartItems.length} color="error">
+                      <ShoppingCart />
+                    </Badge>
+                  </IconButton>
+                </Box>
+              </FavCartContainer>
+              <Box>
+                <PersonOutlined />
+              </Box>
+              <Button
+                variant="text"
+                color="secondary"
+                onClick={() => {
+                  navigate("/signin");
+                  setOpen(true);
+                }}
+              >
+                {t("global.login")}
+              </Button>
+            </UserContainer>
+          </HeaderWraper>
+        </Container>
       </AppBar>
 
       <Box
         className="directionsBox"
         sx={{ backgroundColor: "red", marginTop: "64px" }}
       >
-        <div>Links</div>
         <FavCartContainer sx={{ display: { xs: "flex", md: "none" } }}>
           <Box>
             <StarBorderOutlined />

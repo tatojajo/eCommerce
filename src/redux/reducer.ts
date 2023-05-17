@@ -6,6 +6,7 @@ import {
 import { CART_ACTIONS } from "./CartActions/CartTypes";
 import {
   ADD_PRODUCT_CART,
+  CHANGE_PAGE_NUMBER,
   MOVE_TO_PRODUCT_PAGE,
   NEXT_PAGE_DATA,
   SAVE_PRODUCTS_DATA,
@@ -15,6 +16,7 @@ import {
   SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
   SET_ERROR,
   SET_LOADING,
+  searchedProductsNextPage,
 } from "./HomeActions/HomeActions";
 import { HOME_ACTIONS } from "./HomeActions/HomeTypes";
 
@@ -24,14 +26,12 @@ const initialState: HomeState = {
   totalProducts: 0,
   totalSearchedProducts:0,
   cartItems: [],
-  categories: [],
   totalAmount: 0,
   searchedResults: [],
   selectedProduct: null,
+  pageNumber:1,
   loading: false,
   error: null,
-  mobiles: [],
-  television: []
 };
 
 const homeReducer = (
@@ -63,7 +63,9 @@ const homeReducer = (
       const products = action.products;
       const images = products.map((product) => product.images[0]);
       return { ...state, sliderImages: images };
-    // case SAVE_CATEGORIES:
+    case CHANGE_PAGE_NUMBER:
+      console.log(action.value)
+      return{...state, pageNumber:action.value}
 
     case NEXT_PAGE_DATA:
       return { ...state, products: action.products };
@@ -124,8 +126,11 @@ const homeReducer = (
       }
       return { ...state, cartItems: itemsAfterDecreaseing };
       case SAVE_SEARCHED_PRODUCTS:
-        return{...state, searchedResults: action.products, totalSearchedProducts: action.total_found}
+        const total_found = action.total_found
+        const searchedProducts = action.products
+        return{...state, searchedResults: searchedProducts, totalSearchedProducts: total_found}
         case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
+         
       return { ...state, searchedResults: action.products };
     default:
       return state;

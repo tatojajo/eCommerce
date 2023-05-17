@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import Register from "./pages/Register";
 import { HomeState } from "./@types/general";
 import SignIn from "./pages/SignIn";
+import BreadCrumbs from "./component/BreadCrumbs";
 
 const App = () => {
   const [open, setOpen] = useState(false)
@@ -18,6 +19,7 @@ const App = () => {
   return (
     <>
       <Header  setOpen={setOpen} />
+      <BreadCrumbs/>
 
       <Routes>
         <Route path="/" element={<Home />} />

@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { AnyAction } from "redux";
 
 import thunk from "redux-thunk";
 import reducer from './reducer'

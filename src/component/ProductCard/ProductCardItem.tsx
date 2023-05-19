@@ -10,7 +10,7 @@ import {
   addProductCart,
   moveToProductPage,
   removeFavoriteProduct,
-  favoriteProduct
+  favoriteProduct,
 } from "../../redux/HomeActions/HomeActions";
 
 import {
@@ -41,7 +41,9 @@ const ProductCard = ({ product }: ProductCartProps) => {
   const [productImage, setProductImage] = useState(0);
 
   const handleFavProduct = (product: ProductItem) => {
-    const isProductInFavorites = favorites.find((item) => item.id === product.id);
+    const isProductInFavorites = favorites.find(
+      (item) => item.id === product.id
+    );
 
     if (isProductInFavorites) {
       dispatch(removeFavoriteProduct(product));
@@ -50,10 +52,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
       setIsFavorite(true);
     }
   };
-  
-  const handelFavIcon = ()=>{
-    setIsFavorite(prev=>!prev)
-  }
+
+  const handelFavIcon = () => {
+    setIsFavorite((prev) => !prev);
+  };
   const nextImage = () => {
     setProductImage((prev) => (prev + 1) % product.images.length);
   };
@@ -135,11 +137,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
 
           <Button
             sx={{ backgroundColor: "yellow" }}
-            onClick={() =>{
+            onClick={() => {
               handelFavIcon();
-               handleFavProduct(product)
-              }}
-              
+              handleFavProduct(product);
+            }}
           >
             {isFavorite ? <Star /> : <StarBorder />}
           </Button>

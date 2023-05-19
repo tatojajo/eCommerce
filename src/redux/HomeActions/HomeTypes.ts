@@ -1,4 +1,4 @@
-import { ProductItem } from "../../@types/general";
+import { CartProductItem, ProductItem } from "../../@types/general";
 import {
   ADD_PRODUCT_CART,
   CHANGE_PAGE_NUMBER,

@@ -12,8 +12,6 @@ type ProductItem = {
   title: string;
 };
 
-type selectedProduct = ProductItem | CartProductItem;
-
 type HomeState = {
   products: ProductItem[];
   sliderImages: string[];
@@ -23,7 +21,7 @@ type HomeState = {
   totalProducts: number;
   totalSearchedProducts: number;
   totalAmount: number;
-  selectedProduct: selectedProduct | null;
+  selectedProduct: CartProductItem | null;
   favorites:ProductItem[]
   loading: boolean;
   error: any;

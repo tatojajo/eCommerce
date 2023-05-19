@@ -1,5 +1,8 @@
 {
   "en": {
+    "is":"Is",
+    "empty":"Empty",
+    "my_cart":" My Cart",
   "summary":"Summary",
     "product": "Product",
     "username": "UserName",
@@ -60,7 +63,9 @@
     "save":"Save"
   },
   "ge": {
-
+    "is":"არის",
+    "empty":"ცარიელი",
+    "my_cart":"ჩემი კალათა",
     "summary":"შეჯამება",
     "product": "პროდუქტი",
     "username": "მომხმარებელი",

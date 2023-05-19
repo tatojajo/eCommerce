@@ -50,6 +50,7 @@ import {
   searchedProductsNextPage,
 } from "../../redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
+import BreadCrumbs from "../BreadCrumbs";
 
 type NavbarProps = {
   setOpen: Function;
@@ -128,7 +129,7 @@ const Header = () => {
   }, [debouncedValue, startIndex]);
 
   return (
-    <Box>
+    <Box display='flex'>
       <AppBar color='secondary'>
         <Container maxWidth="xl">
           <HeaderWraper>
@@ -284,6 +285,7 @@ const Header = () => {
           </HeaderWraper>
         </Container>
       </AppBar>
+      
     </Box>
   );
 };

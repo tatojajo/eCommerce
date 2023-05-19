@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { LocalMall, PersonOutline, Place } from "@mui/icons-material";
@@ -38,6 +39,7 @@ const User = () => {
   const [disabled, setDisabled] = useState(true);
   const [selectedInfo, setSelectedInfo] = useState("My Details");
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const user: User = JSON.parse(localStorage.getItem("User") as string);
 
   const {
@@ -65,6 +67,7 @@ const User = () => {
 
   const handleSelectedInfo = (info: string) => {
     setSelectedInfo(info);
+    navigate(`?selected=${encodeURIComponent(info)}`, { replace: true });
   };
   return (
     <UserPageContainer>
@@ -76,7 +79,9 @@ const User = () => {
           <List sx={{ maxWidth: 360, bgcolor: "background.paper" }}>
             <ListItem
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSelectedInfo("My Detales")}
+              onClick={() => {
+                handleSelectedInfo("My Details");
+              }}
             >
               <ListItemAvatar>
                 <PersonOutline />
@@ -85,7 +90,9 @@ const User = () => {
             </ListItem>
             <ListItem
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSelectedInfo("My Address")}
+              onClick={() => {
+                handleSelectedInfo("My Address");
+              }}
             >
               <ListItemAvatar>
                 <Place />
@@ -94,7 +101,9 @@ const User = () => {
             </ListItem>
             <ListItem
               sx={{ cursor: "pointer" }}
-              onClick={() => handleSelectedInfo("My Orders")}
+              onClick={() => {
+                handleSelectedInfo("My Orders");
+              }}
             >
               <ListItemAvatar>
                 <LocalMall />
@@ -191,7 +200,6 @@ const User = () => {
                       onClick={() => {
                         if (disabled) handleEditMode();
                         if (!disabled) handleEditMode();
-                        
                       }}
                     >
                       {disabled ? t("global.edit") : t("global.save")}

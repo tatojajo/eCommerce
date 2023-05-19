@@ -2,7 +2,7 @@ import {
   CartProductItem,
   HomeState,
   ProductItem,
-  selectedProduct,
+  
 } from "../../@types/general";
 import Product from "../../pages/Product";
 import { HOME_ACTIONS } from "./HomeTypes";
@@ -59,7 +59,7 @@ export const addProductCart = (product: ProductItem): HOME_ACTIONS => ({
   product,
 });
 
-export const moveToProductPage = (product: selectedProduct): HOME_ACTIONS => ({
+export const moveToProductPage = (product: ProductItem | CartProductItem): HOME_ACTIONS => ({
   type: MOVE_TO_PRODUCT_PAGE,
   product,
 });

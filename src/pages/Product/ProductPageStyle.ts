@@ -1,6 +1,9 @@
+import { Paper } from "@mui/material";
 import { styled, Box, Container } from "@mui/system";
 
 export const ProductConatiner = styled(Box)`
+  background-color: grey;
+  margin: 20px auto;
   display: flex;
   flexdirection: column;
   alignitems: center;
@@ -8,51 +11,54 @@ export const ProductConatiner = styled(Box)`
 `;
 
 export const ProductInfoWrapper = styled(Box)`
-  height: 500px;
+  width:100%;
+  height: 550px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 30px;
-  margin-top: 60px;
 `;
 
 export const ProductImagesWraper = styled(Box)`
-  width: 50%;
-  height: 300px;
+  width: 60rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
-export const SliderImagesContainer = styled(Container)`
+export const ProductImagesContainer = styled(Container)`
   display: flex;
-  gap: 10px;
+  gap:25px;
   align-items: center;
 `;
 
 export const SliderImageWraper = styled(Box)`
   display: flex;
+  flex-direction:column;
   gap: 10px;
   align-items: center;
-  justify-content: center;
-  //   overflow-x: scroll;
-  //   scroll-behavior: smooth;
 `;
 
 export const Image = styled("img")(({ index, productImage }) => ({
   border: index === productImage ? "2px solid black" : "none",
   borderRadius: "10px",
   padding: "10px",
-  width: "100px",
-  height: "100px",
-  backgroundColor: "#D8BFD8	",
+  width: "50px",
+  height: "50px",
 }));
 
 export const ProductDescription = styled(Box)`
-  width: 50%;
+  width: 50rem;
   height: 300px;
   display: flex;
   flex-direction: column;
+  align-items:;
   justify-content: space-between;
 `;
+
+export const ProductBtns = styled(Box)`
+width:400px;
+display:flex;
+align-items:center;
+justify-content:space-between
+
+`

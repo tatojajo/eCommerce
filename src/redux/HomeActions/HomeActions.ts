@@ -54,7 +54,7 @@ export const saveCategories = (categorie: string): HOME_ACTIONS => ({
   categorie,
 });
 
-export const addProductCart = (product: ProductItem): HOME_ACTIONS => ({
+export const addProductCart = (product: ProductItem | CartProductItem): HOME_ACTIONS => ({
   type: ADD_PRODUCT_CART,
   product,
 });

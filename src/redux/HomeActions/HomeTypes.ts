@@ -48,7 +48,7 @@ export type CHANGE_PAGE_NUMBER_ACTION = {
 
 export type ADD_PRODUCT_CART_ACTION = {
   type: typeof ADD_PRODUCT_CART;
-  product: ProductItem;
+  product: ProductItem | CartProductItem;
 };
 
 export type SET_LOADING_ACTION = {

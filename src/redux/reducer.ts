@@ -81,7 +81,7 @@ const homeReducer = (
         (item) => item.id === productToAdd.id
       );
       if (!existingProduct) {
-        if ('quantity' in productToAdd) {
+        if ("quantity" in productToAdd) {
           return { ...state, cartItems: [...cartItems, productToAdd] };
         }
         return {
@@ -90,6 +90,19 @@ const homeReducer = (
         };
       }
       if (existingProduct) {
+        if ("quantity" in productToAdd) {
+          const existedProductNewQuantity = {
+            ...productToAdd,
+            quantity: productToAdd.quantity + existingProduct.quantity,
+          };
+          const filterArray = cartItems.filter(
+            (item) => item.id !== existedProductNewQuantity.id
+          );
+          return {
+            ...state,
+            cartItems: [...filterArray, existedProductNewQuantity],
+          };
+        }
         const indexOfExistingProduct = cartItems.findIndex(
           (item) => item.id === productToAdd.id
         );

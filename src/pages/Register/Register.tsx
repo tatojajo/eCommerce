@@ -151,6 +151,7 @@ const Register = () => {
                   {t("global.city")}
                 </Typography>
                 <TextField
+                disabled
                   fullWidth
                   id="city"
                   label={t("global.city")}

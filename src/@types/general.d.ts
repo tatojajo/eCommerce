@@ -1,5 +1,17 @@
-import { BackdropProps } from "@mui/material";
-
+type HomeState = {
+  products: ProductItem[];
+  sliderImages: string[];
+  cartItems: CartProductItem[];
+  searchedResults: ProductItem[];
+  pageNumber: number;
+  totalProducts: number;
+  totalSearchedProducts: number;
+  totalAmount: number;
+  selectedProduct: CartProductItem | null;
+  favorites: ProductItem[];
+  loading: boolean;
+  error: any;
+};
 type ProductItem = {
   amount: string;
   brand: string;
@@ -12,23 +24,12 @@ type ProductItem = {
   title: string;
 };
 
-type HomeState = {
-  products: ProductItem[];
-  sliderImages: string[];
-  cartItems: CartProductItem[];
-  searchedResults: ProductItem[];
-  pageNumber:number
-  totalProducts: number;
-  totalSearchedProducts: number;
-  totalAmount: number;
-  selectedProduct: CartProductItem | null;
-  favorites:ProductItem[]
-  loading: boolean;
-  error: any;
-};
-
 type CartProductItem = ProductItem & {
   quantity: number;
 };
 
-
+type UserAddress = {
+  city:string;
+  postCode:Number;
+  address:string
+}

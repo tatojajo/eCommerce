@@ -15,7 +15,6 @@ import {
   productsNextpage,
 } from "../../Helpers/Services/products";
 import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
-import { HomeState, ProductItem } from "../../@types/general";
 import { useAppSelector } from "../../redux/hooks";
 import Slider from "../Slider/Slider";
 import { Box, Pagination, Stack } from "@mui/material";
@@ -83,3 +82,5 @@ const ProductsContainer = () => {
 };
 
 export default ProductsContainer;
+
+

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 import "react-gallery-carousel/dist/index.css";
-import { HomeState } from "../../@types/general";
 import {
   addProductCart,
   moveToProductPage,

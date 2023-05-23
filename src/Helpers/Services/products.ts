@@ -32,10 +32,3 @@ export const selectedBrandProducts = (brandName: string) =>
     page_size: 12,
     page_number: 0,
   });
-
-// export const productInfo = (productId: number) =>
-//   ajax.post(`product/${productId}`);
-// export const deleteProduct = (productId: number) =>
-//   ajax.delete(`products/${productId}`);
-
-// export const getProductsCategories = () => ajax.get("products/categories");

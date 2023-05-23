@@ -11,7 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-/marketplace_21_05_23/
+/marketplace_21_05_23
 
 # Editor directories and files
 .vscode/*

@@ -35,10 +35,11 @@ const signInValidationSchema = yup.object().shape({
     reset,
   } = useForm<SignInInitialValue>({ resolver: yupResolver(signInValidationSchema) });
   const onSubmit: SubmitHandler<SignInInitialValue> = async (user) =>{
+    console.log(user)
    try {
     const {data} = await userlogin(user)
+    console.log(data)
     localStorage.setItem('AccessToken', data.AccessToken)
-    console.log()
     localStorage.setItem('User',  JSON.stringify(data.User))
     if(data.AccessToken) setOpen(false)
    } catch (error) {

@@ -1,4 +1,3 @@
-import { ProductItem } from "../../@types/general";
 import {
   ADD_PRODUCT_CART,
   CHANGE_PAGE_NUMBER,
@@ -11,6 +10,8 @@ import {
   SAVE_SEARCHED_PRODUCTS,
   SAVE_SLIDER_IMAGES,
   SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
+  SELECTED_BRANDS_PRODUCTS,
+  SELECT_BRAND,
   SET_ERROR,
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
@@ -42,13 +43,13 @@ export type NEXT_PAGE_DATA_ACTION = {
 };
 
 export type CHANGE_PAGE_NUMBER_ACTION = {
-  type:typeof CHANGE_PAGE_NUMBER;
-  value:number
-}
+  type: typeof CHANGE_PAGE_NUMBER;
+  value: number;
+};
 
 export type ADD_PRODUCT_CART_ACTION = {
   type: typeof ADD_PRODUCT_CART;
-  product: ProductItem;
+  product: ProductItem | CartProductItem;
 };
 
 export type SET_LOADING_ACTION = {
@@ -68,25 +69,34 @@ export type MOVE_TO_PRODUCT_PAGE_ACTION = {
 
 export type SAVE_SEARCHED_PRODUCTS_ACTION = {
   type: typeof SAVE_SEARCHED_PRODUCTS;
-  products: ProductItem[]
-  total_found:number
-}
+  products: ProductItem[];
+  total_found: number;
+};
 
 export type SEARCHED_PRODUCTS_NEXT_PAGE_DATA_ACTION = {
-  type:typeof SEARCHED_PRODUCTS_NEXT_PAGE_DATA;
-  products: ProductItem[]
-}
+  type: typeof SEARCHED_PRODUCTS_NEXT_PAGE_DATA;
+  products: ProductItem[];
+};
 
-export type SET_FAVORITE_PRODUCTS_ACTION ={
+export type SET_FAVORITE_PRODUCTS_ACTION = {
   type: typeof SET_FAVORITE_PRODUCTS;
-  product:ProductItem
+  product: ProductItem;
+};
+
+export type REMOVE_FAVORITE_PRODUCT_ACTION = {
+  type: typeof REMOVE_FAVORITE_PRODUCT;
+  product: ProductItem;
+};
+
+export type SELECT_BRAND_ACTION = {
+  type:typeof SELECT_BRAND;
+  brand:string
 }
 
-export type REMOVE_FAVORITE_PRODUCT_ACTION={
-  type:typeof REMOVE_FAVORITE_PRODUCT;
-  product:ProductItem
+export type SELECTED_BRANDS_PRODUCTS_ACTION = {
+  type:typeof SELECTED_BRANDS_PRODUCTS;
+  products:ProductItem[]
 }
-
 export type HOME_ACTIONS =
   | SAVE_PRODUCTS_DATA_ACTION
   | SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION
@@ -98,7 +108,9 @@ export type HOME_ACTIONS =
   | SET_LOADING_ACTION
   | SET_ERROR_ACTION
   | MOVE_TO_PRODUCT_PAGE_ACTION
-  |SAVE_SEARCHED_PRODUCTS_ACTION
-  |SEARCHED_PRODUCTS_NEXT_PAGE_DATA_ACTION
-  |SET_FAVORITE_PRODUCTS_ACTION
-  |REMOVE_FAVORITE_PRODUCT_ACTION;
+  | SAVE_SEARCHED_PRODUCTS_ACTION
+  | SEARCHED_PRODUCTS_NEXT_PAGE_DATA_ACTION
+  | SET_FAVORITE_PRODUCTS_ACTION
+  | REMOVE_FAVORITE_PRODUCT_ACTION
+  | SELECT_BRAND_ACTION
+  |SELECTED_BRANDS_PRODUCTS_ACTION;

@@ -1,9 +1,23 @@
-import { BackdropProps } from "@mui/material";
-
+type HomeState = {
+  selectedBrandsProducts:ProductItem[];
+  searchedResults: ProductItem[];
+  cartItems: CartProductItem[];
+  favorites: ProductItem[];
+  products: ProductItem[];
+  sliderImages: string[];
+  selectedProduct: CartProductItem | null;
+  totalSearchedProducts: number;
+  totalProducts: number;
+  selectedBrand:string
+  totalAmount: number;
+  pageNumber: number;
+  loading: boolean;
+  error: any;
+};
 type ProductItem = {
   amount: string;
   brand: string;
-  category: string;
+  categories: string;
   description: string;
   id: string;
   images: string[];
@@ -12,25 +26,12 @@ type ProductItem = {
   title: string;
 };
 
-type selectedProduct = ProductItem | CartProductItem;
-
-type HomeState = {
-  products: ProductItem[];
-  sliderImages: string[];
-  cartItems: CartProductItem[];
-  searchedResults: ProductItem[];
-  pageNumber:number
-  totalProducts: number;
-  totalSearchedProducts: number;
-  totalAmount: number;
-  selectedProduct: selectedProduct | null;
-  favorites:ProductItem[]
-  loading: boolean;
-  error: any;
-};
-
 type CartProductItem = ProductItem & {
   quantity: number;
 };
 
-
+type UserAddress = {
+  city:string;
+  postCode:Number;
+  address:string
+}

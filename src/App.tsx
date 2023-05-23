@@ -8,10 +8,9 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Register from "./pages/Register";
-import { HomeState } from "./@types/general";
-import SignIn from "./pages/SignIn";
 import BreadCrumbs from "./component/BreadCrumbs";
 import User from "./pages/User";
+import BrandPage from "./pages/BrandPage";
 
 const App = () => {
   const [open, setOpen] = useState(false)
@@ -31,6 +30,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/user" element={<User/>}/>
+        <Route path="/brand" element={<BrandPage/>}/>
       </Routes>
 
 

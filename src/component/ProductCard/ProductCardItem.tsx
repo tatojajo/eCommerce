@@ -3,14 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { ProductCartProps } from "../../@types/ProductCartProps";
-import { ProductItem } from "../../@types/general";
 
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   addProductCart,
   moveToProductPage,
   removeFavoriteProduct,
-  favoriteProduct
+  favoriteProduct,
 } from "../../redux/HomeActions/HomeActions";
 
 import {
@@ -23,6 +22,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  AddShoppingCart,
   ArrowLeft,
   ArrowRight,
   ShoppingCart,
@@ -41,7 +41,9 @@ const ProductCard = ({ product }: ProductCartProps) => {
   const [productImage, setProductImage] = useState(0);
 
   const handleFavProduct = (product: ProductItem) => {
-    const isProductInFavorites = favorites.find((item) => item.id === product.id);
+    const isProductInFavorites = favorites.find(
+      (item) => item.id === product.id
+    );
 
     if (isProductInFavorites) {
       dispatch(removeFavoriteProduct(product));
@@ -50,10 +52,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
       setIsFavorite(true);
     }
   };
-  
-  const handelFavIcon = ()=>{
-    setIsFavorite(prev=>!prev)
-  }
+
+  const handelFavIcon = () => {
+    setIsFavorite((prev) => !prev);
+  };
   const nextImage = () => {
     setProductImage((prev) => (prev + 1) % product.images.length);
   };
@@ -130,16 +132,15 @@ const ProductCard = ({ product }: ProductCartProps) => {
             onClick={() => dispatch(addProductCart(product))}
           >
             {t("global.add")}
-            <ShoppingCart />
+            <AddShoppingCart />
           </Button>
 
           <Button
             sx={{ backgroundColor: "yellow" }}
-            onClick={() =>{
+            onClick={() => {
               handelFavIcon();
-               handleFavProduct(product)
-              }}
-              
+              handleFavProduct(product);
+            }}
           >
             {isFavorite ? <Star /> : <StarBorder />}
           </Button>

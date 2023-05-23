@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAppSelector,useAppDispatch } from "../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -22,6 +22,9 @@ import {
 } from "@mui/material";
 import {
   Add,
+  ArrowDownward,
+  ArrowDropDown,
+  ArrowDropUp,
   Clear,
   Remove,
 } from "@mui/icons-material";
@@ -33,15 +36,17 @@ import {
   CartTitle,
   CheckoutBtn,
   ItemQUantity,
+  ProductLink,
   SummaryContainer,
 } from "./CartStyle";
+import { moveToProductPage } from "../../redux/HomeActions/HomeActions";
 
 const Cart = () => {
-  const {t} = useTranslation()
-  const cartItems = useAppSelector((state) => state.cartItems);
+  const { t } = useTranslation();
+  const cartItems: CartProductItem[] = useAppSelector(
+    (state) => state.cartItems
+  );
   const dispatch = useAppDispatch();
-
-  
 
   const totalAmount = useMemo(
     () =>
@@ -54,9 +59,14 @@ const Cart = () => {
   return (
     <Box>
       <CartTitle>
-        <Typography variant="h3" color="initial">
-          My Cart
+        <Typography fontWeight={900} variant="h1" color="initial">
+          {t("global.my_cart")}
         </Typography>
+        {cartItems.length === 0 && (
+          <Typography fontWeight={700} mt={3} color="error">
+            {`${t("global.cart")} ${t("global.is")} ${t("global.empty")}!`}
+          </Typography>
+        )}
       </CartTitle>
       <CartItemsContainer>
         <CartItems>
@@ -64,21 +74,24 @@ const Cart = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align="left">{t('global.product')}</TableCell>
-                  <TableCell align="left">{t('global.price')}</TableCell>
-                  <TableCell align="left">{t('global.quantity')}</TableCell>
-                  <TableCell align="left">{t('global.total')}</TableCell>
+                  <TableCell align="left">{t("global.product")}</TableCell>
+                  <TableCell align="left">{t("global.price")}</TableCell>
+                  <TableCell align="left">{t("global.quantity")}</TableCell>
+                  <TableCell align="left">{t("global.total")}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cartItems.map((item) => (
+                {cartItems.map((item: CartProductItem) => (
                   <TableRow
                     key={item.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="left" component="th" scope="row">
                       <CartItemName>
-                        <IconButton color="error" onClick={()=>dispatch(removeCartItem(item))}>
+                        <IconButton
+                          color="error"
+                          onClick={() => dispatch(removeCartItem(item))}
+                        >
                           <Clear />
                         </IconButton>
                         <img
@@ -87,22 +100,23 @@ const Cart = () => {
                           height="50px"
                           alt={item.brand}
                         />
-                        <Typography
-                          maxWidth="400px"
-                          variant="subtitle2"
-                          color="initial"
+                        <ProductLink
+                          to={`/product/${item.id}/${item.title}`}
+                          onClick={() => dispatch(moveToProductPage(item))}
                         >
                           {item.title}
-                        </Typography>
+                        </ProductLink>
                       </CartItemName>
                     </TableCell>
-                    <TableCell align="left">${Number(item.price).toFixed(2)}</TableCell>
+                    <TableCell align="left">
+                      ${Number(item.price).toFixed(2)}
+                    </TableCell>
                     <TableCell align="left">
                       <ItemQUantity>
                         <IconButton
                           onClick={() => dispatch(decreaseQuantity(item))}
                         >
-                          <Remove />
+                          <ArrowDropDown />
                         </IconButton>
                         <Typography variant="subtitle2" color="initial">
                           {item.quantity}
@@ -110,7 +124,7 @@ const Cart = () => {
                         <IconButton
                           onClick={() => dispatch(increaseQuantity(item))}
                         >
-                          <Add />
+                          <ArrowDropUp />
                         </IconButton>
                       </ItemQUantity>
                     </TableCell>
@@ -131,7 +145,7 @@ const Cart = () => {
               variant="h5"
               color="initial"
             >
-              {t('global.summary')}
+              {t("global.summary")}
             </Typography>
             {/* <Box mb='20px'>
               <TextField id="" label="Coupon Code" />
@@ -141,7 +155,7 @@ const Cart = () => {
             </Box> */}
             <AmountInfo>
               <Typography variant="body1" color="initial">
-                {t('global.total')}:
+                {t("global.total")}:
               </Typography>
               <Typography variant="body1" color="initial">
                 ${Number(totalAmount).toFixed(2)}
@@ -149,7 +163,7 @@ const Cart = () => {
             </AmountInfo>
             <AmountInfo>
               <Typography variant="body1" color="initial">
-                {t('global.shipping')}:
+                {t("global.shipping")}:
               </Typography>
               <Typography variant="body1" color="initial">
                 ${5}
@@ -157,15 +171,15 @@ const Cart = () => {
             </AmountInfo>
             <AmountInfo>
               <Typography variant="body1" color="initial">
-                {t('global.subtotal')}:
+                {t("global.subtotal")}:
               </Typography>
               <Typography variant="body1" color="initial">
                 ${totalAmount.toFixed(3)}
               </Typography>
             </AmountInfo>
-            <CheckoutBtn>
+            <CheckoutBtn >
               <Button variant="outlined" color="success">
-                {t('global.checkout')}
+                {t("global.checkout")}
               </Button>
             </CheckoutBtn>
           </Paper>

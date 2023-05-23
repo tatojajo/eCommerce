@@ -1,29 +1,40 @@
 import { useEffect } from "react";
-
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 import {
   saveProductsData,
   saveProductsTotalAmount,
   nextPage,
   changePageNumber,
 } from "../../redux/HomeActions/HomeActions";
-
-import ProductCard from "../ProductCard";
-
 import {
   getAllProducts,
   productsNextpage,
 } from "../../Helpers/Services/products";
-import { MainContainer, ProductContainer } from "./ProductsContainer.Style";
-import { HomeState, ProductItem } from "../../@types/general";
-import { useAppSelector } from "../../redux/hooks";
+import { useTranslation } from "react-i18next";
+
+import ProductCard from "../ProductCard";
+
 import Slider from "../Slider/Slider";
-import { Box, Pagination, Stack } from "@mui/material";
+import {
+  HotOffers,
+  HotOffersContainer,
+  MainContainer,
+  ProductContainer,
+} from "./ProductsContainer.Style";
+import { Box, Pagination, Stack, Typography } from "@mui/material";
+import { Search, SearchOffSharp, SearchTwoTone, Whatshot } from "@mui/icons-material";
 
 const ProductsContainer = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { products, totalProducts, searchedResults, pageNumber, totalSearchedProducts } =
-    useAppSelector<HomeState>((state) => state);
+  const {
+    products,
+    totalProducts,
+    searchedResults,
+    pageNumber,
+    totalSearchedProducts,
+  } = useAppSelector<HomeState>((state) => state);
 
   const startIndex = (pageNumber - 1) * 12;
 
@@ -37,7 +48,7 @@ const ProductsContainer = () => {
     const fetchData = async () => {
       try {
         if (pageNumber > 1) {
-          console.log('hello')
+          console.log("hello");
           const { data } = await productsNextpage(startIndex);
           dispatch(nextPage(data.products));
         } else {
@@ -52,24 +63,42 @@ const ProductsContainer = () => {
 
     fetchData();
   }, [startIndex]);
-// console.log(pageNumber, startIndex)
+
   return (
     <MainContainer>
       <Box>
         <Slider />
+        <HotOffersContainer>
+          <HotOffers>
+            {searchedResults.length > 0 ? (
+              <Search fontSize="large" color="error"/>
+            ) : (
+              <Whatshot fontSize="large" color="error" />
+            )}
 
-        <ProductContainer>
-          {(searchedResults.length === 0 ? products : searchedResults).map(
-            (product: ProductItem) => {
-              return <ProductCard key={product.id} product={product} />;
-            }
-          )}
-        </ProductContainer>
+            <Typography variant="h1">
+              {searchedResults.length > 0
+                ? t("global.search_results")
+                : t("global.hot_offers")}
+            </Typography>
+          </HotOffers>
+          <ProductContainer>
+            {(searchedResults.length === 0 ? products : searchedResults).map(
+              (product: ProductItem) => {
+                return <ProductCard key={product.id} product={product} />;
+              }
+            )}
+          </ProductContainer>
+        </HotOffersContainer>
 
         <Box>
           <Stack spacing={2} mt={4}>
             <Pagination
-              count={Math.ceil((totalSearchedProducts ? totalSearchedProducts : totalProducts) / 12)}
+              count={Math.ceil(
+                (totalSearchedProducts
+                  ? totalSearchedProducts
+                  : totalProducts) / 12
+              )}
               page={pageNumber}
               variant="outlined"
               shape="rounded"

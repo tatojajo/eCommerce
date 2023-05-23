@@ -1,4 +1,3 @@
-import { HomeState } from "../@types/general";
 import {
   DECREASE_QUANTITY,
   INCREASE_QUANTITY,
@@ -16,25 +15,29 @@ import {
   SAVE_SEARCHED_PRODUCTS,
   SAVE_SLIDER_IMAGES,
   SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
+  SELECTED_BRANDS_PRODUCTS,
+  SELECT_BRAND,
   SET_ERROR,
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
   searchedProductsNextPage,
 } from "./HomeActions/HomeActions";
 import { HOME_ACTIONS } from "./HomeActions/HomeTypes";
-import sliderImage from '../images/slider_first_image.jpg'
+import sliderImage from "../images/slider_first_image.jpg";
 
 const initialState: HomeState = {
-  products: [],
   sliderImages: [sliderImage],
-  totalProducts: 0,
-  totalSearchedProducts: 0,
-  cartItems: [],
-  totalAmount: 0,
+  selectedBrandsProducts: [],
   searchedResults: [],
-  selectedProduct: null,
-  pageNumber: 1,
+  cartItems: [],
   favorites: [],
+  products: [],
+  totalSearchedProducts: 0,
+  totalProducts: 0,
+  totalAmount: 0,
+  pageNumber: 1,
+  selectedProduct: null,
+  selectedBrand: '',
   loading: false,
   error: null,
 };
@@ -69,7 +72,7 @@ const homeReducer = (
       const images = products.map((product) => product.images[0]);
       return { ...state, sliderImages: [...sliderImage, images] };
     case CHANGE_PAGE_NUMBER:
-      console.log(action.value)
+      console.log(action.value);
       return { ...state, pageNumber: action.value };
 
     case NEXT_PAGE_DATA:
@@ -81,12 +84,28 @@ const homeReducer = (
         (item) => item.id === productToAdd.id
       );
       if (!existingProduct) {
+        if ("quantity" in productToAdd) {
+          return { ...state, cartItems: [...cartItems, productToAdd] };
+        }
         return {
           ...state,
           cartItems: [...cartItems, { ...productToAdd, quantity: 1 }],
         };
       }
       if (existingProduct) {
+        if ("quantity" in productToAdd) {
+          const existedProductNewQuantity = {
+            ...productToAdd,
+            quantity: productToAdd.quantity + existingProduct.quantity,
+          };
+          const filterArray = cartItems.filter(
+            (item) => item.id !== existedProductNewQuantity.id
+          );
+          return {
+            ...state,
+            cartItems: [...filterArray, existedProductNewQuantity],
+          };
+        }
         const indexOfExistingProduct = cartItems.findIndex(
           (item) => item.id === productToAdd.id
         );
@@ -99,7 +118,10 @@ const homeReducer = (
         return { ...state, cartItems: cartItems };
       }
     case MOVE_TO_PRODUCT_PAGE:
-      return { ...state, selectedProduct: action.product };
+      if (state.selectedProduct?.id === action.product.id) {
+        return { ...state, selectedProduct: action.product };
+      }
+      return { ...state, selectedProduct: { ...action.product, quantity: 1 } };
     case INCREASE_QUANTITY:
       const increaseQuantity = {
         ...action.product,
@@ -130,12 +152,14 @@ const homeReducer = (
         return { ...state, cartItems: newItems };
       }
       return { ...state, cartItems: itemsAfterDecreaseing };
-      case REMOVE_CART_ITEM:
-        const myCart = state.cartItems.filter(item=>item.id !== action.product.id)
-        return{...state, cartItems: myCart}
+    case REMOVE_CART_ITEM:
+      const myCart = state.cartItems.filter(
+        (item) => item.id !== action.product.id
+      );
+      return { ...state, cartItems: myCart };
 
     case SAVE_SEARCHED_PRODUCTS:
-      console.log(action.total_found, action.products)
+      console.log(action.total_found, action.products);
       const total_found = action.total_found;
       const searchedProducts = action.products;
       return {
@@ -145,11 +169,18 @@ const homeReducer = (
       };
     case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
       return { ...state, searchedResults: action.products };
-      case SET_FAVORITE_PRODUCTS:
-        return{...state, favorites: [...state.favorites, action.product]}
-        case REMOVE_FAVORITE_PRODUCT:
-          const myFavProducts = state.favorites.filter(item=>item.id !== action.product.id)
-          return{...state, favorites: myFavProducts}
+    case SET_FAVORITE_PRODUCTS:
+      return { ...state, favorites: [...state.favorites, action.product] };
+    case REMOVE_FAVORITE_PRODUCT:
+      const myFavProducts = state.favorites.filter(
+        (item) => item.id !== action.product.id
+      );
+      return { ...state, favorites: myFavProducts };
+      case SELECT_BRAND:
+      return{...state, selectedBrand: action.brand}
+      case SELECTED_BRANDS_PRODUCTS:{
+        return{...state, selectedBrandsProducts:action.products}
+      }
     default:
       return state;
   }

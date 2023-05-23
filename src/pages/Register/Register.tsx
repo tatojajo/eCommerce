@@ -44,9 +44,9 @@ const Register = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterInitialValue> = async (user) => {
+    console.log(user)
     try {
       const { data } = await registerUser(user);
-      console.log(data)
     } catch (error) {
       console.log(error)
     }
@@ -151,6 +151,7 @@ const Register = () => {
                   {t("global.city")}
                 </Typography>
                 <TextField
+                disabled
                   fullWidth
                   id="city"
                   label={t("global.city")}
@@ -223,8 +224,8 @@ const Register = () => {
               </Grid>
               <Grid item xs={12} mt={3}>
                 <Button
-                  type="submit"
                   fullWidth
+                  type="submit"
                   variant="outlined"
                   color="secondary"
                 >

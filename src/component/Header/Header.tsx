@@ -50,6 +50,7 @@ import {
   searchedProductsNextPage,
 } from "../../redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
+import BreadCrumbs from "../BreadCrumbs";
 
 type NavbarProps = {
   setOpen: Function;
@@ -89,7 +90,8 @@ const Header = () => {
   const user: User = JSON.parse(localStorage.getItem("User") as string);
 
   const handleChange = (e: any) => {
-    if (searchValue.length > 2 || searchValue.length === 0) dispatch(changePageNumber(1));
+    if (searchValue.length > 2 || searchValue.length === 0)
+      dispatch(changePageNumber(1));
     setSearchValue(e.target.value);
   };
   const handleSearchChange = (e: any) => {
@@ -128,8 +130,8 @@ const Header = () => {
   }, [debouncedValue, startIndex]);
 
   return (
-    <Box>
-      <AppBar color='secondary'>
+    <Box display="flex">
+      <AppBar color="secondary">
         <Container maxWidth="xl">
           <HeaderWraper>
             <LogoTitle
@@ -258,8 +260,8 @@ const Header = () => {
               </Box>
               {isAuthenticated() ? (
                 <Button
-                  variant="text"
-                  color="secondary"
+                  variant="outlined"
+                  color="primary"
                   onClick={() => {
                     handleLogout();
                     navigate("/");
@@ -269,8 +271,8 @@ const Header = () => {
                 </Button>
               ) : (
                 <Button
-                  variant="text"
-                  color="secondary"
+                  variant="outlined"
+                  color="primary"
                   onClick={() => {
                     setOpen(true);
                   }}

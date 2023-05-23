@@ -62,7 +62,9 @@
     "my_orders": "My Orders",
     "personal_information": "Personal Information",
     "save": "Save",
-    "the_ most_popular_brands": "The most popular brands"
+    "the_ most_popular_brands": "The most popular brands",
+    "hot_offers":"Hot Offers",
+    "search_results":"Search Results"
   },
   "ge": {
     "is": "არის",
@@ -122,6 +124,8 @@
     "my_orders": "შეკვეთები",
     "personal_information": "პირადი ინფორმაცია",
     "save": "შენახვა",
-    "the_ most_popular_brands": "ყველაზე მოთხოვნადი ბრენდები"
+    "the_ most_popular_brands": "ყველაზე მოთხოვნადი ბრენდები",
+    "hot_offers":"ცხელი შეთავაზებები",
+    "search_results":"მოიძებნა"
   }
 }

@@ -39,12 +39,13 @@ import {
   ProductLink,
   SummaryContainer,
 } from "./CartStyle";
-import { Link } from "react-router-dom";
 import { moveToProductPage } from "../../redux/HomeActions/HomeActions";
 
 const Cart = () => {
   const { t } = useTranslation();
-  const cartItems = useAppSelector((state) => state.cartItems);
+  const cartItems: CartProductItem[] = useAppSelector(
+    (state) => state.cartItems
+  );
   const dispatch = useAppDispatch();
 
   const totalAmount = useMemo(
@@ -80,7 +81,7 @@ const Cart = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {cartItems.map((item) => (
+                {cartItems.map((item: CartProductItem) => (
                   <TableRow
                     key={item.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -176,7 +177,7 @@ const Cart = () => {
                 ${totalAmount.toFixed(3)}
               </Typography>
             </AmountInfo>
-            <CheckoutBtn>
+            <CheckoutBtn >
               <Button variant="outlined" color="success">
                 {t("global.checkout")}
               </Button>

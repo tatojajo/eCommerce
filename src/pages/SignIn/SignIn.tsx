@@ -38,6 +38,7 @@ const signInValidationSchema = yup.object().shape({
     console.log(user)
    try {
     const {data} = await userlogin(user)
+    console.log(data)
     localStorage.setItem('AccessToken', data.AccessToken)
     localStorage.setItem('User',  JSON.stringify(data.User))
     if(data.AccessToken) setOpen(false)

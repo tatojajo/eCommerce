@@ -25,10 +25,14 @@ export const getSearchedProductsNextPage = (
     page_size: 12,
     page_number: page_number,
   });
+export const selectedBrandProducts = (brandName: string) =>
+  ajax.post("products", {
+    keyword: "",
+    filter: { brand: brandName },
+    page_size: 12,
+    page_number: 0,
+  });
 
-
-  export const sortidProductsPriceUpDown = ()=>  ajax.post("products")
-  
 // export const productInfo = (productId: number) =>
 //   ajax.post(`product/${productId}`);
 // export const deleteProduct = (productId: number) =>

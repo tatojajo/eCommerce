@@ -21,7 +21,6 @@ const addressSchema = yup.object().shape({
 });
 
 const Address = () => {
-  const [userAddressDetails, setUserAddressDetails] = useState({});
   const [disabled, setDisabled] = useState(false);
   const { t } = useTranslation();
   const {
@@ -34,13 +33,12 @@ const Address = () => {
   });
   const userData = localStorage.getItem("User");
   const user = JSON.parse(userData as string);
-
   const onSubmit: SubmitHandler<UserAddress> = async (userAddress) => {
     const userFullData = { ...user, userAddress };
     localStorage.removeItem("User");
     localStorage.setItem("User", JSON.stringify(userFullData));
     setDisabled(true);
-    reset()
+    reset();
   };
 
   const handleDeleteUserAddress = () => {
@@ -50,8 +48,6 @@ const Address = () => {
     localStorage.setItem("User", JSON.stringify(userData));
     setDisabled(false);
   };
-
-  console.log(user)
 
   return (
     <Box
@@ -87,7 +83,13 @@ const Address = () => {
               <Box>
                 <Paper
                   elevation={6}
-                  sx={{display:'flex', flexDirection:'column', gap:'5px', backgroundColor: "rgb(56 189 248)", padding: "10px" }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "5px",
+                    backgroundColor: "rgb(56 189 248)",
+                    padding: "10px",
+                  }}
                 >
                   <Box>
                     <Typography variant="h5" color="initial">
@@ -103,7 +105,7 @@ const Address = () => {
                       {user.userAddress.postCode}
                     </Typography>
                   </Box>
-                  <Box textAlign='center'>
+                  <Box textAlign="center">
                     <Button
                       variant="outlined"
                       color="error"
@@ -169,8 +171,8 @@ const Address = () => {
                 {errors.address?.message}
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={4} mt='20px'>
-              <Button fullWidth type="submit" variant="contained" >
+            <Grid item xs={12} sm={4} mt="20px">
+              <Button fullWidth type="submit" variant="contained">
                 Save
               </Button>
             </Grid>

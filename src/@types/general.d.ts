@@ -1,21 +1,23 @@
 type HomeState = {
+  selectedBrandsProducts:ProductItem[];
+  searchedResults: ProductItem[];
+  cartItems: CartProductItem[];
+  favorites: ProductItem[];
   products: ProductItem[];
   sliderImages: string[];
-  cartItems: CartProductItem[];
-  searchedResults: ProductItem[];
-  pageNumber: number;
-  totalProducts: number;
-  totalSearchedProducts: number;
-  totalAmount: number;
   selectedProduct: CartProductItem | null;
-  favorites: ProductItem[];
+  totalSearchedProducts: number;
+  totalProducts: number;
+  selectedBrand:string
+  totalAmount: number;
+  pageNumber: number;
   loading: boolean;
   error: any;
 };
 type ProductItem = {
   amount: string;
   brand: string;
-  category: string;
+  categories: string;
   description: string;
   id: string;
   images: string[];

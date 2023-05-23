@@ -1,4 +1,3 @@
-import { HomeState } from "../@types/general";
 import {
   DECREASE_QUANTITY,
   INCREASE_QUANTITY,
@@ -16,6 +15,8 @@ import {
   SAVE_SEARCHED_PRODUCTS,
   SAVE_SLIDER_IMAGES,
   SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
+  SELECTED_BRANDS_PRODUCTS,
+  SELECT_BRAND,
   SET_ERROR,
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
@@ -25,16 +26,18 @@ import { HOME_ACTIONS } from "./HomeActions/HomeTypes";
 import sliderImage from "../images/slider_first_image.jpg";
 
 const initialState: HomeState = {
-  products: [],
   sliderImages: [sliderImage],
-  totalProducts: 0,
-  totalSearchedProducts: 0,
-  cartItems: [],
-  totalAmount: 0,
+  selectedBrandsProducts: [],
   searchedResults: [],
-  selectedProduct: null,
-  pageNumber: 1,
+  cartItems: [],
   favorites: [],
+  products: [],
+  totalSearchedProducts: 0,
+  totalProducts: 0,
+  totalAmount: 0,
+  pageNumber: 1,
+  selectedProduct: null,
+  selectedBrand: '',
   loading: false,
   error: null,
 };
@@ -173,6 +176,11 @@ const homeReducer = (
         (item) => item.id !== action.product.id
       );
       return { ...state, favorites: myFavProducts };
+      case SELECT_BRAND:
+      return{...state, selectedBrand: action.brand}
+      case SELECTED_BRANDS_PRODUCTS:{
+        return{...state, selectedBrandsProducts:action.products}
+      }
     default:
       return state;
   }

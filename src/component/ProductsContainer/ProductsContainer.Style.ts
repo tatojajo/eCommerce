@@ -1,9 +1,9 @@
 import { styled, Box } from "@mui/material";
 
 export const MainContainer = styled(Box)`
-margin-top:15px;
-  display:flex;
-  align-items:start;
+  margin-top: 15px;
+  display: flex;
+  align-items: start;
   background: #ff5f5;
 `;
 export const ProductContainer = styled(Box)`
@@ -23,4 +23,17 @@ export const ProductCard = styled(Box)`
   background-color: #fff;
   border: solid 1px #f5f5f5;
   position: relative;
+`;
+
+export const HotOffersContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+ 
+`;
+
+export const HotOffers = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding:20px
 `;

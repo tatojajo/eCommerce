@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { ProductCartProps } from "../../@types/ProductCartProps";
-import { ProductItem } from "../../@types/general";
 
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
@@ -23,6 +22,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  AddShoppingCart,
   ArrowLeft,
   ArrowRight,
   ShoppingCart,
@@ -132,7 +132,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
             onClick={() => dispatch(addProductCart(product))}
           >
             {t("global.add")}
-            <ShoppingCart />
+            <AddShoppingCart />
           </Button>
 
           <Button

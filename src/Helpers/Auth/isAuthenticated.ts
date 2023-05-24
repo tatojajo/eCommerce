@@ -1,21 +1,29 @@
 import jwtDecode from "jwt-decode";
 
-type UserObject = {
+export type UserObject = {
   exp: number;
   isAdmin: boolean;
   userId: string;
 };
 
-export const isAuthenticated = () => {
+export type AuthenticationResult = {
+  isUser: boolean;
+  isAdmin: boolean;
+};
+
+export const isAuthenticated = (): AuthenticationResult => {
   const userToken = localStorage.getItem("AccessToken");
-  if (!userToken) return false;
+  if (!userToken) {
+    return { isUser: false, isAdmin: false };
+  }
   const userObject: UserObject = jwtDecode(userToken);
-  console.log(userObject)
+  console.log(userObject);
   if (Date.now() / 1000 > userObject.exp) {
     localStorage.removeItem("AccessToken");
     localStorage.removeItem("User");
-    return false
+    return { isUser: false, isAdmin: false };
   }
- 
-  return Date.now() / 1000 < userObject.exp;
+
+  return { isUser: true, isAdmin: userObject.isAdmin };
 };
+console.log(isAuthenticated())

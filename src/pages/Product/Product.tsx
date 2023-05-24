@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 import "react-gallery-carousel/dist/index.css";
-import { HomeState } from "../../@types/general";
 import {
   addProductCart,
   moveToProductPage,
@@ -82,7 +81,7 @@ const Product = () => {
             {t("global.model")}: {selectedProduct?.title}
           </Typography>
           <Typography variant="h6" color="initial">
-            {t("global.category")}: {selectedProduct?.category}
+            {t("global.category")}: {selectedProduct?.categories}
           </Typography>
           <Typography variant="h6" color="initial">
             {t("global.price")}: ${selectedProduct?.price}

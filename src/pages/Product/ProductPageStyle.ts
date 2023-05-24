@@ -1,4 +1,7 @@
-import { Paper } from "@mui/material";
+type ImageProps = {
+  index: number;
+  productImage: number;
+};
 import { styled, Box, Container } from "@mui/system";
 
 export const ProductConatiner = styled(Box)`
@@ -11,7 +14,7 @@ export const ProductConatiner = styled(Box)`
 `;
 
 export const ProductInfoWrapper = styled(Box)`
-  width:100%;
+  width: 100%;
   height: 550px;
   display: flex;
   align-items: center;
@@ -27,18 +30,18 @@ export const ProductImagesWraper = styled(Box)`
 
 export const ProductImagesContainer = styled(Container)`
   display: flex;
-  gap:25px;
+  gap: 25px;
   align-items: center;
 `;
 
 export const SliderImageWraper = styled(Box)`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   gap: 10px;
   align-items: center;
 `;
 
-export const Image = styled("img")(({ index, productImage }) => ({
+export const Image = styled("img")<ImageProps>(({ index, productImage }) => ({
   border: index === productImage ? "2px solid black" : "none",
   borderRadius: "10px",
   padding: "10px",
@@ -51,14 +54,13 @@ export const ProductDescription = styled(Box)`
   height: 300px;
   display: flex;
   flex-direction: column;
-  align-items:;
+  align-items: ;
   justify-content: space-between;
 `;
 
 export const ProductBtns = styled(Box)`
-width:400px;
-display:flex;
-align-items:center;
-justify-content:space-between
-
-`
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

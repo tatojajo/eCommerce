@@ -249,8 +249,8 @@ const Header = () => {
                 display="flex"
                 alignItems="center"
                 onClick={() => {
-                  if (isAuthenticated()) navigate("/user");
-                  if (!isAuthenticated()) setOpen(true);
+                  if (isAuthenticated().isUser) navigate("/user");
+                  if (!isAuthenticated().isUser) setOpen(true);
                 }}
               >
                 <IconButton>
@@ -258,7 +258,7 @@ const Header = () => {
                 </IconButton>
                 <Typography variant="body2">{user?.firstName}</Typography>
               </Box>
-              {isAuthenticated() ? (
+              {isAuthenticated().isUser ? (
                 <Button
                   variant="outlined"
                   color="primary"

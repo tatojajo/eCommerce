@@ -14,8 +14,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <AppTheme>\
-          
+        <AppTheme>
           <App />
         </AppTheme>
       </Provider>

@@ -112,7 +112,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
         </CardMedia>
         <CardContent>
           <ProductLink
-            to={`/product/${product.id}/${product.title}`}
+            to={`/product/${product.id}/${product.brand}`}
             onClick={() => dispatch(moveToProductPage(product))}
           >
             {product.title}

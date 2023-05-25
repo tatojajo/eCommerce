@@ -35,3 +35,7 @@ type UserAddress = {
   postCode:Number;
   address:string
 }
+
+interface ProductCartProps {
+  product: ProductItem;
+}

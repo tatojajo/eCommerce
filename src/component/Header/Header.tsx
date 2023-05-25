@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useTranslation } from "react-i18next";
-import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
 
 // * Mui component
 import {
@@ -31,7 +31,6 @@ import {
 import {
   Home,
   Search,
-  PersonOutlined,
   Menu,
   StarBorderOutlined,
   ShoppingCart,
@@ -50,11 +49,7 @@ import {
   searchedProductsNextPage,
 } from "../../redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
-import BreadCrumbs from "../BreadCrumbs";
 
-type NavbarProps = {
-  setOpen: Function;
-};
 const categories = [
   "Mobile Phones",
   "Laptops",
@@ -249,8 +244,8 @@ const Header = () => {
                 display="flex"
                 alignItems="center"
                 onClick={() => {
-                  if (isAuthenticated().isUser) navigate("/user");
                   if (!isAuthenticated().isUser) setOpen(true);
+                  if (isAuthenticated().isUser) navigate("/user");
                 }}
               >
                 <IconButton>
@@ -275,6 +270,7 @@ const Header = () => {
                   color="primary"
                   onClick={() => {
                     setOpen(true);
+                    if (!open) navigate("/?login");
                   }}
                 >
                   {t("global.login")}

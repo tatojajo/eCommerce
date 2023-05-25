@@ -23,7 +23,7 @@ const pages: Page[] = [
 ];
 
 const Sidebar = () => {
-  const [currentPage, setCurrentPage] = useState<Page>(pages[0]);
+  const [currentPage, setCurrentPage] = useState<Page>(pages[1]);
   const handlePageClick = (page: Page) => {
     setCurrentPage(page);
   };

@@ -11,9 +11,6 @@ import { userlogin } from "../../Helpers/Services/userLogin";
 const registerValidationSchema = yup.object().shape({
   firstName: yup.string().required("Firstname is required"),
   lastName: yup.string().required("Lastname is required"),
-  // city: yup.string().required("City is required"),
-  // postCode: yup.number().required("Postal Code is required"),
-  // address: yup.string().required("Address is required"),
   email: yup.string().email("Invalid Email").required("Email is required"),
   phoneNumber: yup
     .string()
@@ -24,12 +21,6 @@ const registerValidationSchema = yup.object().shape({
     .required("Password Is Required")
     .min(5, "Password length should be at least 6 characters")
     .max(12, "Password length cannot exceed more than 12 characters"),
-  // confirmPassword: yup
-  //   .string()
-  //   .required("Confirm Password is required")
-  //   .min(5, "Password length should be at least 6 characters")
-  //   .max(12, "Password length cannot exceed more than 12 characters")
-  //   .oneOf([yup.ref("password")], "Pasword do not match"),
 });
 
 const Register = () => {
@@ -44,11 +35,11 @@ const Register = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterInitialValue> = async (user) => {
-    console.log(user)
+    console.log(user);
     try {
       const { data } = await registerUser(user);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -151,7 +142,7 @@ const Register = () => {
                   {t("global.city")}
                 </Typography>
                 <TextField
-                disabled
+                  disabled
                   fullWidth
                   id="city"
                   label={t("global.city")}

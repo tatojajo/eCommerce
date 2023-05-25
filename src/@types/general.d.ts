@@ -39,3 +39,8 @@ type UserAddress = {
 interface ProductCartProps {
   product: ProductItem;
 }
+
+
+type AdminState = {
+  allProducts:ProductItem[]
+}

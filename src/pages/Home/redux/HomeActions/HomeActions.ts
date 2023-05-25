@@ -1,4 +1,4 @@
-import Product from "../../pages/Product";
+import Product from "../../../Product";
 import { HOME_ACTIONS } from "./HomeTypes";
 
 export const SAVE_PRODUCTS_DATA = "SAVE_PRODUCTS_DATA";

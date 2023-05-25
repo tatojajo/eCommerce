@@ -47,8 +47,9 @@ import {
   changePageNumber,
   saveSearchedProducts,
   searchedProductsNextPage,
-} from "../../redux/HomeActions/HomeActions";
+} from "../../pages/Home/redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
+import homeReducer from "../../pages/Home/redux/reducer";
 
 const categories = [
   "Mobile Phones",
@@ -79,7 +80,7 @@ const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { cartItems, pageNumber, searchedResults, favorites } = useAppSelector(
-    (state) => state
+    (state) => state.homeReducer
   );
 
   const user: User = JSON.parse(localStorage.getItem("User") as string);

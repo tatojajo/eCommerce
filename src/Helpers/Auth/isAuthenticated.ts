@@ -9,6 +9,7 @@ export type UserObject = {
 export type AuthenticationResult = {
   isUser: boolean;
   isAdmin: boolean;
+  userToken?: string;
 };
 
 export const isAuthenticated = (): AuthenticationResult => {
@@ -24,6 +25,6 @@ export const isAuthenticated = (): AuthenticationResult => {
     return { isUser: false, isAdmin: false };
   }
 
-  return { isUser: true, isAdmin: userObject.isAdmin };
+  return { isUser: true, isAdmin: userObject.isAdmin, userToken };
 };
-console.log(isAuthenticated())
+console.log(isAuthenticated());

@@ -6,7 +6,7 @@ import {
   decreaseQuantity,
   increaseQuantity,
   removeCartItem,
-} from "../../redux/CartActions/CartActions";
+} from "../Home/redux/CartActions/CartActions";
 import {
   Box,
   Table,
@@ -32,13 +32,13 @@ import {
   ProductLink,
   SummaryContainer,
 } from "./CartStyle";
-import { moveToProductPage } from "../../redux/HomeActions/HomeActions";
+import { moveToProductPage } from "../Home/redux/HomeActions/HomeActions";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 const Cart = () => {
   const { t } = useTranslation();
-  const cartItems: CartProductItem[] = useAppSelector(
-    (state) => state.cartItems
+  const{ cartItems} = useAppSelector(
+    (state) => state.homeReducer
   );
   const dispatch = useAppDispatch();
 

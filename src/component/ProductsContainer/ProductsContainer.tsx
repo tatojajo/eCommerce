@@ -6,7 +6,7 @@ import {
   saveProductsTotalAmount,
   nextPage,
   changePageNumber,
-} from "../../redux/HomeActions/HomeActions";
+} from "../../pages/Home/redux/HomeActions/HomeActions";
 import {
   getAllProducts,
   productsNextpage,
@@ -23,7 +23,12 @@ import {
   ProductContainer,
 } from "./ProductsContainer.Style";
 import { Box, Pagination, Stack, Typography } from "@mui/material";
-import { Search, SearchOffSharp, SearchTwoTone, Whatshot } from "@mui/icons-material";
+import {
+  Search,
+  SearchOffSharp,
+  SearchTwoTone,
+  Whatshot,
+} from "@mui/icons-material";
 
 const ProductsContainer = () => {
   const { t } = useTranslation();
@@ -34,7 +39,7 @@ const ProductsContainer = () => {
     searchedResults,
     pageNumber,
     totalSearchedProducts,
-  } = useAppSelector<HomeState>((state) => state);
+  } = useAppSelector<HomeState>((state) => state.homeReducer);
 
   const startIndex = (pageNumber - 1) * 12;
 
@@ -71,7 +76,7 @@ const ProductsContainer = () => {
         <HotOffersContainer>
           <HotOffers>
             {searchedResults.length > 0 ? (
-              <Search fontSize="large" color="error"/>
+              <Search fontSize="large" color="error" />
             ) : (
               <Whatshot fontSize="large" color="error" />
             )}

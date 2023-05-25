@@ -5,7 +5,7 @@ import "react-gallery-carousel/dist/index.css";
 import {
   addProductCart,
   moveToProductPage,
-} from "../../redux/HomeActions/HomeActions";
+} from "../Home/redux/HomeActions/HomeActions";
 import { Box, Typography, Button } from "@mui/material";
 import { ShoppingBag, ShoppingCart } from "@mui/icons-material";
 import {
@@ -22,7 +22,7 @@ const Product = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [productImage, setProductImage] = useState(0);
-  const { selectedProduct } = useAppSelector<HomeState>((state) => state);
+  const { selectedProduct } = useAppSelector<HomeState>((state) => state.homeReducer);
 
   const increaseQuntity = () => {
     const increasedQuantity = selectedProduct && {

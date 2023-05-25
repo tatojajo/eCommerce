@@ -1,9 +1,8 @@
-import { CartProductItem, ProductItem } from "../@types/general";
 
 export const PRODUCT_INITIAL_INFO: ProductItem={
     amount: "",
     brand: "",
-    category: "",
+    categories: "",
     description: "",
     id: "",
     images: [],
@@ -15,7 +14,7 @@ export const PRODUCT_INITIAL_INFO: ProductItem={
 export const CART_ITEM_PRODUCTS_INFO:CartProductItem={
     amount: "",
     brand: "",
-    category: "",
+    categories: "",
     description: "",
     id: "",
     images: [],

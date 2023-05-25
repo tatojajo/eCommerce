@@ -11,7 +11,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { setSelectedBrandProducts } from "../../redux/HomeActions/HomeActions";
+import { setSelectedBrandProducts } from "../Home/redux/HomeActions/HomeActions";
 
 import {
   BrandPageContainer,
@@ -31,7 +31,7 @@ import {
 const BrandPage = () => {
   const dispatch = useAppDispatch();
   const { selectedBrand, selectedBrandsProducts } = useAppSelector(
-    (state) => state
+    (state) => state.homeReducer
   );
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const BrandPage = () => {
         </List>
 
         <BrandProductsContainer>
-          {selectedBrandsProducts.map((product) => {
+          {selectedBrandsProducts.map((product:ProductItem) => {
             return <ProductCard key={product.id} product={product} />;
           })}
         </BrandProductsContainer>

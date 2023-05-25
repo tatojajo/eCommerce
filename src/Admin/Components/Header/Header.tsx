@@ -7,7 +7,7 @@ import {
   Box,
   Avatar,
   Typography,
-  TextField,
+  TextField, Button,
 } from "@mui/material";
 
 const Header = () => {
@@ -32,8 +32,13 @@ const Header = () => {
           <Box>
             <TextField id="" label="" />
           </Box>
-          <Box>
+          <Box sx={{ width:'200px',display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+            <Typography width='90px' display='flex' alignItems='center' justifyContent='space-between' variant='body1' color="initial">
             <Avatar/>
+              admin</Typography>
+            <Button variant="contained" color="secondary">
+              LogOut
+            </Button>
           </Box>
         </Toolbar>
       </Container>

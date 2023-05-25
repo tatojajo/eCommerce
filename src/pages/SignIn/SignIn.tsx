@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
@@ -9,7 +8,6 @@ import {
   Typography,
   TextField,
   Button,
-  DialogActions,
 } from "@mui/material";
 import {
   LoginDialoglBox,
@@ -17,8 +15,9 @@ import {
   TextFieldContainer,
 } from "./SignInSyled";
 import { userlogin } from "../../Helpers/Services/userLogin";
-import jwtDecode from "jwt-decode";
-import { UserObject, isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
+import {
+  isAuthenticated,
+} from "../../Helpers/Auth/isAuthenticated";
 
 interface SignInProps {
   open: boolean;
@@ -34,7 +33,7 @@ const signInValidationSchema = yup.object().shape({
     .max(12, "Password length cannot exceed more than 12 characters"),
 });
 
-console.log(isAuthenticated())
+console.log(isAuthenticated());
 const SignIn = ({ open, setOpen }: SignInProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -52,7 +51,7 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
       const { data } = await userlogin(user);
       localStorage.setItem("AccessToken", data.AccessToken);
       localStorage.setItem("User", JSON.stringify(data.User));
-    setOpen(false)
+      setOpen(false);
     } catch (error) {
       console.log(error);
     }

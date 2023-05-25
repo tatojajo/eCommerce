@@ -4,7 +4,7 @@ import "./Slider.scss";
 import Carousel from "react-material-ui-carousel";
 
 const Slider = () => {
-  const { sliderImages } = useAppSelector((state) => state);
+  const { sliderImages } = useAppSelector((state) => state).homeReducer;
 
   return (
     <Carousel

@@ -25,7 +25,6 @@ export const getSearchedProductsNextPage = (
     page_size: 12,
     page_number: page_number,
   });
-<<<<<<< HEAD
 export const selectedBrandProducts = (brandName: string) =>
   ajax.post("products", {
     keyword: "",
@@ -33,15 +32,3 @@ export const selectedBrandProducts = (brandName: string) =>
     page_size: 12,
     page_number: 0,
   });
-=======
-
-
-  export const sortidProductsPriceUpDown = ()=>  ajax.post("products")
-  
-// export const productInfo = (productId: number) =>
-//   ajax.post(`product/${productId}`);
-// export const deleteProduct = (productId: number) =>
-//   ajax.delete(`products/${productId}`);
-
-// export const getProductsCategories = () => ajax.get("products/categories");
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b

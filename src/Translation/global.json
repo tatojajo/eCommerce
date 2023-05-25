@@ -1,13 +1,9 @@
 {
   "en": {
-<<<<<<< HEAD
     "is": "Is",
     "empty": "Empty",
     "my_cart": " My Cart",
     "summary": "Summary",
-=======
-  "summary":"Summary",
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
     "product": "Product",
     "username": "UserName",
     "firstName": "First Name",
@@ -43,10 +39,7 @@
     "logout": "Logout",
     "register": "Register",
     "my_address": "My Address",
-<<<<<<< HEAD
     "address": "Address",
-=======
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
     "city": "City",
     "country": "Country",
     "postal_code": "Postal Code",
@@ -63,7 +56,6 @@
     "newsletter": "Newsletter",
     "subscribe": "Subscribe",
     "unsubscribe": "Unsubscribe",
-<<<<<<< HEAD
     "edit": "Edit",
     "my_acount": "My Account",
     "my_details": "My Details",
@@ -79,18 +71,6 @@
     "empty": "ცარიელი",
     "my_cart": "ჩემი კალათა",
     "summary": "შეჯამება",
-=======
-    "edit":"Edit",
-    "my_acount":"My Account",
-    "my_details": "My Details",
-    "my_orders":"My Orders",
-    "personal_information": "Personal Information",
-    "save":"Save"
-  },
-  "ge": {
-
-    "summary":"შეჯამება",
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
     "product": "პროდუქტი",
     "username": "მომხმარებელი",
     "firstName": "სახელი",
@@ -126,10 +106,7 @@
     "logout": "გამოსვლა",
     "register": "რეგისტრაცია",
     "my_address": "მისამართი",
-<<<<<<< HEAD
     "address": "მისამართი",
-=======
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
     "city": "ქალაქი",
     "country": "ქვეყანა",
     "postal_code": "საფოსტო კოდი",
@@ -141,7 +118,6 @@
     "about": "ჩვენს შესახებ",
     "forgot_password": "დაგდავიწყდა პაროლი",
     "reset_password": "პაროლის აღდგენა",
-<<<<<<< HEAD
     "edit": "რედაქტირება",
     "my_acount": "ჩემი ვერდი",
     "my_details": "დეტალები",
@@ -151,13 +127,5 @@
     "the_ most_popular_brands": "ყველაზე მოთხოვნადი ბრენდები",
     "hot_offers":"ცხელი შეთავაზებები",
     "search_results":"მოიძებნა"
-=======
-    "edit":"რედაქტირება",
-    "my_acount":"ჩემი ვერდი",
-    "my_details":"დეტალები",
-    "my_orders":"შეკვეთები",
-    "personal_information":"პირადი ინფორმაცია",
-    "save":"შენახვა"
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
   }
 }

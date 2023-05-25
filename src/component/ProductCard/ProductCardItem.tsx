@@ -2,24 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-<<<<<<< HEAD
-=======
-import { ProductCartProps } from "../../@types/ProductCartProps";
-import { ProductItem } from "../../@types/general";
-
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   addProductCart,
   moveToProductPage,
   removeFavoriteProduct,
-<<<<<<< HEAD
   favoriteProduct,
 } from "../../pages/Home/redux/HomeActions/HomeActions";
-=======
-  favoriteProduct
-} from "../../redux/HomeActions/HomeActions";
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 
 import {
   Button,
@@ -42,11 +31,7 @@ import { CardContainer, ProductLink } from "./ProductCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
   // console.log(product)
-<<<<<<< HEAD
   const { favorites } = useAppSelector((state) => state.homeReducer);
-=======
-  const { favorites } = useAppSelector((state) => state);
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
   const [isFavorite, setIsFavorite] = useState(false);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -54,13 +39,9 @@ const ProductCard = ({ product }: ProductCartProps) => {
   const [productImage, setProductImage] = useState(0);
 
   const handleFavProduct = (product: ProductItem) => {
-<<<<<<< HEAD
     const isProductInFavorites = favorites.find(
       (item: ProductItem) => item.id === product.id
     );
-=======
-    const isProductInFavorites = favorites.find((item) => item.id === product.id);
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 
     if (isProductInFavorites) {
       dispatch(removeFavoriteProduct(product));
@@ -69,17 +50,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
       setIsFavorite(true);
     }
   };
-<<<<<<< HEAD
 
   const handelFavIcon = () => {
     setIsFavorite((prev) => !prev);
   };
-=======
-  
-  const handelFavIcon = ()=>{
-    setIsFavorite(prev=>!prev)
-  }
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
   const nextImage = () => {
     setProductImage((prev) => (prev + 1) % product.images.length);
   };
@@ -136,11 +110,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
         </CardMedia>
         <CardContent>
           <ProductLink
-<<<<<<< HEAD
             to={`/product/${product.id}/${product.brand}`}
-=======
-            to={`/product/${product.id}/${product.title}`}
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
             onClick={() => dispatch(moveToProductPage(product))}
           >
             {product.title}
@@ -165,18 +135,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
 
           <Button
             sx={{ backgroundColor: "yellow" }}
-<<<<<<< HEAD
             onClick={() => {
               handelFavIcon();
               handleFavProduct(product);
             }}
-=======
-            onClick={() =>{
-              handelFavIcon();
-               handleFavProduct(product)
-              }}
-              
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
           >
             {isFavorite ? <Star /> : <StarBorder />}
           </Button>

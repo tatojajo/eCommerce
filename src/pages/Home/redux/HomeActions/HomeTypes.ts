@@ -43,15 +43,9 @@ export type NEXT_PAGE_DATA_ACTION = {
 };
 
 export type CHANGE_PAGE_NUMBER_ACTION = {
-<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeTypes.ts
   type: typeof CHANGE_PAGE_NUMBER;
   value: number;
 };
-=======
-  type:typeof CHANGE_PAGE_NUMBER;
-  value:number
-}
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeTypes.ts
 
 export type ADD_PRODUCT_CART_ACTION = {
   type: typeof ADD_PRODUCT_CART;
@@ -99,23 +93,10 @@ export type SELECT_BRAND_ACTION = {
   brand:string
 }
 
-<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeTypes.ts
 export type SELECTED_BRANDS_PRODUCTS_ACTION = {
   type:typeof SELECTED_BRANDS_PRODUCTS;
   products:ProductItem[]
 }
-=======
-export type SET_FAVORITE_PRODUCTS_ACTION ={
-  type: typeof SET_FAVORITE_PRODUCTS;
-  product:ProductItem
-}
-
-export type REMOVE_FAVORITE_PRODUCT_ACTION={
-  type:typeof REMOVE_FAVORITE_PRODUCT;
-  product:ProductItem
-}
-
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeTypes.ts
 export type HOME_ACTIONS =
   | SAVE_PRODUCTS_DATA_ACTION
   | SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION
@@ -127,16 +108,9 @@ export type HOME_ACTIONS =
   | SET_LOADING_ACTION
   | SET_ERROR_ACTION
   | MOVE_TO_PRODUCT_PAGE_ACTION
-<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeTypes.ts
   | SAVE_SEARCHED_PRODUCTS_ACTION
   | SEARCHED_PRODUCTS_NEXT_PAGE_DATA_ACTION
   | SET_FAVORITE_PRODUCTS_ACTION
   | REMOVE_FAVORITE_PRODUCT_ACTION
   | SELECT_BRAND_ACTION
   |SELECTED_BRANDS_PRODUCTS_ACTION;
-=======
-  |SAVE_SEARCHED_PRODUCTS_ACTION
-  |SEARCHED_PRODUCTS_NEXT_PAGE_DATA_ACTION
-  |SET_FAVORITE_PRODUCTS_ACTION
-  |REMOVE_FAVORITE_PRODUCT_ACTION;
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeTypes.ts

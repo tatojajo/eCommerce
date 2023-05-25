@@ -13,38 +13,64 @@ import User from "./pages/User";
 import BrandPage from "./pages/BrandPage";
 import AdminPage from "./Admin";
 
-const UserRoutes = () => {
+const AdminRoutes = () => {
+  const navigate = useNavigate();
+  const { isAdmin } = isAuthenticated();
+
+  if (!isAdmin) {
+    navigate("/home");
+    return null;
+  }
+
   return (
     <>
-      <Header />
-      <BreadCrumbs />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/product/:id/:title" element={<Product />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/user" element={<User />} />
-        <Route path="/brand" element={<BrandPage />} />
-      </Routes>
-      <Footer />
+      <AdminPage />
+    </>
+  );
+};
+
+const UserRoutes = () => {
+  const navigate = useNavigate();
+  const { isUser } = isAuthenticated();
+
+  if (!isUser) {
+    navigate("/home");
+    return null;
+  }
+
+  return (
+    <>
+      <User />
     </>
   );
 };
 
 const App = () => {
   const navigate = useNavigate();
+  const { isAdmin, isUser } = isAuthenticated(); // Your authentication logic
+
   useEffect(() => {
-    if (isAuthenticated().isAdmin) {
+    if (isAdmin) {
       navigate("/admin-page");
-    } else {
-      navigate("/");
     }
-  }, [isAuthenticated().isAdmin, navigate]);
+  }, [navigate, isAdmin]);
+
   return (
-    <Routes>
-      <Route path="/*" element={<UserRoutes />} />
-      <Route path="/admin-page" element={<AdminPage />} />
-    </Routes>
+    <>
+      <Header />
+      <BreadCrumbs />
+      <Routes>
+        {isAdmin && <Route path="/admin-page" element={<AdminRoutes />} />}
+        {isUser && <Route path="/user" element={<UserRoutes />} />}
+
+        <Route path="/" element={<Home />} />
+        <Route path="/product/:id/:title" element={<Product />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/brand" element={<BrandPage />} />
+      </Routes>
+      <Footer />
+    </>
   );
 };
 

@@ -34,6 +34,7 @@ const signInValidationSchema = yup.object().shape({
     .max(12, "Password length cannot exceed more than 12 characters"),
 });
 
+console.log(isAuthenticated())
 const SignIn = ({ open, setOpen }: SignInProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();

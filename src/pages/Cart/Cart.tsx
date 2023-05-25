@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 
@@ -40,6 +40,7 @@ import {
   SummaryContainer,
 } from "./CartStyle";
 import { moveToProductPage } from "../../redux/HomeActions/HomeActions";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 const Cart = () => {
   const { t } = useTranslation();
@@ -56,6 +57,25 @@ const Cart = () => {
       ),
     [cartItems]
   );
+
+  const handleCheckout = async () => {
+    await fetch("http://localhost:4000/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ items: cartItems }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        if (response.url) {
+          window.location.assign(response.url); // Forwarding user to Stripe
+        }
+      });
+  };
+
   return (
     <Box>
       <CartTitle>
@@ -177,8 +197,13 @@ const Cart = () => {
                 ${totalAmount.toFixed(3)}
               </Typography>
             </AmountInfo>
-            <CheckoutBtn >
-              <Button variant="outlined" color="success">
+            <CheckoutBtn>
+              <Button
+                disabled={!isAuthenticated().isUser || cartItems.length === 0}
+                variant="outlined"
+                color="success"
+                onClick={handleCheckout}
+              >
                 {t("global.checkout")}
               </Button>
             </CheckoutBtn>

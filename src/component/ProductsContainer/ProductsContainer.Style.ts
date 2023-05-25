@@ -1,9 +1,15 @@
 import { styled, Box } from "@mui/material";
 
 export const MainContainer = styled(Box)`
+<<<<<<< HEAD
   margin-top: 15px;
   display: flex;
   align-items: start;
+=======
+margin-top:15px;
+  display:flex;
+  align-items:start;
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
   background: #ff5f5;
 `;
 export const ProductContainer = styled(Box)`

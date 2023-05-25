@@ -1,8 +1,13 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 import { useTranslation } from "react-i18next";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
+=======
+import useDebounce from "../../Helpers/CustomHooks/useBoolean/useDebounce";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 
 // * Mui component
 import {
@@ -47,9 +52,14 @@ import {
   changePageNumber,
   saveSearchedProducts,
   searchedProductsNextPage,
+<<<<<<< HEAD
 } from "../../pages/Home/redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
 import homeReducer from "../../pages/Home/redux/reducer";
+=======
+} from "../../redux/HomeActions/HomeActions";
+import SignIn from "../../pages/SignIn";
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 
 const categories = [
   "Mobile Phones",
@@ -80,14 +90,22 @@ const Header = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { cartItems, pageNumber, searchedResults, favorites } = useAppSelector(
+<<<<<<< HEAD
     (state) => state.homeReducer
+=======
+    (state) => state
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
   );
 
   const user: User = JSON.parse(localStorage.getItem("User") as string);
 
   const handleChange = (e: any) => {
+<<<<<<< HEAD
     if (searchValue.length > 2 || searchValue.length === 0)
       dispatch(changePageNumber(1));
+=======
+    if (searchValue.length > 2 || searchValue.length === 0) dispatch(changePageNumber(1));
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
     setSearchValue(e.target.value);
   };
   const handleSearchChange = (e: any) => {
@@ -126,8 +144,13 @@ const Header = () => {
   }, [debouncedValue, startIndex]);
 
   return (
+<<<<<<< HEAD
     <Box display="flex">
       <AppBar color="secondary">
+=======
+    <Box>
+      <AppBar color='secondary'>
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
         <Container maxWidth="xl">
           <HeaderWraper>
             <LogoTitle
@@ -245,8 +268,13 @@ const Header = () => {
                 display="flex"
                 alignItems="center"
                 onClick={() => {
+<<<<<<< HEAD
                   if (!isAuthenticated().isUser) setOpen(true);
                   if (isAuthenticated().isUser) navigate("/user");
+=======
+                  if (isAuthenticated()) navigate("/user");
+                  if (!isAuthenticated()) setOpen(true);
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
                 }}
               >
                 <IconButton>
@@ -254,10 +282,17 @@ const Header = () => {
                 </IconButton>
                 <Typography variant="body2">{user?.firstName}</Typography>
               </Box>
+<<<<<<< HEAD
               {isAuthenticated().isUser ? (
                 <Button
                   variant="outlined"
                   color="primary"
+=======
+              {isAuthenticated() ? (
+                <Button
+                  variant="text"
+                  color="secondary"
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
                   onClick={() => {
                     handleLogout();
                     navigate("/");
@@ -267,11 +302,18 @@ const Header = () => {
                 </Button>
               ) : (
                 <Button
+<<<<<<< HEAD
                   variant="outlined"
                   color="primary"
                   onClick={() => {
                     setOpen(true);
                     if (!open) navigate("/?login");
+=======
+                  variant="text"
+                  color="secondary"
+                  onClick={() => {
+                    setOpen(true);
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
                   }}
                 >
                   {t("global.login")}

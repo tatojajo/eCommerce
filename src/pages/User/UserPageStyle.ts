@@ -4,6 +4,7 @@ export const UserPageContainer = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: start;
+<<<<<<< HEAD
   justifay-content: start;
   padding: 20px;
   margin-top: 50px;
@@ -29,3 +30,31 @@ export const UserInfoPaper = styled(Paper)`
   align-items: start;
   justifay-content: center;
 `;
+=======
+  justifay-content:start ;
+  padding:20px;
+  margin-top:50px;
+  
+`;
+
+export const UserPageTitle = styled(Typography)`
+font-weight:700;
+margin-bottom:20px;
+`
+
+export const UserInfoDetails = styled(Box)`
+display: flex;
+align-items: start;
+justifay-content: center;
+gap:20px
+`
+
+export const UserInfoPaper  =styled(Paper)`
+width:80%;
+padding:50px;
+display: flex;
+flex-direction: column;
+align-items: start;
+justifay-content:start ;
+`
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b

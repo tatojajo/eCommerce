@@ -20,7 +20,11 @@ export const FavCartContainer = styled(Box)`
 `;
 
 export const UserContainer = styled(Box)`
+<<<<<<< HEAD
   width: 350px;
+=======
+  width: 250px;
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
   display: flex;
   align-items: center;
   justify-content: space-between;

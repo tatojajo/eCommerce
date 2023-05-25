@@ -1,9 +1,23 @@
+<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeActions.ts
 import Product from "../../../Product";
+=======
+import {
+  CartProductItem,
+  HomeState,
+  ProductItem,
+  selectedProduct,
+} from "../../@types/general";
+import Product from "../../pages/Product";
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeActions.ts
 import { HOME_ACTIONS } from "./HomeTypes";
 
 export const SAVE_PRODUCTS_DATA = "SAVE_PRODUCTS_DATA";
 export const SAVE_SLIDER_IMAGES = "SAVE_SLIDER_IMAGES";
+<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeActions.ts
 export const CHANGE_PAGE_NUMBER = "CHANGE_PAGE_NUMBER";
+=======
+export const CHANGE_PAGE_NUMBER = 'CHANGE_PAGE_NUMBER'
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeActions.ts
 export const SAVE_PRODUCTS_TOTAL_AMOUNT = "SAVE_PRODUCTS_TOTAL_AMOUNT";
 export const NEXT_PAGE_DATA = "NEXT_PAGE";
 export const ADD_PRODUCT_CART = "ADD_PRODUCT_CART";
@@ -14,19 +28,33 @@ export const SAVE_CATEGORIES = "SAVE_CATEGORIES";
 export const SAVE_SEARCHED_PRODUCTS = "SAVE_SEARCHED_PRODUCTS";
 export const SEARCHED_PRODUCTS_NEXT_PAGE_DATA =
   "SEARCHED_PRODUCTS_NEXT_PAGE_DATA";
+<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeActions.ts
 export const SET_FAVORITE_PRODUCTS = "SET_FAVORITE_PRODUCTS";
 export const REMOVE_FAVORITE_PRODUCT = "REMOVE_FAVORITE_PRODUCT";
 export const SELECT_BRAND = "SELECT_BRAND";
 export const SELECTED_BRANDS_PRODUCTS = "SELECTED_BRANDS_PRODUCTS";
+=======
+export const SET_FAVORITE_PRODUCTS = 'SET_FAVORITE_PRODUCTS'
+export const REMOVE_FAVORITE_PRODUCT = 'REMOVE_FAVORITE_PRODUCT'
+
+
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeActions.ts
 export const saveProductsData = (products: ProductItem[]): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_DATA,
   products,
 });
 
+<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeActions.ts
 export const changePageNumber = (value: number): HOME_ACTIONS => ({
   type: CHANGE_PAGE_NUMBER,
   value,
 });
+=======
+export const changePageNumber = (value:number):HOME_ACTIONS=>({
+type:CHANGE_PAGE_NUMBER,
+value
+})
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeActions.ts
 
 export const nextPage = (products: ProductItem[]): HOME_ACTIONS => ({
   type: NEXT_PAGE_DATA,
@@ -88,6 +116,7 @@ export const searchedProductsNextPage = (
   products,
 });
 
+<<<<<<< HEAD:src/pages/Home/redux/HomeActions/HomeActions.ts
 export const favoriteProduct = (product: ProductItem): HOME_ACTIONS => ({
   type: SET_FAVORITE_PRODUCTS,
   product,
@@ -109,3 +138,14 @@ export const setSelectedBrandProducts = (
   type: SELECTED_BRANDS_PRODUCTS,
   products,
 });
+=======
+export const favoriteProduct = (product:ProductItem):HOME_ACTIONS=>({
+  type:SET_FAVORITE_PRODUCTS,
+  product
+})
+
+export const removeFavoriteProduct=(product:ProductItem):HOME_ACTIONS=>({
+  type: REMOVE_FAVORITE_PRODUCT,
+  product
+})
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b:src/redux/HomeActions/HomeActions.ts

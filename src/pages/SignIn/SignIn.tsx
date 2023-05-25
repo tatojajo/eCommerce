@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
+<<<<<<< HEAD
 import {
   Box,
   Typography,
@@ -18,6 +19,13 @@ import { userlogin } from "../../Helpers/Services/userLogin";
 import {
   isAuthenticated,
 } from "../../Helpers/Auth/isAuthenticated";
+=======
+import { Box,  Typography, TextField, Button, DialogActions } from "@mui/material";
+import { LoginDialoglBox, SignInContainer, TextFieldContainer } from "./SignInSyled";
+import { userlogin } from "../../Helpers/Services/userLogin";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
+import User from "../User";
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 
 interface SignInProps {
   open: boolean;
@@ -42,6 +50,7 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
     handleSubmit,
     formState: { errors },
     reset,
+<<<<<<< HEAD
   } = useForm<SignInInitialValue>({
     resolver: yupResolver(signInValidationSchema),
   });
@@ -56,6 +65,20 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
       console.log(error);
     }
   };
+=======
+  } = useForm<SignInInitialValue>({ resolver: yupResolver(signInValidationSchema) });
+  const onSubmit: SubmitHandler<SignInInitialValue> = async (user) =>{
+   try {
+    const {data} = await userlogin(user)
+    localStorage.setItem('AccessToken', data.AccessToken)
+    console.log()
+    localStorage.setItem('User',  JSON.stringify(data.User))
+    if(data.AccessToken) setOpen(false)
+   } catch (error) {
+    console.log(error)
+   }
+  }
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 
   const handleClose = () => {
     navigate("/");
@@ -102,9 +125,13 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
           <Box>
             <Typography variant="subtitle1" color="initial">
               {t("global.don't_have_an_account")}?
+<<<<<<< HEAD
               <Link to="/register" onClick={() => setOpen(false)}>
                 {t("global.register")}
               </Link>
+=======
+              <Link to="/register" onClick={()=>setOpen(false)}>{t('global.register')}</Link>
+>>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
             </Typography>
           </Box>
         </SignInContainer>

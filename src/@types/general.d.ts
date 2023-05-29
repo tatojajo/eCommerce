@@ -7,6 +7,7 @@ type HomeState = {
   sliderImages: string[];
   selectedProduct: CartProductItem | null;
   totalSearchedProducts: number;
+  selectedCategory:Categories;
   totalProducts: number;
   selectedBrand:string
   totalAmount: number;
@@ -26,31 +27,10 @@ type ProductItem = {
   title: string;
 };
 
-<<<<<<< HEAD
-=======
-type selectedProduct = ProductItem | CartProductItem;
-
-type HomeState = {
-  products: ProductItem[];
-  sliderImages: string[];
-  cartItems: CartProductItem[];
-  searchedResults: ProductItem[];
-  pageNumber:number
-  totalProducts: number;
-  totalSearchedProducts: number;
-  totalAmount: number;
-  selectedProduct: selectedProduct | null;
-  favorites:ProductItem[]
-  loading: boolean;
-  error: any;
-};
-
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
 type CartProductItem = ProductItem & {
   quantity: number;
 };
 
-<<<<<<< HEAD
 type UserAddress = {
   city:string;
   postCode:Number;
@@ -65,6 +45,9 @@ interface ProductCartProps {
 type AdminState = {
   allProducts:ProductItem[]
 }
-=======
 
->>>>>>> d69ccb6885efc973fdebca7708c6dbc83dc84c2b
+
+type Categories = {
+  value: string,
+  label: string,
+}

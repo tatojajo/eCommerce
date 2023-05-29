@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
 import { Box, Paper, Typography, TextField, Grid, Button } from "@mui/material";
 import { registerUser } from "../../Helpers/Services/register";
-import { userlogin } from "../../Helpers/Services/userLogin";
+import { userlogin } from "../../Helpers/Services/user";
 
 const registerValidationSchema = yup.object().shape({
   firstName: yup.string().required("Firstname is required"),

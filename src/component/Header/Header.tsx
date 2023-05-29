@@ -278,9 +278,9 @@ const Header = () => {
                   aria-haspopup="true"
                   onClick={handleUserMenu}
                 >
-                  <IconButton>
+                  <MenuItem>
                     <Avatar>{user?.firstName[0]}</Avatar>
-                  </IconButton>
+                  </MenuItem>
                   <Typography variant="body2">{user?.firstName}</Typography>
                 </Button>
                 <Popper

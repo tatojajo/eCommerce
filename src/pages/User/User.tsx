@@ -72,7 +72,7 @@ const User = () => {
             </ListItem>
           </List>
         </Box>
-        <UserInfoPaper elevation={5}>
+        <UserInfoPaper elevation={5} sx={{width:'100%'}}>
           {(() => {
             if (selectedInfo === "My Details") {
               return <Details />;

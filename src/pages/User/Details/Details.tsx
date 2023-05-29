@@ -10,7 +10,10 @@ import {
   Grid,
   TextField,
   Button,
+  InputAdornment,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { editPersonalInfo } from "../../../Helpers/Services/user";
 
 const registerValidationSchema = yup.object().shape({
   firstName: yup.string().required("Firstname is required"),
@@ -24,7 +27,8 @@ const registerValidationSchema = yup.object().shape({
 });
 
 const Details = () => {
-  const [disabled, setDisabled] = useState(true);
+  const [isUserEditingInfo, setIsUserEditingInfo] = useState(false);
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
   const user: User = JSON.parse(localStorage.getItem("User") as string);
@@ -33,23 +37,28 @@ const Details = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<User>({
     resolver: yupResolver(registerValidationSchema),
   });
-  // console.log(errors)
-  const onSubmit: SubmitHandler<User> = (data) => {
-    console.log(data);
-    // try {
-    //   const { data } = await registerUser(user);
-    //   console.log(data)
-    // } catch (error) {
-    //   console.log(error)
-    // }
-  };
+  const onSubmit: SubmitHandler<User> = async (userPersonalInfo) => {
+    setIsUserEditingInfo(false);
+    navigate("/user/?editing-done");
+    try {
+      const { data } = await editPersonalInfo(userPersonalInfo);
 
-  const handleEditMode = () => {
-    setDisabled((prev) => !prev);
+      if ("userAddress" in user) {
+        const updateUserFullInfo = JSON.stringify({
+          ...data,
+          userAddress: user.userAddress,
+        });
+        localStorage.setItem("User", updateUserFullInfo);
+      } else {
+        const updatedUserInfo = JSON.stringify(data);
+        localStorage.setItem("User", updatedUserInfo);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -70,6 +79,7 @@ const Details = () => {
           sx={{
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
             justifyContent: "space-between",
             marginTop: "20px",
           }}
@@ -89,58 +99,124 @@ const Details = () => {
                 <Typography variant="body1" color="initial">
                   {t("global.firstName")}
                 </Typography>
-                <TextField
-                  disabled={disabled}
-                  value={user.firstName}
-                  {...register("firstName")}
-                />
+                {!isUserEditingInfo && (
+                  <Typography variant="h3" color="initial">
+                    {user.firstName}
+                  </Typography>
+                )}
+                {isUserEditingInfo && (
+                  <TextField
+                    defaultValue={user.firstName}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start" color="error">
+                          <Typography variant="subtitle2" color="error">
+                            {errors.firstName?.message}
+                          </Typography>
+                        </InputAdornment>
+                      ),
+                    }}
+                    {...register("firstName")}
+                  />
+                )}
               </Grid>
 
               <Grid item xs={6}>
                 <Typography variant="body1" color="initial">
                   {t("global.lastName")}
                 </Typography>
-                <TextField
-                  fullWidth
-                  disabled={disabled}
-                  value={user.lastName}
-                  {...register("lastName")}
-                />
+                {!isUserEditingInfo && (
+                  <Typography variant="h3" color="initial">
+                    {user.lastName}
+                  </Typography>
+                )}
+                {isUserEditingInfo && (
+                  <TextField
+                    fullWidth
+                    defaultValue={user.lastName}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start" color="error">
+                          <Typography variant="subtitle2" color="error">
+                            {errors.lastName?.message}
+                          </Typography>
+                        </InputAdornment>
+                      ),
+                    }}
+                    {...register("lastName")}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1" color="initial">
                   {t("global.phone")}
                 </Typography>
-                <TextField
-                  fullWidth
-                  disabled={disabled}
-                  value={user.phoneNumber}
-                  {...register("phoneNumber")}
-                />
+                {!isUserEditingInfo && (
+                  <Typography variant="h3" color="initial">
+                    {user.phoneNumber}
+                  </Typography>
+                )}
+                {isUserEditingInfo && (
+                  <TextField
+                    fullWidth
+                    defaultValue={user.phoneNumber}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start" color="error">
+                          <Typography variant="subtitle2" color="error">
+                            {errors.phoneNumber?.message}
+                          </Typography>
+                        </InputAdornment>
+                      ),
+                    }}
+                    {...register("phoneNumber")}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="body1" color="initial">
                   {t("global.email")}
                 </Typography>
-                <TextField
-                  fullWidth
-                  disabled={disabled}
-                  value={user.email}
-                  {...register("email")}
-                />
+                {!isUserEditingInfo && (
+                  <Typography variant="h3" color="initial">
+                    {user.email}
+                  </Typography>
+                )}
+                {isUserEditingInfo && (
+                  <TextField
+                    fullWidth
+                    defaultValue={user.email}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start" color="error">
+                          <Typography variant="subtitle2" color="error">
+                            {errors.email?.message}
+                          </Typography>
+                        </InputAdornment>
+                      ),
+                    }}
+                    {...register("email")}
+                  />
+                )}
               </Grid>
               <Grid item xs={12}>
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  fullWidth
-                  onClick={() => {
-                    if (disabled) handleEditMode();
-                    if (!disabled) handleEditMode();
-                  }}
-                >
-                  {disabled ? t("global.edit") : t("global.save")}
-                </Button>
+                {!isUserEditingInfo && (
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={() => {
+                      navigate("/user/?editing");
+                      setIsUserEditingInfo(true);
+                    }}
+                  >
+                    {t("global.edit")}
+                  </Button>
+                )}
+                {isUserEditingInfo && (
+                  <Button type="submit" variant="outlined" fullWidth>
+                    {t("global.save")}
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </form>

@@ -1,4 +1,4 @@
-import { styled, Box, Toolbar, TextField, FormControl } from "@mui/material";
+import { styled, Box, Toolbar, TextField } from "@mui/material";
 
 export const HeaderWraper = styled(Toolbar)`
   display: flex;
@@ -35,17 +35,17 @@ export const RoundedTextField = styled(TextField)`
     background-color: #f0f0f0;
     width: 200px;
     height: 48px;
-  }
-  &:hover .MuiOutlinedInput-notchedOutline {
-    border-left-color: blue;
-    border-top-color: blue;
-    border-bottom-color: blue;
-  }
-  & .MuiOutlinedInput-notchedOutline {
-    border-top: 2px solid #ced4da;
-    border-bottom: 2px solid #ced4da;
-    border-left: 2px solid #ced4da;
-    border-right: transparent;
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border-left-color: blue;
+      border-top-color: blue;
+      border-bottom-color: blue;
+    }
+    & .MuiOutlinedInput-notchedOutline {
+      border-top: 2px solid #ced4da;
+      border-bottom: 2px solid #ced4da;
+      border-left: 2px solid #ced4da;
+      border-right: transparent;
+    }
   }
 `;
 

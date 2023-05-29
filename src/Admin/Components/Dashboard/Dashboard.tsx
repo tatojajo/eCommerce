@@ -1,7 +1,7 @@
-const AdminPage = ()=>{
+const Dashboard = ()=>{
     return(
         
         <h1>Admin</h1>
     )
 }
-export default AdminPage
+export default Dashboard

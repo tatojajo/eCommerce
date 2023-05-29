@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Routes, Route, Router } from "react-router-dom";
-import { useAppSelector } from "./redux/hooks";
+import { Routes, Route } from "react-router-dom";
+import { isAuthenticated } from "./Helpers/Auth/isAuthenticated";
 // * components
 import Header from "./component/Header";
 import Footer from "./component/Footer";
@@ -11,29 +10,22 @@ import Register from "./pages/Register";
 import BreadCrumbs from "./component/BreadCrumbs";
 import User from "./pages/User";
 import BrandPage from "./pages/BrandPage";
+import Admin from "./Admin/Components/AdminMain/Admin";
 
 const App = () => {
-  const [open, setOpen] = useState(false)
-  const { selectedProduct } = useAppSelector<HomeState>((state) => state);
-
   return (
     <>
-      <Header   />
-      <BreadCrumbs/>
-
+      <Header />
+      <BreadCrumbs />
       <Routes>
+        <Route path="/user" element={<User />} />
         <Route path="/" element={<Home />} />
-        <Route
-          path={`/product/:id/${selectedProduct?.title}`}
-          element={<Product />}
-        />
+        <Route path="/product/:id/:title" element={<Product />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/cart" element={<Cart/>}/>
-        <Route path="/user" element={<User/>}/>
-        <Route path="/brand" element={<BrandPage/>}/>
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/brand" element={<BrandPage />} />
+        <Route path="/admin-page" element={<Admin />} />
       </Routes>
-
-
       <Footer />
     </>
   );

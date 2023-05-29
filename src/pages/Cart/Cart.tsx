@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
 
@@ -6,7 +6,7 @@ import {
   decreaseQuantity,
   increaseQuantity,
   removeCartItem,
-} from "../../redux/CartActions/CartActions";
+} from "../Home/redux/CartActions/CartActions";
 import {
   Box,
   Table,
@@ -20,14 +20,7 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import {
-  Add,
-  ArrowDownward,
-  ArrowDropDown,
-  ArrowDropUp,
-  Clear,
-  Remove,
-} from "@mui/icons-material";
+import { ArrowDropDown, ArrowDropUp, Clear } from "@mui/icons-material";
 import {
   AmountInfo,
   CartItemName,
@@ -39,14 +32,17 @@ import {
   ProductLink,
   SummaryContainer,
 } from "./CartStyle";
-import { moveToProductPage } from "../../redux/HomeActions/HomeActions";
+import { moveToProductPage } from "../Home/redux/HomeActions/HomeActions";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 const Cart = () => {
   const { t } = useTranslation();
-  const cartItems: CartProductItem[] = useAppSelector(
-    (state) => state.cartItems
+  const{ cartItems} = useAppSelector(
+    (state) => state.homeReducer
   );
   const dispatch = useAppDispatch();
+
+  
 
   const totalAmount = useMemo(
     () =>
@@ -56,6 +52,27 @@ const Cart = () => {
       ),
     [cartItems]
   );
+
+  const handleCheckout = async () => {
+    if (isAuthenticated().isUser && cartItems.length > 0) {
+      await fetch("http://localhost:4000/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ items: cartItems }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((response) => {
+          if (response.url) {
+            window.location.assign(response.url); // Forwarding user to Stripe
+          }
+        });
+    }
+  };
+
   return (
     <Box>
       <CartTitle>
@@ -177,8 +194,12 @@ const Cart = () => {
                 ${totalAmount.toFixed(3)}
               </Typography>
             </AmountInfo>
-            <CheckoutBtn >
-              <Button variant="outlined" color="success">
+            <CheckoutBtn>
+              <Button
+                variant="outlined"
+                color="success"
+                onClick={handleCheckout}
+              >
                 {t("global.checkout")}
               </Button>
             </CheckoutBtn>

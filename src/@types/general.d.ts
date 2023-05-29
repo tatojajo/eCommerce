@@ -7,6 +7,7 @@ type HomeState = {
   sliderImages: string[];
   selectedProduct: CartProductItem | null;
   totalSearchedProducts: number;
+  selectedCategory:Categories;
   totalProducts: number;
   selectedBrand:string
   totalAmount: number;
@@ -34,4 +35,19 @@ type UserAddress = {
   city:string;
   postCode:Number;
   address:string
+}
+
+interface ProductCartProps {
+  product: ProductItem;
+}
+
+
+type AdminState = {
+  allProducts:ProductItem[]
+}
+
+
+type Categories = {
+  value: string,
+  label: string,
 }

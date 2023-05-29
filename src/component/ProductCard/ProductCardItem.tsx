@@ -2,15 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { ProductCartProps } from "../../@types/ProductCartProps";
-
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   addProductCart,
   moveToProductPage,
   removeFavoriteProduct,
   favoriteProduct,
-} from "../../redux/HomeActions/HomeActions";
+} from "../../pages/Home/redux/HomeActions/HomeActions";
 
 import {
   Button,
@@ -33,7 +31,7 @@ import { CardContainer, ProductLink } from "./ProductCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
   // console.log(product)
-  const { favorites } = useAppSelector((state) => state);
+  const { favorites } = useAppSelector((state) => state.homeReducer);
   const [isFavorite, setIsFavorite] = useState(false);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -42,7 +40,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
 
   const handleFavProduct = (product: ProductItem) => {
     const isProductInFavorites = favorites.find(
-      (item) => item.id === product.id
+      (item: ProductItem) => item.id === product.id
     );
 
     if (isProductInFavorites) {
@@ -112,7 +110,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
         </CardMedia>
         <CardContent>
           <ProductLink
-            to={`/product/${product.id}/${product.title}`}
+            to={`/product/${product.id}/${product.brand}`}
             onClick={() => dispatch(moveToProductPage(product))}
           >
             {product.title}

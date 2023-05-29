@@ -2,7 +2,7 @@ import { styled, Box } from "@mui/material";
 
 export const BrandPageContainer = styled(Box)`
   width: 100%;
-  margin-top:20px;
+  margin-top: 20px;
   padding: 20px 0px;
   display: flex;
   flex-direction: column;
@@ -12,23 +12,23 @@ export const BrandPageContainer = styled(Box)`
 
 export const BrandImageContainer = styled(Box)`
   width: 80%;
-  object-fit:cover;
-  padding:20px;
-  display:flex;
-  align-items:center;
+  object-fit: cover;
+  padding: 20px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  background-color:#FCEADE;
-  border-radius:20px
+  background-color: #fceade;
+  border-radius: 20px;
 `;
 
-export const BrandImage  = styled('img')`
-width:80%;
-
-`
-
+export const BrandImage = styled("img")`
+  width: 80%;
+  height: 300px;
+  object-fit: contain;
+`;
 
 export const BrandProductsContainer = styled(Box)`
-gap: 3rem;
+  gap: 3rem;
   width: 70%;
   margin: auto;
   padding: 20px;
@@ -36,4 +36,4 @@ gap: 3rem;
   flex-wrap: wrap;
   align-items: stretch;
   justify-content: space-between;
-`
+`;

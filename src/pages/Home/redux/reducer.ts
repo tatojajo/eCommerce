@@ -14,6 +14,7 @@ import {
   SAVE_PRODUCTS_TOTAL_AMOUNT,
   SAVE_SEARCHED_PRODUCTS,
   SAVE_SLIDER_IMAGES,
+  SELECT_CATEGORY,
   SEARCHED_PRODUCTS_NEXT_PAGE_DATA,
   SELECTED_BRANDS_PRODUCTS,
   SELECT_BRAND,
@@ -31,6 +32,10 @@ const initialState: HomeState = {
   cartItems: [],
   favorites: [],
   products: [],
+  selectedCategory: {
+    value: "",
+    label: "",
+  },
   totalSearchedProducts: 0,
   totalProducts: 0,
   totalAmount: 0,
@@ -180,6 +185,15 @@ const homeReducer = (
     case SELECTED_BRANDS_PRODUCTS: {
       return { ...state, selectedBrandsProducts: action.products };
     }
+    case SELECT_CATEGORY:
+      return {
+        ...state,
+        selectedCategory: {
+          ...state.selectedCategory,
+          value: action.category.value,
+          label: action.category.label,
+        },
+      };
     default:
       return state;
   }

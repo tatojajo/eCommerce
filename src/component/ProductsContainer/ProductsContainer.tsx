@@ -39,6 +39,7 @@ const ProductsContainer = () => {
     searchedResults,
     pageNumber,
     totalSearchedProducts,
+    selectedCategory
   } = useAppSelector<HomeState>((state) => state.homeReducer);
 
   const startIndex = (pageNumber - 1) * 12;
@@ -70,7 +71,7 @@ const ProductsContainer = () => {
   }, [startIndex]);
   return (
     <MainContainer>
-      <Box>
+      <Box sx={{width:'90%'}}>
         <Slider />
         <HotOffersContainer>
           <HotOffers>

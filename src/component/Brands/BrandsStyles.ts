@@ -9,7 +9,7 @@ export const BrandsContainer = styled(Box)`
 `;
 
 export const BrandsOwerFlow = styled(Box)`
-margin-top:30px;
+  margin-top: 30px;
   position: relative;
   max-width: 100%;
   display: flex;

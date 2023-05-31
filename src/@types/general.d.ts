@@ -1,20 +1,3 @@
-type HomeState = {
-  selectedBrandsProducts:ProductItem[];
-  searchedResults: ProductItem[];
-  cartItems: CartProductItem[];
-  favorites: ProductItem[];
-  products: ProductItem[];
-  sliderImages: string[];
-  selectedProduct: CartProductItem | null;
-  totalSearchedProducts: number;
-  selectedCategory:Categories;
-  totalProducts: number;
-  selectedBrand:string
-  totalAmount: number;
-  pageNumber: number;
-  loading: boolean;
-  error: any;
-};
 type ProductItem = {
   amount: string;
   brand: string;
@@ -26,10 +9,27 @@ type ProductItem = {
   rating: string;
   title: string;
 };
-
 type CartProductItem = ProductItem & {
   quantity: number;
 };
+type HomeState = {
+  selectedBrandsProducts:ProductItem[];
+  searchedResults: ProductItem[];
+  cartItems: CartProductItem[];
+  favorites: ProductItem[];
+  products: ProductItem[];
+  sliderImages: ProductItem[];
+  selectedProduct: CartProductItem | null;
+  totalSearchedProducts: number;
+  selectedCategory:Categories;
+  totalProducts: number;
+  selectedBrand:string
+  totalAmount: number;
+  pageNumber: number;
+  loading: boolean;
+  error: any;
+};
+
 
 type UserAddress = {
   city:string;

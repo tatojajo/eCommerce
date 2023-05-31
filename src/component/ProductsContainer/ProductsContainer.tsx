@@ -6,6 +6,7 @@ import {
   saveProductsTotalAmount,
   nextPage,
   changePageNumber,
+  saveSliderImages,
 } from "../../pages/Home/redux/HomeActions/HomeActions";
 import {
   getAllProducts,
@@ -15,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 import ProductCard from "../ProductCard";
 
-import Slider from "../Slider/Slider";
+import MainSlider from "../Slider/Slider";
 import {
   HotOffers,
   HotOffersContainer,
@@ -23,12 +24,7 @@ import {
   ProductContainer,
 } from "./ProductsContainer.Style";
 import { Box, Pagination, Stack, Typography } from "@mui/material";
-import {
-  Search,
-  SearchOffSharp,
-  SearchTwoTone,
-  Whatshot,
-} from "@mui/icons-material";
+import { Search, Whatshot } from "@mui/icons-material";
 
 const ProductsContainer = () => {
   const { t } = useTranslation();
@@ -39,7 +35,6 @@ const ProductsContainer = () => {
     searchedResults,
     pageNumber,
     totalSearchedProducts,
-    selectedCategory
   } = useAppSelector<HomeState>((state) => state.homeReducer);
 
   const startIndex = (pageNumber - 1) * 12;
@@ -61,6 +56,7 @@ const ProductsContainer = () => {
           const { data } = await getAllProducts();
           dispatch(saveProductsData(data.products));
           dispatch(saveProductsTotalAmount(data.total_found));
+          dispatch(saveSliderImages(data.products));
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -71,8 +67,8 @@ const ProductsContainer = () => {
   }, [startIndex]);
   return (
     <MainContainer>
-      <Box sx={{width:'90%'}}>
-        <Slider />
+      <Box sx={{ width: "90%" }}>
+        <MainSlider />
         <HotOffersContainer>
           <HotOffers>
             {searchedResults.length > 0 ? (

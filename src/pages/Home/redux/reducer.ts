@@ -23,12 +23,11 @@ import {
   SET_LOADING,
 } from "./HomeActions/HomeActions";
 import { HOME_ACTIONS } from "./HomeActions/HomeTypes";
-import sliderImage from "../../../images/slider_first_image.jpg";
 
 const initialState: HomeState = {
-  sliderImages: [sliderImage],
   selectedBrandsProducts: [],
   searchedResults: [],
+  sliderImages: [],
   cartItems: [],
   favorites: [],
   products: [],
@@ -72,9 +71,7 @@ const homeReducer = (
         totalProducts: action.total,
       };
     case SAVE_SLIDER_IMAGES:
-      const products = action.products;
-      const images = products.map((product) => product.images[0]);
-      return { ...state, sliderImages: [...sliderImage, images] };
+      return { ...state, sliderImages: action.products};
     case CHANGE_PAGE_NUMBER:
       console.log(action.value);
       return { ...state, pageNumber: action.value };

@@ -30,7 +30,7 @@ import {
 
 const BrandPage = () => {
   const dispatch = useAppDispatch();
-  const { selectedBrand, selectedBrandsProducts } = useAppSelector(
+  const { selectedBrand, selectedBrandsProducts } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
 
@@ -49,7 +49,9 @@ const BrandPage = () => {
       <BrandImageContainer>
         {mainBrands.map((brand) => {
           if (brand.brand === selectedBrand) {
-            return <BrandImage src={brand.img} alt={brand.brand} />;
+            return (
+              <BrandImage key={brand.brand} src={brand.img} alt={brand.brand} />
+            );
           }
         })}
       </BrandImageContainer>
@@ -90,7 +92,7 @@ const BrandPage = () => {
         </List>
 
         <BrandProductsContainer>
-          {selectedBrandsProducts.map((product:ProductItem) => {
+          {selectedBrandsProducts.map((product) => {
             return <ProductCard key={product.id} product={product} />;
           })}
         </BrandProductsContainer>

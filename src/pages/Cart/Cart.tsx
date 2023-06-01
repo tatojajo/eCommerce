@@ -37,7 +37,7 @@ import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 const Cart = () => {
   const { t } = useTranslation();
-  const{ cartItems} = useAppSelector(
+  const{ cartItems} = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
   const dispatch = useAppDispatch();

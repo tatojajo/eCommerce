@@ -49,7 +49,7 @@ const Brands = () => {
               key={index}
               onClick={() => {
                 dispatch(selectBrand(brand.brand));
-                navigate(`/brand?${brand.brand}`);
+                navigate(`/brand/${brand.brand}`);
               }}
             >
               <BrandImage src={brand.img} alt={brand.brand} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { selectedBrandProducts } from "../../Helpers/Services/products";
 import mainBrands from "../../component/Brands/mainBrands";
@@ -27,9 +27,12 @@ import {
   Tv,
   Watch,
 } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 const BrandPage = () => {
   const dispatch = useAppDispatch();
+const {t} = useTranslation()
+  const [brandItem, setBrandItem] = useState<string>("");
   const { selectedBrand, selectedBrandsProducts } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
@@ -37,12 +40,12 @@ const BrandPage = () => {
   useEffect(() => {
     const getSelectedBrandProducts = async () => {
       try {
-        const { data } = await selectedBrandProducts(selectedBrand);
+        const { data } = await selectedBrandProducts(selectedBrand, brandItem);
         dispatch(setSelectedBrandProducts(data.products));
       } catch (error) {}
     };
     getSelectedBrandProducts();
-  }, [selectedBrand]);
+  }, [selectedBrand, brandItem]);
   console.log(selectedBrandsProducts);
   return (
     <BrandPageContainer>
@@ -55,38 +58,38 @@ const BrandPage = () => {
           }
         })}
       </BrandImageContainer>
-      <Box>
-        <List sx={{ display: "flex", width: "300px" }}>
+      <Box >
+        <List sx={{ display: "flex", alignItems:'start',width: "300px" }}>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => setBrandItem("")}>
               <ListItemAvatar>
                 <AllInclusive />
               </ListItemAvatar>
-              <ListItemText>All</ListItemText>
+              <ListItemText>{t('global.all')}</ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => setBrandItem("Mobile")}>
               <ListItemAvatar>
                 <MobileFriendly />
               </ListItemAvatar>
-              <ListItemText>Mobile</ListItemText>
+              <ListItemText>{t('global.phone')}</ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => setBrandItem("tv")}>
               <ListItemAvatar>
                 <Tv />
               </ListItemAvatar>
-              <ListItemText>Tv</ListItemText>
+              <ListItemText>{t('global.tv')}</ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem>
-            <ListItemButton>
+            <ListItemButton onClick={() => setBrandItem("watch")}>
               <ListItemAvatar>
                 <Watch />
               </ListItemAvatar>
-              <ListItemText>Watch</ListItemText>
+              <ListItemText>{t('global.watch')}</ListItemText>
             </ListItemButton>
           </ListItem>
         </List>

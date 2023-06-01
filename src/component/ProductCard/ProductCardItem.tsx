@@ -8,6 +8,7 @@ import {
   moveToProductPage,
   removeFavoriteProduct,
   favoriteProduct,
+  saveSearchedProducts,
 } from "../../pages/Home/redux/HomeActions/HomeActions";
 
 import {
@@ -23,7 +24,6 @@ import {
   AddShoppingCart,
   ArrowLeft,
   ArrowRight,
-  ShoppingCart,
   Star,
   StarBorder,
 } from "@mui/icons-material";
@@ -31,7 +31,7 @@ import { CardContainer, ProductLink } from "./ProductCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
   // console.log(product)
-  const { favorites } = useAppSelector((state) => state.homeReducer);
+  const { favorites } = useAppSelector<HomeState>((state) => state.homeReducer);
   const [isFavorite, setIsFavorite] = useState(false);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -65,17 +65,6 @@ const ProductCard = ({ product }: ProductCartProps) => {
   return (
     <Paper elevation={10}>
       <CardContainer>
-        <IconButton
-          sx={{
-            position: "absolute",
-            top: "40%",
-            left: "-30px",
-            cursor: "pointer",
-          }}
-          onClick={prevImage}
-        >
-          <ArrowLeft />
-        </IconButton>
         <CardMedia
           component="div"
           sx={{ height: "140px", width: "140px", position: "relative" }}
@@ -110,8 +99,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
         </CardMedia>
         <CardContent>
           <ProductLink
-            to={`/product/${product.id}/${product.brand}`}
-            onClick={() => dispatch(moveToProductPage(product))}
+            to={`/product/${product.categories}/${product.brand}`}
+            onClick={() => {
+              dispatch(moveToProductPage(product));
+            }}
           >
             {product.title}
           </ProductLink>

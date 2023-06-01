@@ -24,21 +24,15 @@ import {
   ProductContainer,
 } from "./ProductsContainer.Style";
 import { Box, Pagination, Stack, Typography } from "@mui/material";
-import { Search, Whatshot } from "@mui/icons-material";
+import { Whatshot } from "@mui/icons-material";
 
 const ProductsContainer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const {
-    products,
-    totalProducts,
-    searchedResults,
-    pageNumber,
-    totalSearchedProducts,
-  } = useAppSelector<HomeState>((state) => state.homeReducer);
+  const { products, totalProducts, searchedResults, pageNumber } =
+    useAppSelector<HomeState>((state) => state.homeReducer);
 
   const startIndex = (pageNumber - 1) * 12;
-
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -67,39 +61,24 @@ const ProductsContainer = () => {
   }, [startIndex]);
   return (
     <MainContainer>
-      <Box sx={{ width: "90%" }}>
+      <Box sx={{ width: "100%" }}>
         <MainSlider />
         <HotOffersContainer>
           <HotOffers>
-            {searchedResults.length > 0 ? (
-              <Search fontSize="large" color="error" />
-            ) : (
-              <Whatshot fontSize="large" color="error" />
-            )}
-
-            <Typography variant="h1">
-              {searchedResults.length > 0
-                ? t("global.search_results")
-                : t("global.hot_offers")}
-            </Typography>
+            <Whatshot fontSize="large" color="error" />
+            <Typography variant="h1">{t("global.hot_offers")}</Typography>
           </HotOffers>
           <ProductContainer>
-            {(searchedResults.length === 0 ? products : searchedResults).map(
-              (product: ProductItem) => {
-                return <ProductCard key={product.id} product={product} />;
-              }
-            )}
+            {products.map((product) => {
+              return <ProductCard key={product.id} product={product} />;
+            })}
           </ProductContainer>
         </HotOffersContainer>
 
         <Box>
           <Stack spacing={2} mt={4}>
             <Pagination
-              count={Math.ceil(
-                (totalSearchedProducts
-                  ? totalSearchedProducts
-                  : totalProducts) / 12
-              )}
+              count={Math.ceil(totalProducts / 10)}
               page={pageNumber}
               variant="outlined"
               shape="rounded"

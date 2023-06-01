@@ -1,15 +1,16 @@
 import { styled, Box } from "@mui/material";
 
 export const MainContainer = styled(Box)`
-  margin-top: 15px;
+position:relative;
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content:center;
   background: #ff5f5;
-`;
+  `;
 export const ProductContainer = styled(Box)`
   gap: 3rem;
-  width: 70%;
+  max-width: 80%;
   margin: auto;
   padding: 20px;
   display: flex;

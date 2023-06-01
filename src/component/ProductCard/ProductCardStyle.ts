@@ -1,12 +1,12 @@
-import { styled, Card, Typography } from "@mui/material";
+import { styled, Card, } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export const CardContainer = styled(Card)`
-  max-width: 240px;
-  height:100% ;
+  max-width: 210px;
+  height: 100%;
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   border-radius: 5px;
 `;

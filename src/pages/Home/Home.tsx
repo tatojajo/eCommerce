@@ -1,5 +1,3 @@
-import React from "react";
-
 import ProductsContainer from "../../component/ProductsContainer";
 import Brands from "../../component/Brands";
 import { Box } from "@mui/material";
@@ -20,7 +18,7 @@ const Home = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          marginTop:'50px'
+          marginTop: "50px",
         }}
       >
         <Brands />

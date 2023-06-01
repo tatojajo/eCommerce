@@ -45,8 +45,8 @@ export const Image = styled("img")<ImageProps>(({ index, productImage }) => ({
   border: index === productImage ? "2px solid black" : "none",
   borderRadius: "10px",
   padding: "10px",
-  width: "50px",
-  height: "50px",
+  width: "40px",
+  height: "30px",
 }));
 
 export const ProductDescription = styled(Box)`

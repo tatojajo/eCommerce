@@ -39,7 +39,7 @@ import {
 // * icons
 import {
   Home,
-  Search,
+  Search as SearchIcon,
   Menu,
   StarBorderOutlined,
   ShoppingCart,
@@ -59,7 +59,7 @@ import {
   setSelectedCategory,
 } from "../../pages/Home/redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
-
+import Search from "../Search/Search";
 const Header = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -82,8 +82,10 @@ const Header = () => {
   const startIndex = (pageNumber - 1) * 12;
 
   const handleChange = (e: any) => {
-    if (searchValue.length > 2 || searchValue.length === 0)
-      dispatch(changePageNumber(1));
+    if (searchValue.length < 2 || searchValue.length === 0) {
+      dispatch(saveSearchedProducts([], 0));
+    }
+    dispatch(changePageNumber(1));
     setSearchValue(e.target.value);
   };
 
@@ -121,6 +123,7 @@ const Header = () => {
   }
 
   const prevOpen = useRef(isUserMenuOpen);
+
   useEffect(() => {
     if (prevOpen.current === true && isUserMenuOpen === false) {
       anchorRef.current!.focus();
@@ -190,43 +193,54 @@ const Header = () => {
             <Box
               sx={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <RoundedTextField
-                id="search"
-                placeholder="Search products..."
-                value={searchValue}
-                onChange={handleChange}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {debouncedValue ? (
-                        <IconButton
-                          onClick={() => {
-                            setSearchValue("");
-                            dispatch(saveSearchedProducts([], 0));
-                          }}
-                        >
-                          <Clear />
-                        </IconButton>
-                      ) : (
-                        <IconButton>
-                          <Search />
-                        </IconButton>
-                      )}
-                    </InputAdornment>
-                  ),
+              <Box
+                sx={{
+                  display: "flex",
+
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
-              <Select
-                options={options}
-                onChange={handleSelectCategory}
-                placeholder="Select category"
-                styles={customStyles}
-              />
+              >
+                <RoundedTextField
+                  id="search"
+                  placeholder="Search products..."
+                  value={searchValue}
+                  onChange={handleChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {debouncedValue ? (
+                          <IconButton
+                            onClick={() => {
+                              setSearchValue("");
+                              dispatch(saveSearchedProducts([], 0));
+                            }}
+                          >
+                            <Clear />
+                          </IconButton>
+                        ) : (
+                          <IconButton>
+                            <SearchIcon />
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Select
+                  options={options}
+                  onChange={handleSelectCategory}
+                  placeholder="Select category"
+                  styles={customStyles}
+                />
+              </Box>
             </Box>
+
             <Box sx={{ minWidth: 50 }}>
               <FormControl fullWidth>
                 <NativeSelect
@@ -342,6 +356,28 @@ const Header = () => {
           </HeaderWraper>
         </Container>
       </AppBar>
+      <Box
+        sx={{
+          display: debouncedValue.length === 0 ? "none" : "flex",
+          width: "100%",
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "start",
+          flexDirection: "column",
+          gap: "10px",
+          position: "absolute",
+          top: "70px",
+          left: "50%",
+          transform: " translate(-50%, 0%)",
+          zIndex: 1,
+          backdropFilter: "blur(5px)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          padding: "20px",
+        }}
+        onClick={() => setSearchValue("")}
+      >
+        {searchValue && <Search />}
+      </Box>
     </Box>
   );
 };

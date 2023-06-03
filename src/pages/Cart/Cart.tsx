@@ -50,7 +50,7 @@ const Cart = () => {
         (acc, corrent) => acc + Number(corrent.price) * corrent.quantity,
         0
       ),
-    [cartItems]
+    [cartItems.length]
   );
 
   const handleCheckout = async () => {

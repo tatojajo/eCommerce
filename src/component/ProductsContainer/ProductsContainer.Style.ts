@@ -2,7 +2,6 @@ import { styled, Box } from "@mui/material";
 
 export const MainContainer = styled(Box)`
 position:relative;
-  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content:center;

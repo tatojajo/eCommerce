@@ -35,12 +35,11 @@ const Register = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterInitialValue> = async (user) => {
-    console.log(user);
-    try {
-      const { data } = await registerUser(user);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const { data } = await registerUser(user);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (

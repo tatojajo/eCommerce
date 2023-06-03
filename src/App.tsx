@@ -11,11 +11,12 @@ import BreadCrumbs from "./component/BreadCrumbs";
 import User from "./pages/User";
 import BrandPage from "./pages/BrandPage";
 import Admin from "./Admin/Components/AdminMain/Admin";
+import SearchPage from "./pages/SearchPage";
 import { Box } from "@mui/material";
 
 const App = () => {
   return (
-    <Box sx={{position:'relative'}}>
+    <Box >
       <Header />
       <BreadCrumbs />
       <Routes>
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/brand/:brand" element={<BrandPage />} />
+        <Route path="/search/:inputValue" element={<SearchPage />} />
         <Route path="/admin-page" element={<Admin />} />
       </Routes>
       <Footer />

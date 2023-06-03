@@ -1,3 +1,4 @@
+import { FC, useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { t } from "i18next";
@@ -13,15 +14,43 @@ import {
 import { Search as SearchIcon } from "@mui/icons-material";
 import { CardContainer, ProductLink } from "../ProductCard/ProductCardStyle";
 
-import { moveToProductPage } from "../../pages/Home/redux/HomeActions/HomeActions";
+import {
+  moveToProductPage,
+  saveSearchedProducts,
+} from "../../pages/Home/redux/HomeActions/HomeActions";
+import { getSearchedProducts } from "../../Helpers/Services/products";
 
-const Search = () => {
+type SearchProps = {
+  debouncedValue: string;
+};
+
+const Search: FC<SearchProps> = ({ debouncedValue }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [seeMore, setSeeMore] = useState<boolean>(false);
   const { searchedResults } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
 
+  const handleSeeMore = () => {
+    setSeeMore((prev) => !prev);
+  };
+  useEffect(() => {
+    console.log(seeMore);
+    const fetchData = async () => {
+      try {
+        const searchedProducts = async () => {
+          const { data } = await getSearchedProducts(debouncedValue);
+          dispatch(saveSearchedProducts(data.products, data.total_found));
+        };
+        searchedProducts();
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+    console.log("hello");
+  }, [debouncedValue, seeMore]);
   return (
     <Box>
       {searchedResults.length >= 0 && (
@@ -87,7 +116,13 @@ const Search = () => {
             })}
           </Box>
           {searchedResults.length > 0 && (
-            <Button variant="text" onClick={() => navigate(`/search`)}>
+            <Button
+              variant="text"
+              onClick={() => {
+                navigate(`/search/${debouncedValue}`);
+                handleSeeMore();
+              }}
+            >
               See More
             </Button>
           )}

@@ -72,7 +72,9 @@
     "watch": "Watch",
     "tv": "Tv",
     "buy_now": "By Now",
-    "similar_products": "Similar Products"
+    "similar_products": "Similar Products",
+    "found":"Found",
+    "details":"Details"
   },
   "ge": {
     "is": "არის",
@@ -134,7 +136,7 @@
     "save": "შენახვა",
     "the_ most_popular_brands": "ყველაზე მოთხოვნადი ბრენდები",
     "hot_offers": "ცხელი შეთავაზებები",
-    "search_results": "მოიძებნა",
+    "search_results": "ძებნის შედეგი",
     "results_not_found": "შედეგები ვერ მოიძებნა",
     "colors": "ფერები",
     "more_info": "მეტის ნახვა",
@@ -142,6 +144,8 @@
     "watch": "საათი",
     "tv": "ტელევიზორი",
     "buy_now": "ყიდვა",
-    "similar_products": "მსგავსი პროდუქტები"
+    "similar_products": "მსგავსი პროდუქტები",
+    "found":"მოიძებნა",
+    "details":"დეტალები"
   }
 }

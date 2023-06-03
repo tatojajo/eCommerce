@@ -13,41 +13,39 @@ type CartProductItem = ProductItem & {
   quantity: number;
 };
 type HomeState = {
-  selectedBrandsProducts:ProductItem[];
+  selectedBrandsProducts: ProductItem[];
   searchedResults: ProductItem[];
+  similarProducts: ProductItem[];
   cartItems: CartProductItem[];
   favorites: ProductItem[];
   products: ProductItem[];
   sliderImages: ProductItem[];
   selectedProduct: CartProductItem | null;
   totalSearchedProducts: number;
-  selectedCategory:Categories;
+  selectedCategory: Categories;
   totalProducts: number;
-  selectedBrand:string
+  selectedBrand: string;
   totalAmount: number;
   pageNumber: number;
   loading: boolean;
   error: any;
 };
 
-
 type UserAddress = {
-  city:string;
-  postCode:Number;
-  address:string
-}
+  city: string;
+  postCode: Number;
+  address: string;
+};
 
 interface ProductCartProps {
   product: ProductItem;
 }
 
-
 type AdminState = {
-  allProducts:ProductItem[]
-}
-
+  allProducts: ProductItem[];
+};
 
 type Categories = {
-  value: string,
-  label: string,
-}
+  value: string;
+  label: string;
+};

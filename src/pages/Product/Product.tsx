@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import {
   addProductCart,
   moveToProductPage,
+  saveSimilarProducts,
 } from "../Home/redux/HomeActions/HomeActions";
 
 import { Box, Typography, Button, IconButton, Paper } from "@mui/material";
@@ -29,6 +30,24 @@ import {
   ProductDescription,
   ProductBtns,
 } from "./ProductPageStyle";
+import { selectedBrandProducts } from "../../Helpers/Services/products";
+import { BrandImage, BrandPaper } from "../../component/Brands/BrandsStyles";
+import Slider from "react-slick";
+import ProductCard from "../../component/ProductCard";
+
+const settings = {
+  dots: false,
+  infinite: true,
+  speed: 5000,
+  slidesToShow: 7,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  slickNext: false,
+  slickPrevious: false,
+  swipe: true,
+  arrows: false,
+};
 
 const Product = () => {
   const { t } = useTranslation();
@@ -36,10 +55,10 @@ const Product = () => {
   const [productImage, setProductImage] = useState<number>(0);
   const [color, setColor] = useState<string>("#d32f2f");
   const [isDescriptionOpen, setIsDescriptionOpen] = useState<boolean>(false);
-  const { selectedProduct } = useAppSelector<HomeState>(
+  const { selectedProduct, similarProducts } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
-
+  console.log(selectedProduct);
   const increaseQuntity = () => {
     const increasedQuantity = selectedProduct && {
       ...selectedProduct,
@@ -47,6 +66,7 @@ const Product = () => {
     };
     dispatch(moveToProductPage(increasedQuantity!));
   };
+
   const decreaseQuantity = () => {
     if (selectedProduct?.quantity === 1) return;
     const decreasedQuantity = selectedProduct && {
@@ -55,6 +75,18 @@ const Product = () => {
     };
     dispatch(moveToProductPage(decreasedQuantity!));
   };
+
+  useEffect(() => {
+    try {
+      const similarProducts = async () => {
+        const { data } = await selectedBrandProducts(selectedProduct!.brand);
+        dispatch(saveSimilarProducts(data.products));
+      };
+      similarProducts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [selectedProduct]);
 
   return (
     <Box
@@ -185,32 +217,34 @@ const Product = () => {
       </ProductInfoWrapper>
       <Box>
         {isDescriptionOpen && (
-          <Paper sx={{ padding: "10px" }}>{selectedProduct?.description}</Paper>
+          <Paper elevation={4} sx={{ p: 3 }}>
+            <Typography variant="h1" color="initial">
+              {t("global.details")}:
+            </Typography>
+            <Paper elevation={3} sx={{ padding: "10px", marginTop: "10px" }}>
+              {selectedProduct?.description}
+            </Paper>
+          </Paper>
         )}
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          marginTop: `${isDescriptionOpen}` && "50px",
+        }}
+      >
         <Box>
           <Typography variant="h1" color="initial">
             <ContentPasteSearch color="success" />{" "}
             {t("global.similar_products")}
           </Typography>
-          <Box>
-            <Carousel
-              autoPlay={false}
-              indicators={false}
-              className="home__carousel"
-              navButtonsAlwaysVisible={true}
-              navButtonsAlwaysInvisible={false}
-            >
-              {/* {sliderImages.map((item, i) => (
-                <img
-                  key={i}
-                  src={item}
-                  alt={`Tshop ${i}`}
-                  className="home__image"
-                />
-              ))} */}
-            </Carousel>
+          <Box mt={5}>
+            <Slider {...settings}>
+              {similarProducts.map((product, index) => {
+                return <ProductCard key={index} product={product} />;
+              })}
+            </Slider>
           </Box>
         </Box>
       </Box>

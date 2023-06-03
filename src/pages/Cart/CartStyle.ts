@@ -33,7 +33,7 @@ export const ItemQUantity = styled(Box)`
 export const SummaryContainer = styled(Box)`
   width: 20%;
   position: fixed;
-  top: 85px;
+  top: 100px;
   right: 0;
   height: 600px;
 `;

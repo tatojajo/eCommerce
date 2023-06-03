@@ -27,4 +27,3 @@ export const isAuthenticated = (): AuthenticationResult => {
 
   return { isUser: true, isAdmin: userObject.isAdmin, userToken };
 };
-console.log(isAuthenticated());

@@ -56,8 +56,12 @@ const ProductsContainer = () => {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }, [startIndex]);
   return (
     <MainContainer>
@@ -78,7 +82,7 @@ const ProductsContainer = () => {
         <Box>
           <Stack spacing={2} mt={4}>
             <Pagination
-              count={Math.ceil(totalProducts / 10)}
+              count={Math.ceil(totalProducts / 12)}
               page={pageNumber}
               variant="outlined"
               shape="rounded"

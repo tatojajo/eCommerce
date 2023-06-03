@@ -16,7 +16,7 @@ const Brands = () => {
   const { t } = useTranslation();
   const [brands, setBrands] = useState(mainBrands);
 
-  var settings = {
+  const settings = {
     dots: false,
     infinite: true,
     speed: 5000,

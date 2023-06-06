@@ -21,14 +21,15 @@ import {
   SET_ERROR,
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
+  SAVE_SIMILAR_PRODUCTS,
 } from "./HomeActions/HomeActions";
 import { HOME_ACTIONS } from "./HomeActions/HomeTypes";
-import sliderImage from "../../../images/slider_first_image.jpg";
 
 const initialState: HomeState = {
-  sliderImages: [sliderImage],
   selectedBrandsProducts: [],
   searchedResults: [],
+  similarProducts: [],
+  sliderImages: [],
   cartItems: [],
   favorites: [],
   products: [],
@@ -72,9 +73,7 @@ const homeReducer = (
         totalProducts: action.total,
       };
     case SAVE_SLIDER_IMAGES:
-      const products = action.products;
-      const images = products.map((product) => product.images[0]);
-      return { ...state, sliderImages: [...sliderImage, images] };
+      return { ...state, sliderImages: action.products };
     case CHANGE_PAGE_NUMBER:
       console.log(action.value);
       return { ...state, pageNumber: action.value };
@@ -163,7 +162,6 @@ const homeReducer = (
       return { ...state, cartItems: myCart };
 
     case SAVE_SEARCHED_PRODUCTS:
-      console.log(action.total_found, action.products);
       const total_found = action.total_found;
       const searchedProducts = action.products;
       return {
@@ -194,6 +192,8 @@ const homeReducer = (
           label: action.category.label,
         },
       };
+      case SAVE_SIMILAR_PRODUCTS:
+        return{...state, similarProducts: action.products}
     default:
       return state;
   }

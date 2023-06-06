@@ -37,7 +37,7 @@ import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 const Cart = () => {
   const { t } = useTranslation();
-  const{ cartItems} = useAppSelector(
+  const{ cartItems} = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
   const dispatch = useAppDispatch();
@@ -50,7 +50,7 @@ const Cart = () => {
         (acc, corrent) => acc + Number(corrent.price) * corrent.quantity,
         0
       ),
-    [cartItems]
+    [cartItems.length]
   );
 
   const handleCheckout = async () => {

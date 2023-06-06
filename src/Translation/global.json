@@ -63,8 +63,18 @@
     "personal_information": "Personal Information",
     "save": "Save",
     "the_ most_popular_brands": "The most popular brands",
-    "hot_offers":"Hot Offers",
-    "search_results":"Search Results"
+    "hot_offers": "Hot Offers",
+    "search_results": "Search Results",
+    "results_not_found": "Results Not Found",
+    "colors": "Colors",
+    "more_info": "More Info",
+    "all": "All",
+    "watch": "Watch",
+    "tv": "Tv",
+    "buy_now": "By Now",
+    "similar_products": "Similar Products",
+    "found":"Found",
+    "details":"Details"
   },
   "ge": {
     "is": "არის",
@@ -125,7 +135,17 @@
     "personal_information": "პირადი ინფორმაცია",
     "save": "შენახვა",
     "the_ most_popular_brands": "ყველაზე მოთხოვნადი ბრენდები",
-    "hot_offers":"ცხელი შეთავაზებები",
-    "search_results":"მოიძებნა"
+    "hot_offers": "ცხელი შეთავაზებები",
+    "search_results": "ძებნის შედეგი",
+    "results_not_found": "შედეგები ვერ მოიძებნა",
+    "colors": "ფერები",
+    "more_info": "მეტის ნახვა",
+    "all": "ყველა",
+    "watch": "საათი",
+    "tv": "ტელევიზორი",
+    "buy_now": "ყიდვა",
+    "similar_products": "მსგავსი პროდუქტები",
+    "found":"მოიძებნა",
+    "details":"დეტალები"
   }
 }

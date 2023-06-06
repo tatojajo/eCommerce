@@ -1,3 +1,3 @@
-import Slider from "./Slider";
+import MainSlider from "./Slider";
 
-export default Slider
+export default MainSlider

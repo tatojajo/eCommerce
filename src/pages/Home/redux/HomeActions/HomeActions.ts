@@ -9,7 +9,7 @@ export const ADD_PRODUCT_CART = "ADD_PRODUCT_CART";
 export const SET_LOADING = "SET_LOADING";
 export const SET_ERROR = "SET_ERROR";
 export const MOVE_TO_PRODUCT_PAGE = "MOVE_TO_PRODUCT_PAGE";
-export const SELECT_CATEGORY= "SELECT_CATEGORY";
+export const SELECT_CATEGORY = "SELECT_CATEGORY";
 export const SAVE_SEARCHED_PRODUCTS = "SAVE_SEARCHED_PRODUCTS";
 export const SEARCHED_PRODUCTS_NEXT_PAGE_DATA =
   "SEARCHED_PRODUCTS_NEXT_PAGE_DATA";
@@ -17,6 +17,7 @@ export const SET_FAVORITE_PRODUCTS = "SET_FAVORITE_PRODUCTS";
 export const REMOVE_FAVORITE_PRODUCT = "REMOVE_FAVORITE_PRODUCT";
 export const SELECT_BRAND = "SELECT_BRAND";
 export const SELECTED_BRANDS_PRODUCTS = "SELECTED_BRANDS_PRODUCTS";
+export const SAVE_SIMILAR_PRODUCTS = "SAVE_SIMILAR_PRODUCTS";
 
 export const saveProductsData = (products: ProductItem[]): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_DATA,
@@ -107,5 +108,10 @@ export const setSelectedBrandProducts = (
   products: ProductItem[]
 ): HOME_ACTIONS => ({
   type: SELECTED_BRANDS_PRODUCTS,
+  products,
+});
+
+export const saveSimilarProducts = (products: ProductItem[]): HOME_ACTIONS => ({
+  type: SAVE_SIMILAR_PRODUCTS,
   products,
 });

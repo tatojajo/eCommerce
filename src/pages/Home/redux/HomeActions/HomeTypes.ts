@@ -15,6 +15,7 @@ import {
   SET_ERROR,
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
+  SAVE_SIMILAR_PRODUCTS,
 } from "./HomeActions";
 
 export type SAVE_PRODUCTS_DATA_ACTION = {
@@ -89,14 +90,19 @@ export type REMOVE_FAVORITE_PRODUCT_ACTION = {
 };
 
 export type SELECT_BRAND_ACTION = {
-  type:typeof SELECT_BRAND;
-  brand:string
-}
+  type: typeof SELECT_BRAND;
+  brand: string;
+};
 
 export type SELECTED_BRANDS_PRODUCTS_ACTION = {
-  type:typeof SELECTED_BRANDS_PRODUCTS;
-  products:ProductItem[]
-}
+  type: typeof SELECTED_BRANDS_PRODUCTS;
+  products: ProductItem[];
+};
+
+export type SAVE_SIMILAR_PRODUCTS_ACTION = {
+  type: typeof SAVE_SIMILAR_PRODUCTS;
+  products: ProductItem[];
+};
 export type HOME_ACTIONS =
   | SAVE_PRODUCTS_DATA_ACTION
   | SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION
@@ -113,4 +119,5 @@ export type HOME_ACTIONS =
   | SET_FAVORITE_PRODUCTS_ACTION
   | REMOVE_FAVORITE_PRODUCT_ACTION
   | SELECT_BRAND_ACTION
-  |SELECTED_BRANDS_PRODUCTS_ACTION;
+  | SELECTED_BRANDS_PRODUCTS_ACTION
+  | SAVE_SIMILAR_PRODUCTS_ACTION;

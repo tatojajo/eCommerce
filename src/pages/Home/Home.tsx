@@ -1,5 +1,3 @@
-import React from "react";
-
 import ProductsContainer from "../../component/ProductsContainer";
 import Brands from "../../component/Brands";
 import { Box } from "@mui/material";
@@ -10,11 +8,21 @@ const Home = () => {
       sx={{
         width: "100%",
         display: "flex",
-        flexDirection:'column',
+        flexDirection: "column",
       }}
     >
       <ProductsContainer />
-      <Brands />
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "50px",
+        }}
+      >
+        <Brands />
+      </Box>
     </Box>
   );
 };

@@ -30,3 +30,10 @@ export const editPersonalInfo = (userPersonalInfo:User) =>
       Authorization: userToken,
     },
   });
+
+export const getUserData = () =>
+  ajax.get("me", {
+    headers: {
+      Authorization: userToken,
+    },
+  });

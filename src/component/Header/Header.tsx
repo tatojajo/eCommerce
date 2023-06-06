@@ -1,3 +1,4 @@
+import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 import { useTranslation } from "react-i18next";
@@ -25,6 +26,9 @@ import {
   MenuList,
   Paper,
   Popper,
+  Divider,
+  ListItemIcon,
+  Menu,
 } from "@mui/material";
 // *  styles
 import {
@@ -39,12 +43,15 @@ import {
 // * icons
 import {
   Home,
-  Search,
-  Menu,
+  Search as SearchIcon,
   StarBorderOutlined,
   ShoppingCart,
   Clear,
   Star,
+  Logout,
+  Menu as MenuIcon,
+  PersonAdd,
+  Settings,
 } from "@mui/icons-material";
 import i18next from "i18next";
 import { useEffect, useRef, useState } from "react";
@@ -59,6 +66,7 @@ import {
   setSelectedCategory,
 } from "../../pages/Home/redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
+import Search from "../Search/Search";
 
 const Header = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -77,13 +85,22 @@ const Header = () => {
     selectedCategory,
   } = useAppSelector<HomeState>((state) => state.homeReducer);
 
+  const handleUserMenu = () => {
+    setIsUserMenuOpen(true);
+  };
+  const handleCloseUserMenu = () => {
+    setIsUserMenuOpen(false);
+  };
+
   const user: User = JSON.parse(localStorage.getItem("User") as string);
 
   const startIndex = (pageNumber - 1) * 12;
 
   const handleChange = (e: any) => {
-    if (searchValue.length > 2 || searchValue.length === 0)
-      dispatch(changePageNumber(1));
+    if (searchValue.length < 2 || searchValue.length === 0) {
+      dispatch(saveSearchedProducts([], 0));
+    }
+    dispatch(changePageNumber(1));
     setSearchValue(e.target.value);
   };
 
@@ -91,43 +108,11 @@ const Header = () => {
     localStorage.removeItem("AccessToken");
     localStorage.removeItem("User");
   };
+
   const handleSelectCategory = (value: any) => {
     console.log(value);
     dispatch(setSelectedCategory(value));
   };
-
-  const handleUserMenu = () => {
-    setIsUserMenuOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-
-    setIsUserMenuOpen(false);
-  };
-
-  function handleListKeyDown(event: React.KeyboardEvent) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      setIsUserMenuOpen(false);
-    } else if (event.key === "Escape") {
-      setIsUserMenuOpen(false);
-    }
-  }
-
-  const prevOpen = useRef(isUserMenuOpen);
-  useEffect(() => {
-    if (prevOpen.current === true && isUserMenuOpen === false) {
-      anchorRef.current!.focus();
-    }
-
-    prevOpen.current = isUserMenuOpen;
-  }, [isUserMenuOpen]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -142,7 +127,7 @@ const Header = () => {
             dispatch(searchedProductsNextPage(data.products));
           };
           getSearchedNextpageProducts();
-        } else if (debouncedValue.length > 2 || selectedCategory.value) {
+        } else if (debouncedValue.length > 2 && selectedCategory.value) {
           const searchedProducts = async () => {
             const { data } = await getSearchedProducts(
               debouncedValue || selectedCategory.value
@@ -183,50 +168,61 @@ const Header = () => {
 
             <Box>
               <IconButton sx={{ display: { xs: "flex", md: "none" } }}>
-                <Menu />
+                <MenuIcon />
               </IconButton>
             </Box>
 
             <Box
               sx={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <RoundedTextField
-                id="search"
-                placeholder="Search products..."
-                value={searchValue}
-                onChange={handleChange}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {debouncedValue ? (
-                        <IconButton
-                          onClick={() => {
-                            setSearchValue("");
-                            dispatch(saveSearchedProducts([], 0));
-                          }}
-                        >
-                          <Clear />
-                        </IconButton>
-                      ) : (
-                        <IconButton>
-                          <Search />
-                        </IconButton>
-                      )}
-                    </InputAdornment>
-                  ),
+              <Box
+                sx={{
+                  display: "flex",
+
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
-              <Select
-                options={options}
-                onChange={handleSelectCategory}
-                placeholder="Select category"
-                styles={customStyles}
-              />
+              >
+                <RoundedTextField
+                  id="search"
+                  placeholder="Search products..."
+                  value={searchValue}
+                  onChange={handleChange}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {debouncedValue ? (
+                          <IconButton
+                            onClick={() => {
+                              setSearchValue("");
+                              dispatch(saveSearchedProducts([], 0));
+                            }}
+                          >
+                            <Clear />
+                          </IconButton>
+                        ) : (
+                          <IconButton>
+                            <SearchIcon />
+                          </IconButton>
+                        )}
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <Select
+                  options={options}
+                  onChange={handleSelectCategory}
+                  placeholder="Select category"
+                  styles={customStyles}
+                />
+              </Box>
             </Box>
+
             <Box sx={{ minWidth: 50 }}>
               <FormControl fullWidth>
                 <NativeSelect
@@ -276,72 +272,109 @@ const Header = () => {
                   aria-controls={isUserMenuOpen ? "user menu" : undefined}
                   aria-expanded={isUserMenuOpen ? "true" : undefined}
                   aria-haspopup="true"
-                  onClick={handleUserMenu}
+                  onClick={() => {
+                    if (isAuthenticated().isUser) handleUserMenu();
+                  }}
                 >
-                  <MenuItem>
-                    <Avatar>{user?.firstName[0]}</Avatar>
-                  </MenuItem>
-                  <Typography variant="body2">{user?.firstName}</Typography>
+                  <Avatar>{user?.firstName[0]}</Avatar>
+
+                  <Typography ml={1} variant="body2">
+                    {user?.firstName}
+                  </Typography>
                 </Button>
-                <Popper
-                  open={isUserMenuOpen}
-                  anchorEl={anchorRef.current}
-                  role={undefined}
-                  placement="bottom-start"
-                  transition
-                  disablePortal
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === "bottom-start"
-                            ? "left top"
-                            : "left bottom",
+                {isAuthenticated().isUser && (
+                  <Menu
+                    anchorEl={anchorRef.current}
+                    id="account-menu"
+                    open={isUserMenuOpen}
+                    onClose={handleCloseUserMenu}
+                    onClick={handleCloseUserMenu}
+                    PaperProps={{
+                      elevation: 10,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          content: '""',
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        isAuthenticated().isUser && navigate("/user");
+                        setIsUserMenuOpen(false);
                       }}
                     >
-                      <Paper>
-                        <ClickAwayListener onClickAway={handleClose}>
-                          <MenuList
-                            autoFocusItem={isUserMenuOpen}
-                            id="user-menu"
-                            aria-labelledby="user-menu-button"
-                            onKeyDown={handleListKeyDown}
-                          >
-                            <MenuItem
-                              onClick={() => {
-                                isAuthenticated().isUser && navigate("/user");
-                                setIsUserMenuOpen(false);
-                              }}
-                            >
-                              My account
-                            </MenuItem>
-                            <MenuItem>
-                              {" "}
-                              {isAuthenticated().isUser && (
-                                <MenuItem
-                                  onClick={() => {
-                                    handleLogout();
-                                    navigate("/");
-                                  }}
-                                >
-                                  {t("global.logout")}
-                                </MenuItem>
-                              )}
-                            </MenuItem>
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
+                      <Avatar /> My account
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleCloseUserMenu}>
+                      <ListItemIcon>
+                        <Settings fontSize="small" />
+                      </ListItemIcon>
+                      Settings
+                    </MenuItem>
+
+                    <MenuItem
+                      onClick={() => {
+                        handleLogout();
+                        navigate("/");
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Logout fontSize="small" />
+                      </ListItemIcon>
+                      {t("global.logout")}
+                    </MenuItem>
+                  </Menu>
+                )}
               </Box>
               <SignIn open={isSignInOpen} setOpen={setIsSignInOpen} />
             </UserContainer>
           </HeaderWraper>
         </Container>
       </AppBar>
+      <Box
+        sx={{
+          display: debouncedValue.length === 0 ? "none" : "flex",
+          width: "100%",
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "start",
+          flexDirection: "column",
+          gap: "10px",
+          position: "fixed",
+          top: "60px",
+          left: "50%",
+          transform: " translate(-50%, 0%)",
+          zIndex: 1,
+          backdropFilter: "blur(5px)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          padding: "20px",
+        }}
+        onClick={() => setSearchValue("")}
+      >
+        {searchValue && <Search debouncedValue= {debouncedValue}/>}
+      </Box>
     </Box>
   );
 };

@@ -1,26 +1,58 @@
-import { useAppSelector } from "../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Background } from "./sliderStyles";
+import { Box, Typography } from "@mui/material";
+import { moveToProductPage } from "../../pages/Home/redux/HomeActions/HomeActions";
+import { useNavigate } from "react-router-dom";
 
-import "./Slider.scss";
-import Carousel from "react-material-ui-carousel";
+const MainSlider = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { sliderImages} = useAppSelector<HomeState>(
+    (state) => state.homeReducer
+  );
 
-const Slider = () => {
-  const { sliderImages } = useAppSelector((state) => state).homeReducer;
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 5000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    slickNext: false,
+    slickPrevious: false,
+    swipe: true,
+    arrows: false,
+  };
 
   return (
-    <Carousel
-      autoPlay={false}
-      indicators={false}
-      className="home__carousel"
-      navButtonsAlwaysVisible={true}
-      navButtonsAlwaysInvisible={false}
-    >
-      {sliderImages.map((item, i) => (
-        <img key={i} src={item} alt={`Tshop ${i}`} className="home__image" />
+    <Slider {...settings}>
+      {sliderImages.map((product: ProductItem, i) => (
+        <Background
+          key={i}
+          onClick={() => {
+            dispatch(moveToProductPage(product));
+            navigate(`/product/${product.id}/${product.brand}`);
+          }}
+        >
+          <Typography variant="h2" color="limegreen">
+            <strong>{product.brand}: " </strong>
+            {product.title} "
+          </Typography>
+          <img
+            src={product.images?.[0]}
+            alt={`Tshop ${i}`}
+            style={{
+              margin: "25px auto",
+            }}
+          />
+        </Background>
       ))}
-    </Carousel>
+    </Slider>
   );
 };
 
-export default Slider;
-
-
+export default MainSlider;

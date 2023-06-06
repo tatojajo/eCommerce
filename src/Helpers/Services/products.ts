@@ -14,7 +14,11 @@ export const productsNextpage = (startingIndex: number) =>
   });
 
 export const getSearchedProducts = (value: string) =>
-  ajax.post("products", { keyword: value, page_size: 12, page_number: 0 });
+  ajax.post("products", {
+    keyword: value,
+    page_size: 10,
+    page_number: 0,
+  });
 
 export const getSearchedProductsNextPage = (
   value: string,
@@ -25,10 +29,12 @@ export const getSearchedProductsNextPage = (
     page_size: 12,
     page_number: page_number,
   });
-export const selectedBrandProducts = (brandName: string) =>
+export const selectedBrandProducts = (brandName: string, item: string = "") =>
   ajax.post("products", {
-    keyword: "",
+    keyword: item,
     filter: { brand: brandName },
     page_size: 12,
     page_number: 0,
   });
+
+

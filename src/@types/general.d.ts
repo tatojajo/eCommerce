@@ -8,6 +8,7 @@ type ProductItem = {
   price: number;
   rating: string;
   title: string;
+  favorite:boolean
 };
 type CartProductItem = ProductItem & {
   quantity: number;

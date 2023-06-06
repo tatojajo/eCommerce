@@ -35,19 +35,19 @@ import { BrandImage, BrandPaper } from "../../component/Brands/BrandsStyles";
 import Slider from "react-slick";
 import ProductCard from "../../component/ProductCard";
 
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 5000,
-  slidesToShow: 7,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 2000,
-  slickNext: false,
-  slickPrevious: false,
-  swipe: true,
-  arrows: false,
-};
+// const settings = {
+//   dots: false,
+//   infinite: false,
+//   speed: 5000,
+//   slidesToShow: 7,
+//   slidesToScroll: 1,
+//   autoplay: true,
+//   autoplaySpeed: 3000,
+//   slickNext: false,
+//   slickPrevious: false,
+//   swipe: true,
+//   arrows: false,
+// };
 
 const Product = () => {
   const { t } = useTranslation();
@@ -86,7 +86,12 @@ const Product = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [selectedProduct]);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, [selectedProduct?.id]);
 
   return (
     <Box
@@ -239,12 +244,19 @@ const Product = () => {
             <ContentPasteSearch color="success" />{" "}
             {t("global.similar_products")}
           </Typography>
-          <Box mt={5}>
-            <Slider {...settings}>
-              {similarProducts.map((product, index) => {
-                return <ProductCard key={index} product={product} />;
-              })}
-            </Slider>
+          <Box
+            sx={{
+              margin: "50px 0px",
+              display: "flex",
+              justifyContent: "center",
+              gap: "20px",
+            }}
+          >
+            {/* <Slider {...settings}> */}
+            {similarProducts.map((product, index) => {
+              return <ProductCard key={index} product={product} />;
+            })}
+            {/* </Slider> */}
           </Box>
         </Box>
       </Box>

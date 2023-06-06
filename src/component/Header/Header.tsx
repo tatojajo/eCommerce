@@ -67,10 +67,12 @@ import {
 } from "../../pages/Home/redux/HomeActions/HomeActions";
 import SignIn from "../../pages/SignIn";
 import Search from "../Search/Search";
+import Favorites from "../../pages/Favorites";
 
 const Header = () => {
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isSignInOpen, setIsSignInOpen] = useState<boolean>(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
+  const [isFavOpen, setIsFavOpen] = useState<boolean>(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [searchValue, setSearchValue] = useState<string>("");
   const debouncedValue = useDebounce(searchValue);
@@ -113,36 +115,6 @@ const Header = () => {
     console.log(value);
     dispatch(setSelectedCategory(value));
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (selectedCategory.value && pageNumber > 1) {
-          const getSearchedNextpageProducts = async () => {
-            const { data } = await getSearchedProductsNextPage(
-              debouncedValue || selectedCategory.value,
-              startIndex
-            );
-
-            dispatch(searchedProductsNextPage(data.products));
-          };
-          getSearchedNextpageProducts();
-        } else if (debouncedValue.length > 2 && selectedCategory.value) {
-          const searchedProducts = async () => {
-            const { data } = await getSearchedProducts(
-              debouncedValue || selectedCategory.value
-            );
-            dispatch(saveSearchedProducts(data.products, data.total_found));
-          };
-          searchedProducts();
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-    console.log("hello");
-  }, [debouncedValue, startIndex, selectedCategory.value]);
 
   return (
     <Box display="flex">
@@ -245,7 +217,12 @@ const Header = () => {
             <UserContainer>
               <FavCartContainer>
                 <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      setIsFavOpen(true);
+                      navigate("/?favorites");
+                    }}
+                  >
                     <Badge badgeContent={favorites.length} color="success">
                       {favorites.length > 0 ? <Star /> : <StarBorderOutlined />}
                     </Badge>
@@ -373,7 +350,10 @@ const Header = () => {
         }}
         onClick={() => setSearchValue("")}
       >
-        {searchValue && <Search debouncedValue= {debouncedValue}/>}
+        {searchValue && <Search debouncedValue={debouncedValue} />}
+        {isFavOpen && (
+          <Favorites isFavOpen={isFavOpen} setIsFavOpen={setIsFavOpen} />
+        )}
       </Box>
     </Box>
   );

@@ -7,7 +7,7 @@ const adminInitialState:AdminState = {
 }
 
 const adminReducer = (state = adminInitialState, action:ADMIN_ACTIONS)=>{
-    console.log(state)
+   
     switch(action.type){
         case SAVE_PRODUCTS_LIST:
             return {...state, allProducts: action.products}

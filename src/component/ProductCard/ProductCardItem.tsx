@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
+import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   addProductCart,
@@ -30,9 +30,8 @@ import {
 import { CardContainer, ProductLink } from "./ProductCardStyle";
 
 const ProductCard = ({ product }: ProductCartProps) => {
-  // console.log(product)
+  
   const { favorites } = useAppSelector<HomeState>((state) => state.homeReducer);
-  const [isFavorite, setIsFavorite] = useState(false);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -42,18 +41,15 @@ const ProductCard = ({ product }: ProductCartProps) => {
     const isProductInFavorites = favorites.find(
       (item: ProductItem) => item.id === product.id
     );
-
     if (isProductInFavorites) {
       dispatch(removeFavoriteProduct(product));
+      product.favorite = false
     } else {
       dispatch(favoriteProduct(product));
-      setIsFavorite(true);
+      product.favorite = true
     }
   };
 
-  const handelFavIcon = () => {
-    setIsFavorite((prev) => !prev);
-  };
   const nextImage = () => {
     setProductImage((prev) => (prev + 1) % product.images.length);
   };
@@ -81,7 +77,7 @@ const ProductCard = ({ product }: ProductCartProps) => {
             <ArrowLeft />
           </IconButton>
           <img
-            src={product.images[productImage]}
+            src={product.images?.[productImage]}
             alt={product.title}
             style={{ height: "100%", width: "100%" }}
           />
@@ -118,7 +114,14 @@ const ProductCard = ({ product }: ProductCartProps) => {
         <CardActions>
           <Button
             variant="contained"
-            onClick={() => dispatch(addProductCart(product))}
+            onClick={() => {
+              dispatch(addProductCart(product));
+              toast(() =>
+                t(
+                  "global.product_added_to_cart_check_your_cart_to_complete_your_purchase"
+                )
+              );
+            }}
           >
             {t("global.add")}
             <AddShoppingCart />
@@ -127,11 +130,10 @@ const ProductCard = ({ product }: ProductCartProps) => {
           <Button
             sx={{ backgroundColor: "yellow" }}
             onClick={() => {
-              handelFavIcon();
               handleFavProduct(product);
             }}
           >
-            {isFavorite ? <Star /> : <StarBorder />}
+            {product.favorite ? <Star /> : <StarBorder />}
           </Button>
         </CardActions>
       </CardContainer>

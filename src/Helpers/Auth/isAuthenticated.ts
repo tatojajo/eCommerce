@@ -24,6 +24,11 @@ export const isAuthenticated = (): AuthenticationResult => {
     localStorage.removeItem("User");
     return { isUser: false, isAdmin: false };
   }
-
-  return { isUser: true, isAdmin: userObject.isAdmin, userToken };
+  if (userObject.isAdmin) {
+    return { isUser: false, isAdmin: true, userToken };
+  }
+  if (!userObject.isAdmin) {
+    return { isUser: true, isAdmin: false, userToken };
+  }
+  return { isUser: false, isAdmin: false };
 };

@@ -14,9 +14,14 @@ import Admin from "./Admin/Components/AdminMain/Admin";
 import SearchPage from "./pages/SearchPage";
 import { Box } from "@mui/material";
 
+import "react-toastify/dist/ReactToastify.css";
+import { isAuthenticated } from "./Helpers/Auth/isAuthenticated";
+
 const App = () => {
+  const { isAdmin, isUser } = isAuthenticated();
+  console.log(isUser);
   return (
-    <Box >
+    <Box>
       <Header />
       <BreadCrumbs />
       <Routes>

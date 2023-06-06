@@ -29,7 +29,7 @@ import { Whatshot } from "@mui/icons-material";
 const ProductsContainer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { products, totalProducts, searchedResults, pageNumber } =
+  const { products, totalProducts,  pageNumber } =
     useAppSelector<HomeState>((state) => state.homeReducer);
 
   const startIndex = (pageNumber - 1) * 12;
@@ -43,7 +43,6 @@ const ProductsContainer = () => {
     const fetchData = async () => {
       try {
         if (pageNumber > 1) {
-          console.log("hello");
           const { data } = await productsNextpage(startIndex);
           dispatch(nextPage(data.products));
         } else {

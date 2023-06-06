@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,7 +11,8 @@ import {
   TextFieldContainer,
 } from "./SignInSyled";
 import { userlogin } from "../../Helpers/Services/user";
-import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
+
+import Register from "../Register";
 
 interface SignInProps {
   open: boolean;
@@ -26,9 +28,9 @@ const signInValidationSchema = yup.object().shape({
     .max(12, "Password length cannot exceed more than 12 characters"),
 });
 
-console.log(isAuthenticated());
-const SignIn = ({ open, setOpen }: SignInProps) => {
+const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
   const navigate = useNavigate();
+  const [isRegister, setIsRegister] = useState<boolean>(false);
   const { t } = useTranslation();
   const {
     register,
@@ -55,9 +57,17 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
     setOpen(false);
   };
 
-  return (
+  return isRegister ? (
+    <Register open={isRegister} setOpen={setIsRegister} />
+  ) : (
     <div>
-      <LoginDialoglBox open={open} onClose={handleClose}>
+      <LoginDialoglBox
+        open={open}
+        onClose={handleClose}
+        PaperProps={{
+          style: { borderRadius: "20px" },
+        }}
+      >
         <SignInContainer>
           <Box
             sx={{
@@ -93,11 +103,17 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
             </Box>
           </TextFieldContainer>
           <Box>
-            <Typography variant="subtitle1" color="initial">
+            <Typography variant="h6" color="initial">
               {t("global.don't_have_an_account")}?
-              <Link to="/register" onClick={() => setOpen(false)}>
+              <Button
+                variant="text"
+                onClick={() => {
+                  setIsRegister((prev) => !prev);
+                  setOpen(false);
+                }}
+              >
                 {t("global.register")}
-              </Link>
+              </Button>
             </Typography>
           </Box>
         </SignInContainer>

@@ -17,7 +17,33 @@ import {
   TableRow,
   Checkbox,
   Avatar,
+  IconButton,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
+import { DeleteForever, Edit, Search } from "@mui/icons-material";
+
+const TruncatedText = ({ text, maxLength }: any) => {
+  const [truncated, setTruncated] = useState(true);
+
+  const toggleTruncated = () => {
+    setTruncated(!truncated);
+  };
+
+  const truncatedText =
+    text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+
+  return (
+    <Box>
+      <span>{truncated ? truncatedText : text}</span>
+      {text.length > maxLength && (
+        <Button variant="text" onClick={toggleTruncated}>
+          {truncated ? "Read More" : "Read Less"}
+        </Button>
+      )}
+    </Box>
+  );
+};
 
 const Products = () => {
   const { isAdmin } = isAuthenticated();
@@ -43,6 +69,21 @@ const Products = () => {
         <Typography variant="h4" color="initial">
           Products
         </Typography>
+        <TextField
+          fullWidth
+          id="filled-hidden-label-small"
+          variant="filled"
+          size="small"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <IconButton>
+                  <Search />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
         <Button color="success">Add New Products</Button>
       </Box>
       <TableContainer component={Paper}>
@@ -61,6 +102,8 @@ const Products = () => {
                 />
               </TableCell>
               <TableCell>Product Name</TableCell>
+              <TableCell align="right">Edit</TableCell>
+              <TableCell align="right">Delete</TableCell>
               <TableCell align="right">Brand</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Amount</TableCell>
@@ -88,9 +131,20 @@ const Products = () => {
                   sx={{ display: "flex", gap: 1 }}
                 >
                   <Avatar alt="Remy Sharp" src={product.images[0]} />
-                  {product.title}
+                  <TruncatedText text={product.title} maxLength={10} />
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton>
+                    <DeleteForever />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="right">
+                  <IconButton>
+                    <Edit />
+                  </IconButton>
                 </TableCell>
                 <TableCell align="right">{product.brand}</TableCell>
+
                 <TableCell align="right">
                   <strong>$</strong> {Number(product.price).toFixed(2)}
                 </TableCell>

@@ -53,9 +53,22 @@ const homeReducer = (
 ) => {
   switch (action.type) {
     case SAVE_PRODUCTS_DATA:
+      const products = action.products;
+      const addFavStatus = products.map((product) => {
+        const isInFavorites = state.favorites.find(
+          (favProduct) => favProduct.id === product.id
+        );
+
+        if (isInFavorites) {
+          return { ...product, favorite: true };
+        } else {
+          return { ...product, favorite: false };
+        }
+      });
+
       return {
         ...state,
-        products: action.products,
+        products: addFavStatus,
       };
     case SET_LOADING:
       return {
@@ -75,11 +88,23 @@ const homeReducer = (
     case SAVE_SLIDER_IMAGES:
       return { ...state, sliderImages: action.products };
     case CHANGE_PAGE_NUMBER:
-      console.log(action.value);
       return { ...state, pageNumber: action.value };
 
-    case NEXT_PAGE_DATA:
-      return { ...state, products: action.products };
+    case NEXT_PAGE_DATA: {
+      const products = action.products;
+      const addFavStatus = products.map((product) => {
+        const isInFavorites = state.favorites.find(
+          (favProduct) => favProduct.id === product.id
+        );
+
+        if (isInFavorites) {
+          return { ...product, favorite: true };
+        } else {
+          return { ...product, favorite: false };
+        }
+      });
+      return { ...state, products: addFavStatus };
+    }
     case ADD_PRODUCT_CART:
       const productToAdd = action.product;
       const cartItems = state.cartItems;
@@ -164,13 +189,20 @@ const homeReducer = (
     case SAVE_SEARCHED_PRODUCTS:
       const total_found = action.total_found;
       const searchedProducts = action.products;
+      console.log(searchedProducts);
       return {
         ...state,
         searchedResults: searchedProducts,
         totalSearchedProducts: total_found,
       };
     case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
-      return { ...state, searchedResults: action.products };
+      const prevPage = [...state.searchedResults];
+      const moreProducts = [...prevPage, ...action.products];
+
+      return {
+        ...state,
+        searchedResults: moreProducts,
+      };
     case SET_FAVORITE_PRODUCTS:
       return { ...state, favorites: [...state.favorites, action.product] };
     case REMOVE_FAVORITE_PRODUCT:
@@ -192,8 +224,8 @@ const homeReducer = (
           label: action.category.label,
         },
       };
-      case SAVE_SIMILAR_PRODUCTS:
-        return{...state, similarProducts: action.products}
+    case SAVE_SIMILAR_PRODUCTS:
+      return { ...state, similarProducts: action.products };
     default:
       return state;
   }

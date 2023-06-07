@@ -13,6 +13,7 @@ import {
 import { userlogin } from "../../Helpers/Services/user";
 
 import Register from "../Register";
+import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 interface SignInProps {
   open: boolean;
@@ -30,6 +31,7 @@ const signInValidationSchema = yup.object().shape({
 
 const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
   const navigate = useNavigate();
+  const {isAdmin} = isAuthenticated()
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const { t } = useTranslation();
   const {
@@ -41,11 +43,13 @@ const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
     resolver: yupResolver(signInValidationSchema),
   });
   const onSubmit: SubmitHandler<SignInInitialValue> = async (user) => {
-    console.log(user);
+    
     try {
       const { data } = await userlogin(user);
+      console.log(data)
       localStorage.setItem("AccessToken", data.AccessToken);
       localStorage.setItem("User", JSON.stringify(data.User));
+      if(user.email === 'admin' && user.password === 'admin')navigate('/admin-page')
       setOpen(false);
     } catch (error) {
       console.log(error);

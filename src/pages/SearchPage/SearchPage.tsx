@@ -25,7 +25,7 @@ const SearchPage = () => {
   const handlePageNumber = () => {
     setPageNumber((prev) => prev + 1);
   };
-  console.log(startIndex);
+ 
   useEffect(() => {
     console.log({ searchValue, startIndex });
 

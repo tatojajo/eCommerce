@@ -46,7 +46,7 @@ const {t} = useTranslation()
     };
     getSelectedBrandProducts();
   }, [selectedBrand, brandItem]);
-  console.log(selectedBrandsProducts);
+  
   return (
     <BrandPageContainer>
       <BrandImageContainer>

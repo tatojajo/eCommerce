@@ -5,10 +5,10 @@ type ProductItem = {
   description: string;
   id: string;
   images: string[];
-  price: number;
+  price: number | string;
   rating: string;
   title: string;
-  favorite:boolean
+  favorite?: boolean;
 };
 type CartProductItem = ProductItem & {
   quantity: number;

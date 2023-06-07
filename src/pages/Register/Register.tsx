@@ -34,7 +34,7 @@ const registerValidationSchema = yup.object().shape({
 });
 
 const Register: FC<RegistracionProps> = ({ open, setOpen }) => {
-   const { t } = useTranslation();
+  const { t } = useTranslation();
   const handleClose = () => {
     setOpen(false);
   };
@@ -56,11 +56,16 @@ const Register: FC<RegistracionProps> = ({ open, setOpen }) => {
     // }
   };
   return (
-    <div style={{marginTop:'0px'}}>
-      <Dialog maxWidth='sm' style={{marginTop:"60px"}} open={open} onClose={handleClose}>
+    <div style={{ marginTop: "0px" }}>
+      <Dialog
+        maxWidth="sm"
+        style={{ marginTop: "60px" }}
+        open={open}
+        onClose={handleClose}
+      >
         <DialogTitle> {t("global.create_T-shop_Account")}</DialogTitle>
         <DialogContent>
-          <form  style={{marginTop:'10px'}} onSubmit={handleSubmit(onSubmit)}>
+          <form style={{ marginTop: "10px" }} onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField

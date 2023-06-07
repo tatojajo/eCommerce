@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import { Home, Logout, Settings } from "@mui/icons-material";
 
-const Header = () => {
+const AdminHeader = () => {
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const { t } = useTranslation();
@@ -148,4 +148,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default AdminHeader;

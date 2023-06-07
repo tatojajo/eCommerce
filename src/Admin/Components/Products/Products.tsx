@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { isAuthenticated } from "../../../Helpers/Auth/isAuthenticated";
-import { getProductList } from "../../Requests/products";
-import { saveProductsList } from "../../Redux/action";
+import { useTranslation } from "react-i18next";
+import { getProductList } from "../../helpers/products";
+import { saveProductsList, saveSearchedProductList } from "../../Redux/action";
 
 import {
   Box,
@@ -20,11 +21,22 @@ import {
   IconButton,
   TextField,
   InputAdornment,
+  Container,
 } from "@mui/material";
-import { DeleteForever, Edit, Search } from "@mui/icons-material";
+import {
+  ArrowLeft,
+  ArrowRight,
+  DeleteForever,
+  Edit,
+  Search,
+} from "@mui/icons-material";
+import { t } from "i18next";
+import useDebounce from "../../../Helpers/CustomHooks/useBoolean/useDebounce";
+import EditProduct from "./Edit";
 
 const TruncatedText = ({ text, maxLength }: any) => {
   const [truncated, setTruncated] = useState(true);
+  const { t } = useTranslation();
 
   const toggleTruncated = () => {
     setTruncated(!truncated);
@@ -46,17 +58,45 @@ const TruncatedText = ({ text, maxLength }: any) => {
 };
 
 const Products = () => {
+  const [searchValue, setSearchValue] = useState<string>("");
+  const debounceValue = useDebounce(searchValue);
+  const [pageNumber, setPageNumber] = useState<number>(0);
   const { isAdmin } = isAuthenticated();
   const dispatch = useAppDispatch();
   const { allProducts } = useAppSelector((state) => state.adminReducer);
+  const startIndex = pageNumber * 20;
 
+  const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    if (debounceValue === "") setPageNumber(0);
+    setSearchValue(e.target.value);
+  };
+
+  const prevPage = () => {
+    if (pageNumber === 0) return;
+    setPageNumber((prev) => prev - 1);
+  };
+  const nextPage = () => {
+    setPageNumber((prev) => prev + 1);
+  };
   useEffect(() => {
+    let isCanceled = false;
     const getAllProducts = async () => {
-      const { data } = await getProductList();
-      dispatch(saveProductsList(data.products));
+      const { data } = await getProductList(debounceValue, startIndex);
+      if (!isCanceled && debounceValue === "")
+        dispatch(saveProductsList(data.products));
+      if (!isCanceled && debounceValue)
+        dispatch(saveSearchedProductList(data.products, data.total_found));
     };
-    getAllProducts();
-  }, [isAdmin]);
+    if (!isCanceled) getAllProducts();
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+    return () => {
+      isCanceled = true;
+    };
+  }, [isAdmin, debounceValue, startIndex]);
   return (
     <Box>
       <Box
@@ -67,23 +107,26 @@ const Products = () => {
         }}
       >
         <Typography variant="h4" color="initial">
-          Products
+          {t("global.products")}
         </Typography>
-        <TextField
-          fullWidth
-          id="filled-hidden-label-small"
-          variant="filled"
-          size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton>
+
+        <Container maxWidth="md" sx={{ mt: 2, mb: 2 }}>
+          <TextField
+            id="search"
+            type="search"
+            label="Search"
+            // value={searchTerm}
+            onChange={handleChangeValue}
+            sx={{ width: 600 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
                   <Search />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Container>
         <Button color="success">Add New Products</Button>
       </Box>
       <TableContainer component={Paper}>
@@ -102,8 +145,8 @@ const Products = () => {
                 />
               </TableCell>
               <TableCell>Product Name</TableCell>
-              <TableCell align="right">Edit</TableCell>
               <TableCell align="right">Delete</TableCell>
+              <TableCell align="right">Edit</TableCell>
               <TableCell align="right">Brand</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Amount</TableCell>
@@ -139,7 +182,9 @@ const Products = () => {
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton>
+                  <IconButton onClick={()=>{
+                    return <EditProduct product={product}/> 
+                  }}>
                     <Edit />
                   </IconButton>
                 </TableCell>
@@ -154,6 +199,34 @@ const Products = () => {
             ))}
           </TableBody>
         </Table>
+        {debounceValue && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              margin: "20px 20px",
+            }}
+          >
+            <Button variant="outlined" onClick={prevPage}>
+              <ArrowLeft />
+              Back
+            </Button>
+            {allProducts.length > 0 ? (
+              <Typography variant="h6" color="initial">
+                Page: {pageNumber + 1}
+              </Typography>
+            ) : (
+              <Typography variant="h6" color="error">
+                No Products Found!
+              </Typography>
+            )}
+            <Button variant="outlined" onClick={nextPage}>
+              Next
+              <ArrowRight />
+            </Button>
+          </Box>
+        )}
       </TableContainer>
     </Box>
   );

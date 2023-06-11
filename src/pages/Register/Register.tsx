@@ -49,6 +49,7 @@ const Register: FC<RegistracionProps> = ({ open, setOpen }) => {
   });
 
   const onSubmit: SubmitHandler<RegisterInitialValue> = async (user) => {
+    console.log(user)
     // try {
     //   const { data } = await registerUser(user);
     // } catch (error) {

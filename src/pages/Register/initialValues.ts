@@ -3,9 +3,5 @@ export const initialValues: RegisterInitialValue = {
     lastName: "",
     phoneNumber: "",
     email: "",
-    // city: "",
-    // postCode: "",
-    // address: "",
     password: "",
-    // confirmPassword: ""
 }

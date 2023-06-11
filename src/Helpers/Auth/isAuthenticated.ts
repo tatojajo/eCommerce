@@ -18,7 +18,6 @@ export const isAuthenticated = (): AuthenticationResult => {
     return { isUser: false, isAdmin: false };
   }
   const userObject: UserObject = jwtDecode(userToken);
-  console.log(userObject);
   if (Date.now() / 1000 > userObject.exp) {
     localStorage.removeItem("AccessToken");
     localStorage.removeItem("User");

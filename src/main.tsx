@@ -16,15 +16,13 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Provider store={store}>
-          <AppTheme>
-            <ToastContainer />
-            <App />
-          </AppTheme>
-        </Provider>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <Provider store={store}>
+        <AppTheme>
+          <ToastContainer />
+          <App />
+        </AppTheme>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );

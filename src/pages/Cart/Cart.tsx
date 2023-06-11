@@ -55,6 +55,7 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     if (isAuthenticated().isUser && cartItems.length > 0) {
+      
       await fetch("http://localhost:4000/checkout", {
         method: "POST",
         headers: {
@@ -62,7 +63,7 @@ const Cart = () => {
         },
         body: JSON.stringify({ items: cartItems }),
       })
-        .then((response) => {
+      .then((response) => {
           return response.json();
         })
         .then((response) => {
@@ -70,7 +71,9 @@ const Cart = () => {
             window.location.assign(response.url); // Forwarding user to Stripe
           }
         });
-    }
+        
+        console.log(cartItems[0].quantity)
+      }
   };
 
   return (
@@ -146,7 +149,7 @@ const Cart = () => {
                       </ItemQUantity>
                     </TableCell>
                     <TableCell align="left">
-                      ${(item.quantity * item.price).toFixed(2)}
+                      ${(item.quantity * Number(item.price)).toFixed(2)}
                     </TableCell>
                   </TableRow>
                 ))}

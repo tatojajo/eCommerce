@@ -1,6 +1,6 @@
 
 
-const categories = [
+export const categories = [
     "Mobile Phones",
     "Laptops",
     "Tablets",

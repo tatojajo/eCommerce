@@ -1,9 +1,9 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { isAuthenticated } from "../../../Helpers/Auth/isAuthenticated";
-import { useTranslation } from "react-i18next";
-import { getProductList } from "../../helpers/products";
-import { saveProductsList, saveSearchedProductList } from "../../Redux/action";
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { isAuthenticated } from '../../../Helpers/Auth/isAuthenticated';
+import { useTranslation } from 'react-i18next';
+import { getProductList } from '../../helpers/products';
+import { saveProductsList, saveSearchedProductList, setEditabelProduct } from '../../Redux/action';
 
 import {
   Box,
@@ -21,18 +21,13 @@ import {
   IconButton,
   TextField,
   InputAdornment,
-  Container,
-} from "@mui/material";
-import {
-  ArrowLeft,
-  ArrowRight,
-  DeleteForever,
-  Edit,
-  Search,
-} from "@mui/icons-material";
-import { t } from "i18next";
-import useDebounce from "../../../Helpers/CustomHooks/useBoolean/useDebounce";
-import EditProduct from "./Edit";
+  Container
+} from '@mui/material';
+import { ArrowLeft, ArrowRight, DeleteForever, Edit, Search } from '@mui/icons-material';
+import { t } from 'i18next';
+import useDebounce from '../../../Helpers/CustomHooks/useBoolean/useDebounce';
+import EditProduct from './Edit';
+import DeleteProduct from './Delete';
 
 const TruncatedText = ({ text, maxLength }: any) => {
   const [truncated, setTruncated] = useState(true);
@@ -42,15 +37,14 @@ const TruncatedText = ({ text, maxLength }: any) => {
     setTruncated(!truncated);
   };
 
-  const truncatedText =
-    text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  const truncatedText = text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
 
   return (
     <Box>
       <span>{truncated ? truncatedText : text}</span>
       {text.length > maxLength && (
         <Button variant="text" onClick={toggleTruncated}>
-          {truncated ? "Read More" : "Read Less"}
+          {truncated ? 'Read More' : 'Read Less'}
         </Button>
       )}
     </Box>
@@ -58,16 +52,19 @@ const TruncatedText = ({ text, maxLength }: any) => {
 };
 
 const Products = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
-  const debounceValue = useDebounce(searchValue);
+  const [searchValue, setSearchValue] = useState<string>('');
   const [pageNumber, setPageNumber] = useState<number>(0);
+  const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
+  const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
+  const [productToDelete, setProductToDelete] = useState<ProductItem | null>(null);
+  const debounceValue = useDebounce(searchValue);
   const { isAdmin } = isAuthenticated();
   const dispatch = useAppDispatch();
-  const { allProducts } = useAppSelector((state) => state.adminReducer);
+  const { allProducts } = useAppSelector<AdminState>((state) => state.adminReducer);
   const startIndex = pageNumber * 20;
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    if (debounceValue === "") setPageNumber(0);
+    if (debounceValue === '') setPageNumber(0);
     setSearchValue(e.target.value);
   };
 
@@ -82,8 +79,7 @@ const Products = () => {
     let isCanceled = false;
     const getAllProducts = async () => {
       const { data } = await getProductList(debounceValue, startIndex);
-      if (!isCanceled && debounceValue === "")
-        dispatch(saveProductsList(data.products));
+      if (!isCanceled && debounceValue === '') dispatch(saveProductsList(data.products));
       if (!isCanceled && debounceValue)
         dispatch(saveSearchedProductList(data.products, data.total_found));
     };
@@ -91,7 +87,7 @@ const Products = () => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "smooth",
+      behavior: 'smooth'
     });
     return () => {
       isCanceled = true;
@@ -101,13 +97,12 @@ const Products = () => {
     <Box>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}>
         <Typography variant="h4" color="initial">
-          {t("global.products")}
+          {t('global.product')}
         </Typography>
 
         <Container maxWidth="md" sx={{ mt: 2, mb: 2 }}>
@@ -123,7 +118,7 @@ const Products = () => {
                 <InputAdornment position="end">
                   <Search />
                 </InputAdornment>
-              ),
+              )
             }}
           />
         </Container>
@@ -140,7 +135,7 @@ const Products = () => {
                   // checked={rowCount > 0 && numSelected === rowCount}
                   // onChange={onSelectAllClick}
                   inputProps={{
-                    "aria-label": "select all desserts",
+                    'aria-label': 'select all desserts'
                   }}
                 />
               </TableCell>
@@ -163,28 +158,29 @@ const Products = () => {
                     // checked={rowCount > 0 && numSelected === rowCount}
                     // onChange={onSelectAllClick}
                     inputProps={{
-                      "aria-label": "select all desserts",
+                      'aria-label': 'select all desserts'
                     }}
                   />
                 </TableCell>
 
-                <TableCell
-                  component="th"
-                  scope="row"
-                  sx={{ display: "flex", gap: 1 }}
-                >
+                <TableCell component="th" scope="row" sx={{ display: 'flex', gap: 1 }}>
                   <Avatar alt="Remy Sharp" src={product.images[0]} />
                   <TruncatedText text={product.title} maxLength={10} />
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton>
+                  <IconButton
+                    onClick={() => {
+                      setConfirmDelete(true);
+                      setProductToDelete(product);
+                    }}>
                     <DeleteForever />
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton onClick={()=>{
-                    return <EditProduct product={product}/> 
-                  }}>
+                  <IconButton
+                    onClick={() => {
+                      setIsEditingOpen(true), dispatch(setEditabelProduct(product));
+                    }}>
                     <Edit />
                   </IconButton>
                 </TableCell>
@@ -194,20 +190,28 @@ const Products = () => {
                   <strong>$</strong> {Number(product.price).toFixed(2)}
                 </TableCell>
                 <TableCell align="right">{product.amount}</TableCell>
-                {/* <TableCell align="right">{row.protein}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        {isEditingOpen && (
+          <EditProduct isEditingOpen={isEditingOpen} setIsEditingOpen={setIsEditingOpen} />
+        )}
+        {confirmDelete && (
+          <DeleteProduct
+            confirmDelete={confirmDelete}
+            setConfirmDelete={setConfirmDelete}
+            product={productToDelete}
+          />
+        )}
         {debounceValue && (
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              margin: "20px 20px",
-            }}
-          >
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              margin: '20px 20px'
+            }}>
             <Button variant="outlined" onClick={prevPage}>
               <ArrowLeft />
               Back

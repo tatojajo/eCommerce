@@ -1,7 +1,7 @@
 type ProductItem = {
   amount: string;
   brand: string;
-  categories: string;
+  categories: string[];
   description: string;
   id: string;
   images: string[];
@@ -44,6 +44,8 @@ interface ProductCartProps {
 
 type AdminState = {
   allProducts: ProductItem[];
+  editabeProduct: ProductItem | null;
+  brands: string[];
 };
 
 type Categories = {

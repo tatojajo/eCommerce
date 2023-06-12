@@ -15,6 +15,7 @@ type CartProductItem = ProductItem & {
 };
 type HomeState = {
   selectedBrandsProducts: ProductItem[];
+  productsToFilter: ProductItem[];
   searchedResults: ProductItem[];
   similarProducts: ProductItem[];
   cartItems: CartProductItem[];
@@ -22,6 +23,7 @@ type HomeState = {
   products: ProductItem[];
   sliderImages: ProductItem[];
   selectedProduct: CartProductItem | null;
+  totalProductsToFilter: number;
   totalSearchedProducts: number;
   selectedCategory: Categories;
   totalProducts: number;

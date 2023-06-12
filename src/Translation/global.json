@@ -77,7 +77,8 @@
     "details": "Details",
     "product_added_to_cart_check_your_cart_to_complete_your_purchase": "Product added to cart Check your cart to complete your purchase.",
     "see_more": "See More",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "close": "Close"
   },
   "ge": {
     "is": "არის",
@@ -152,6 +153,7 @@
     "details": "დეტალები",
     "product_added_to_cart_check_your_cart_to_complete_your_purchase": "პროდუქტი დამატებულია კალათაში. შეამოწმეთ თქვენი კალათა შესყიდვის დასასრულებლად.",
     "see_more": "მეტის ნახვა",
-    "favorites": "სასურველი პროდუქტები"
+    "favorites": "სასურველი პროდუქტები",
+    "close": "დახურვა"
   }
 }

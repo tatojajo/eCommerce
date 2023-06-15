@@ -16,6 +16,7 @@ type CartProductItem = ProductItem & {
 type HomeState = {
   selectedBrandsProducts: ProductItem[];
   productsToFilter: ProductItem[];
+  reservedProducts: ProductItem[];
   searchedResults: ProductItem[];
   similarProducts: ProductItem[];
   cartItems: CartProductItem[];

@@ -18,7 +18,8 @@ import {
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
   SAVE_SIMILAR_PRODUCTS,
-  SAVE_PRODUCTS_TO_FILTER
+  SAVE_PRODUCTS_TO_FILTER,
+  RESERVE_PRODUCT
 } from './HomeActions/HomeActions';
 import { HOME_ACTIONS } from './HomeActions/HomeTypes';
 
@@ -26,6 +27,7 @@ const initialState: HomeState = {
   selectedBrandsProducts: [],
   searchedResults: [],
   similarProducts: [],
+  reservedProducts: [],
   productsToFilter: [],
   sliderImages: [],
   cartItems: [],
@@ -48,7 +50,7 @@ const initialState: HomeState = {
 
 const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) => {
   switch (action.type) {
-    case SAVE_PRODUCTS_DATA:
+    case SAVE_PRODUCTS_DATA: {
       const products = action.products;
       const addFavStatus = products.map((product) => {
         const isInFavorites = state.favorites.find((favProduct) => favProduct.id === product.id);
@@ -64,6 +66,7 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) 
         ...state,
         products: addFavStatus
       };
+    }
     case SET_LOADING:
       return {
         ...state,
@@ -213,6 +216,14 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) 
         productsToFilter: action.products,
         totalProductsToFilter: action.total_found
       };
+    }
+    case RESERVE_PRODUCT: {
+      const prevReserved = state.reservedProducts;
+      const productToAdd = action.product;
+      const updateReservedProducts = [...prevReserved, productToAdd];
+      localStorage.setItem('Reserved_Products', JSON.stringify(updateReservedProducts));
+      console.log(state.reservedProducts);
+      return { ...state, reservedProducts: updateReservedProducts };
     }
     default:
       return state;

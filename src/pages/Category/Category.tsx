@@ -2,29 +2,32 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  CircularProgress,
   Drawer,
   InputBase,
   List,
   ListItemButton,
+  Pagination,
   Paper,
   Slider,
+  Stack,
+  TextField,
   Typography,
   alpha,
-  styled
+  styled,
+  Grid
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { categories } from '../../component/Header/categories';
 import mainBrands from '../../component/Brands/mainBrands';
 import { getFilteredProducts } from '../../Helpers/Services/products';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { saveProductsToFilter } from '../Home/redux/HomeActions/HomeActions';
 import { SavedSearch } from '@mui/icons-material';
 import ProductCard from '../../component/ProductCard';
-function values(value: number) {
-  return `${value}$`;
-}
+import useDebounce from '../../Helpers/CustomHooks/useBoolean/useDebounce';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -55,7 +58,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -69,27 +71,48 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Category = () => {
-  const location = useLocation();
-  const pathname = location.pathname.split('/').filter((path) => path !== '');
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [priceValue, setPriceValue] = useState<number[]>([40, 20]);
+  const location = useLocation();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const pathname = location.pathname.split('/').filter((path) => path !== '');
+  const [priceValue, setPriceValue] = useState<number[]>([0, 0]);
   const [showAllCategories, setShowallCategories] = useState<boolean>(false);
   const [showAllBrands, setShowallBrands] = useState<boolean>(false);
   const [brandValue, setBrandValue] = useState<string>('');
   const [categoryValue, setCategoryValue] = useState<string>(pathname[pathname.length - 1]);
-  const dispatch = useAppDispatch();
   const { totalProductsToFilter, productsToFilter } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
+  const [searchWord, setSeachWord] = useState('');
+  const debounceValue = useDebounce(searchWord);
+
+  const [minPrice, setMinPrice] = useState<string | number>('');
+  const [maxPrice, setMaxPrice] = useState<string | number>('');
 
   const initialCuantity = 5;
-  const productsToRender = 5;
+  const startIndex = (pageNumber - 1) * 10;
+  const finalIndex = startIndex + 10;
+
+  const productsPerPage = productsToFilter.slice(startIndex, finalIndex);
 
   const displayedCategories = showAllCategories ? categories : categories.slice(0, initialCuantity);
   const displayBrands = showAllBrands ? mainBrands : mainBrands.slice(0, initialCuantity);
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setPriceValue(newValue as number[]);
+  const handleApplyPrice = () => {
+    const newMinPrice = Number(minPrice);
+    const newMaxPrice = Number(maxPrice);
+
+    if (newMinPrice <= newMaxPrice) {
+      setPriceValue([newMinPrice, newMaxPrice]);
+      const filterPrice: ProductItem[] = productsToFilter.filter((product: ProductItem) => {
+        const productPrice = Number(product.price);
+        return productPrice >= newMinPrice && productPrice <= newMaxPrice;
+      });
+
+      dispatch(saveProductsToFilter(filterPrice, filterPrice.length));
+    }
   };
 
   const handleShowMoreCategories = () => {
@@ -104,13 +127,51 @@ const Category = () => {
   const setBrand = (brand: string) => {
     setBrandValue(brand);
   };
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPageNumber(value);
+  };
+
   useEffect(() => {
     let isCanceled = false;
+    let timeForLoading: NodeJS.Timeout | null = null;
     try {
       if (!isCanceled) {
         const getProducts = async () => {
-          const { data } = await getFilteredProducts(categoryValue, brandValue);
-          dispatch(saveProductsToFilter(data.products, data.total_found));
+          setLoading(true);
+          try {
+            const { data } = await getFilteredProducts(categoryValue, brandValue);
+
+            const prices = data.products.map((product: ProductItem) => Number(product.price));
+            const maxPrice = Math.max(...prices);
+            const minPrice = Math.min(...prices);
+            setMinPrice(minPrice);
+            setMaxPrice(maxPrice);
+
+            setPriceValue([minPrice, maxPrice]);
+
+            if (debounceValue) {
+              const filteredProducts = data.products.filter((product: ProductItem) => {
+                const productTitle = product.title.toLowerCase();
+                const productDescription = product.description.toLowerCase();
+                const debounceValueToLowerCase = debounceValue.toLowerCase();
+                const filterResults =
+                  productTitle.includes(debounceValueToLowerCase) ||
+                  productDescription.includes(debounceValueToLowerCase);
+
+                return filterResults;
+              });
+
+              return dispatch(saveProductsToFilter(filteredProducts, filteredProducts.length));
+            }
+
+            dispatch(saveProductsToFilter(data.products, data.total_found));
+          } catch (error) {
+            console.log(error);
+          } finally {
+            timeForLoading = setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          }
         };
         getProducts();
       }
@@ -119,8 +180,9 @@ const Category = () => {
     }
     return () => {
       isCanceled = true;
+      if (timeForLoading) clearTimeout(timeForLoading);
     };
-  }, [categoryValue, brandValue]);
+  }, [categoryValue, brandValue, debounceValue]);
   return (
     <Box sx={{ display: 'flex' }}>
       <Drawer
@@ -148,7 +210,11 @@ const Category = () => {
             <SearchIconWrapper>
               <SavedSearch />
             </SearchIconWrapper>
-            <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => setSeachWord(e.target.value)}
+            />
           </Search>
         </Paper>
         <Paper sx={{ minWidth: '200px', padding: '10px' }}>
@@ -156,12 +222,33 @@ const Category = () => {
             Price Range
           </Typography>
           <Slider
-            getAriaLabel={() => 'Temperature range'}
+            getAriaLabel={() => 'Price range'}
             value={priceValue}
-            onChange={handleChange}
             valueLabelDisplay="auto"
-            getAriaValueText={values}
+            min={priceValue[0]}
+            max={priceValue[1]}
           />
+          <Grid container spacing={1}>
+            <Grid item sm={6}>
+              <TextField
+                label="Min Price"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <TextField
+                label="Max Price"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+              />
+            </Grid>
+            <Grid item sm={12} textAlign="center">
+              <Button variant="outlined" color="primary" onClick={handleApplyPrice}>
+                Apply
+              </Button>
+            </Grid>
+          </Grid>
         </Paper>
         <Paper elevation={4} sx={{ minWidth: '150px', padding: '10px' }}>
           <Typography variant="h4" color="initial">
@@ -203,27 +290,76 @@ const Category = () => {
         </Paper>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 9 }}>
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            padding: '30px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '30px'
+          }}>
           <Typography variant="h6" color="initial">
-            {t('global.brand')}: {brandValue !== '' && <strong>{brandValue}</strong>}
+            {t('global.brand')}:{' '}
+            {brandValue ? (
+              <strong>{brandValue}</strong>
+            ) : (
+              <strong>{t('global.brand_is_not_selected')}</strong>
+            )}
           </Typography>
           <Typography variant="h6" color="initial">
-            {t('global.category')}: {categoryValue && <strong>{categoryValue}</strong>}
+            {t('global.category')}:{' '}
+            {categoryValue ? (
+              <strong>{categoryValue}</strong>
+            ) : (
+              <strong>{t('global.category')}</strong>
+            )}
+          </Typography>
+          <Typography variant="h6" color="initial">
+            {t('global.total')}:{' '}
+            {totalProductsToFilter && (
+              <strong>
+                {totalProductsToFilter} {t('global.product')}
+              </strong>
+            )}
           </Typography>
         </Box>
         <Paper
           elevation={5}
           sx={{
             display: 'flex',
-            flexWrap: 'wrap',
-            gap: '10px',
-            padding: '10px',
-            alignItems: 'center',
-            justifyContent: 'center'
+            flexDirection: 'column',
+            alignItems: 'center'
           }}>
-          {productsToFilter.map((product, index) => {
-            return <ProductCard key={index} product={product} />;
-          })}
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px',
+              padding: '10px',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+            {loading ? (
+              <Typography variant="body1">
+                <CircularProgress color="success" />
+              </Typography>
+            ) : (
+              productsPerPage.map((product, index) => <ProductCard key={index} product={product} />)
+            )}
+          </Box>
+          {productsToFilter && (
+            <Box>
+              <Stack spacing={2} mt={4}>
+                <Pagination
+                  count={Math.ceil(totalProductsToFilter / 10)}
+                  page={pageNumber}
+                  variant="outlined"
+                  shape="rounded"
+                  onChange={handleChangePage}
+                />
+              </Stack>
+            </Box>
+          )}
         </Paper>
       </Box>
     </Box>

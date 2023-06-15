@@ -50,11 +50,12 @@ const Register: FC<RegistracionProps> = ({ open, setOpen }) => {
 
   const onSubmit: SubmitHandler<RegisterInitialValue> = async (user) => {
     console.log(user)
-    // try {
-    //   const { data } = await registerUser(user);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const { data } = await registerUser(user);
+      console.log(data)
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div style={{ marginTop: "0px" }}>

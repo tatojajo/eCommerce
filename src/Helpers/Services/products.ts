@@ -39,6 +39,6 @@ export const getFilteredProducts = (category: string, brandName: string = '') =>
   ajax.post('products', {
     keyword: category,
     filter: { brand: brandName },
-    page_size: 10,
+    page_size: 2000,
     page_number: 0
   });

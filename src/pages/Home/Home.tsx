@@ -11,7 +11,8 @@ const Home = () => {
       sx={{
         width: '100%',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginTop:'20px'
       }}>
       <MainSlider />
       <ProductsContainer />

@@ -19,6 +19,7 @@ import {
   UserPageTitle,
 } from "./UserPageStyle";
 import Address from "./Address";
+import Orders from "../../Admin/Components/Order";
 
 const User = () => {
   const [selectedInfo, setSelectedInfo] = useState("My Details");
@@ -35,7 +36,7 @@ const User = () => {
         {t("global.my_acount")}
       </UserPageTitle>
       <UserInfoDetails>
-        <Box sx={{ width: "20%" }}>
+        <Box>
           <List sx={{ maxWidth: 360, bgcolor: "background.paper" }}>
             <ListItem
               sx={{ cursor: "pointer" }}
@@ -72,12 +73,16 @@ const User = () => {
             </ListItem>
           </List>
         </Box>
-        <UserInfoPaper elevation={5} sx={{width:'100%'}}>
+        <UserInfoPaper sx={{width:'70%'}}>
           {(() => {
             if (selectedInfo === "My Details") {
               return <Details />;
-            } else if(selectedInfo === "My Address") {
+            }
+           if(selectedInfo === "My Address") {
               return <Address />;
+            }
+           if(selectedInfo === "My Orders") {
+              return < Orders/>;
             }
           })()}
         </UserInfoPaper>

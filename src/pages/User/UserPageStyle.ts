@@ -1,12 +1,11 @@
-import { styled, Box, Typography, Paper } from "@mui/material";
+import { styled, Box, Typography, Paper } from '@mui/material';
 
 export const UserPageContainer = styled(Box)`
   display: flex;
   flex-direction: column;
-  align-items: start;
-  justifay-content: start;
+  align-items: center;
   padding: 20px;
-  margin-top: 50px;
+  margin-top: 100px;
 `;
 
 export const UserPageTitle = styled(Typography)`
@@ -15,17 +14,31 @@ export const UserPageTitle = styled(Typography)`
 `;
 
 export const UserInfoDetails = styled(Box)`
+  width: 100%;
   display: flex;
   align-items: start;
-  justifay-content: center;
+  justify-content: space-between;
   gap: 20px;
 `;
 
 export const UserInfoPaper = styled(Paper)`
- width: 70rem;
   padding: 50px;
   display: flex;
   flex-direction: column;
   align-items: start;
   justifay-content: center;
+`;
+
+export const AddressDetailsContainer = styled(Paper)`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+`;
+
+export const UserAddress = styled(Box)`
+width:100%;
+  display: flex;
+  flex-direction: column;
 `;

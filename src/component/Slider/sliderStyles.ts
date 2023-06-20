@@ -48,8 +48,8 @@ export const SliderImage = styled('img')`
 export const CategoryDisplayOnSlide = styled(Box)`
   direction: rtl;
   position: absolute;
-  top: 10px;
-  height: 430px;
+  top: px;
+  height: 440px;
   right: 10%;
   background-color: #f5f5f5;
 

@@ -60,7 +60,7 @@ const Brands = () => {
       }}>
       <PopularBrandsTitle>
         <Beenhere fontSize="large" color="info" />
-        <Typography variant="h1" color="initial">
+        <Typography variant='h2Montserrat' color="initial">
           {t('global.the_ most_popular_brands')}
         </Typography>
       </PopularBrandsTitle>

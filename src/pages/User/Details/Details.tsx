@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { editPersonalInfo } from "../../../Helpers/Services/user";
+import { UserDetailsContiner } from "./userDetailsStyle";
 
 const registerValidationSchema = yup.object().shape({
   firstName: yup.string().required("Firstname is required"),
@@ -62,7 +63,7 @@ const Details = () => {
   };
 
   return (
-    <Box>
+    <UserDetailsContiner>
       <Box>
         <Typography variant="h4" color="initial">
           {t("global.my_details")}
@@ -100,7 +101,7 @@ const Details = () => {
                   {t("global.firstName")}
                 </Typography>
                 {!isUserEditingInfo && (
-                  <Typography variant="h3" color="initial">
+                  <Typography variant='h4Montserrat' color="initial">
                     {user.firstName}
                   </Typography>
                 )}
@@ -126,7 +127,7 @@ const Details = () => {
                   {t("global.lastName")}
                 </Typography>
                 {!isUserEditingInfo && (
-                  <Typography variant="h3" color="initial">
+                  <Typography variant='h4Montserrat' color="initial">
                     {user.lastName}
                   </Typography>
                 )}
@@ -152,7 +153,7 @@ const Details = () => {
                   {t("global.phone")}
                 </Typography>
                 {!isUserEditingInfo && (
-                  <Typography variant="h3" color="initial">
+                  <Typography variant='h4Montserrat' color="initial">
                     {user.phoneNumber}
                   </Typography>
                 )}
@@ -178,7 +179,7 @@ const Details = () => {
                   {t("global.email")}
                 </Typography>
                 {!isUserEditingInfo && (
-                  <Typography variant="h3" color="initial">
+                  <Typography variant='h4Montserrat' color="initial">
                     {user.email}
                   </Typography>
                 )}
@@ -222,7 +223,7 @@ const Details = () => {
           </form>
         </Box>
       </Box>
-    </Box>
+    </UserDetailsContiner>
   );
 };
 

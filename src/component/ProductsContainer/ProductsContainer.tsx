@@ -77,7 +77,7 @@ const ProductsContainer = () => {
         <HotOffersContainer>
           <HotOffers>
             <Whatshot fontSize="large" color="error" />
-            <Typography variant='h2Montserrat'>{t('global.hot_offers')}</Typography>
+            <Typography variant='h1Montserrat'>{t('global.hot_offers')}</Typography>
           </HotOffers>
           <ProductContainer>
             {products.map((product) => {

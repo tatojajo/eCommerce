@@ -18,13 +18,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { isAuthenticated } from "./Helpers/Auth/isAuthenticated";
 
 const App = () => {
-  const navigate = useNavigate();
   const { isAdmin, isUser } = isAuthenticated();
 
   return (
     <Box>
       <Header />
-      <BreadCrumbs />
       <Routes>
         {!isAdmin && (
           <>
@@ -43,7 +41,7 @@ const App = () => {
           </>
         )}
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </Box>
   );
 };

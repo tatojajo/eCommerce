@@ -16,8 +16,8 @@ import Register from "../Register";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 interface SignInProps {
-  open: boolean;
-  setOpen: Function;
+  isSignInOpen: boolean;
+  setIsSignInOpen: Function;
 }
 
 const signInValidationSchema = yup.object().shape({
@@ -29,7 +29,7 @@ const signInValidationSchema = yup.object().shape({
     .max(12, "Password length cannot exceed more than 12 characters"),
 });
 
-const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
+const SignIn: FC<SignInProps> = ({ isSignInOpen, setIsSignInOpen }) => {
   const navigate = useNavigate();
   const {isAdmin} = isAuthenticated()
   const [isRegister, setIsRegister] = useState<boolean>(false);
@@ -50,7 +50,7 @@ const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
       localStorage.setItem("AccessToken", data.AccessToken);
       localStorage.setItem("User", JSON.stringify(data.User));
       if(user.email === 'admin' && user.password === 'admin')navigate('/admin-page')
-      setOpen(false);
+      setIsSignInOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -58,15 +58,15 @@ const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
 
   const handleClose = () => {
     navigate("/");
-    setOpen(false);
+    setIsSignInOpen(false);
   };
 
   return isRegister ? (
-    <Register open={isRegister} setOpen={setIsRegister} />
+    <Register isRegister={isRegister} setIsRegister={setIsRegister}/>
   ) : (
     <div>
       <LoginDialoglBox
-        open={open}
+        open={isSignInOpen}
         onClose={handleClose}
         PaperProps={{
           style: { borderRadius: "20px" },
@@ -113,7 +113,7 @@ const SignIn: FC<SignInProps> = ({ open, setOpen }) => {
                 variant="text"
                 onClick={() => {
                   setIsRegister((prev) => !prev);
-                  setOpen(false);
+                  setIsSignInOpen(false);
                 }}
               >
                 {t("global.register")}

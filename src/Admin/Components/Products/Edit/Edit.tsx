@@ -152,7 +152,6 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
             spacing={2}
             sx={{ overflowY: 'auto', padding: '20px', maxHeight: '400px' }}>
             {editabeProduct!.images.map((image: string, index: number) => {
-              // const imageName = `images[${index}]`;
               return (
                 <Grid key={index} item xs={6} sm={12}>
                   image N `${index}`

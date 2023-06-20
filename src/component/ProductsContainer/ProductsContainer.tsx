@@ -1,75 +1,83 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../redux/hooks";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../redux/hooks';
 import {
   saveProductsData,
   saveProductsTotalAmount,
   nextPage,
   changePageNumber,
-  saveSliderImages,
-} from "../../pages/Home/redux/HomeActions/HomeActions";
-import {
-  getAllProducts,
-  productsNextpage,
-} from "../../Helpers/Services/products";
-import { useTranslation } from "react-i18next";
+  saveSliderImages
+} from '../../pages/Home/redux/HomeActions/HomeActions';
+import { getAllProducts, productsNextpage } from '../../Helpers/Services/products';
+import { useTranslation } from 'react-i18next';
 
-import ProductCard from "../ProductCard";
+import ProductCard from '../ProductCard';
 
-import MainSlider from "../Slider/Slider";
+import MainSlider from '../Slider/Slider';
 import {
+  HomePageContainer,
   HotOffers,
   HotOffersContainer,
   MainContainer,
-  ProductContainer,
-} from "./ProductsContainer.Style";
-import { Box, Pagination, Stack, Typography } from "@mui/material";
-import { Whatshot } from "@mui/icons-material";
+  PaginationContainer,
+  ProductContainer
+} from './ProductsContainer.Style';
+import { Pagination, Stack, Typography } from '@mui/material';
+import { Whatshot } from '@mui/icons-material';
 
 const ProductsContainer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { products, totalProducts,  pageNumber } =
-    useAppSelector<HomeState>((state) => state.homeReducer);
+  const { products, totalProducts, pageNumber } = useAppSelector<HomeState>(
+    (state) => state.homeReducer
+  );
 
-  const startIndex = (pageNumber - 1) * 12;
-  const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
+  function productsQuantityOnPage() {
+    if (window.innerWidth >= 1282) return 15;
+    if (window.innerWidth >= 1094) return 12;
+    if (window.innerWidth >= 900) return 9;
+    if (window.innerWidth >= 600) return 6;
+    return 4;
+  }
+  const startIndex = (pageNumber - 1) * productsQuantityOnPage();
+  const pageSize = productsQuantityOnPage();
+
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(changePageNumber(value));
   };
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (pageNumber > 1) {
-          const { data } = await productsNextpage(startIndex);
+          const { data } = await productsNextpage(pageSize, startIndex);
+          console.log(data.products);
           dispatch(nextPage(data.products));
         } else {
-          const { data } = await getAllProducts();
+          const { data } = await getAllProducts(pageSize, startIndex);
+          console.log(data.products);
           dispatch(saveProductsData(data.products));
           dispatch(saveProductsTotalAmount(data.total_found));
           dispatch(saveSliderImages(data.products));
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchData();
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "smooth",
+      behavior: 'smooth'
     });
-  }, [startIndex]);
+  }, [productsQuantityOnPage(), startIndex]);
   return (
     <MainContainer>
-      <Box sx={{ width: "100%" }}>
-        <MainSlider />
+      <HomePageContainer>
+       
         <HotOffersContainer>
           <HotOffers>
             <Whatshot fontSize="large" color="error" />
-            <Typography variant="h1">{t("global.hot_offers")}</Typography>
+            <Typography variant='h2Montserrat'>{t('global.hot_offers')}</Typography>
           </HotOffers>
           <ProductContainer>
             {products.map((product) => {
@@ -78,18 +86,18 @@ const ProductsContainer = () => {
           </ProductContainer>
         </HotOffersContainer>
 
-        <Box>
+        <PaginationContainer>
           <Stack spacing={2} mt={4}>
             <Pagination
-              count={Math.ceil(totalProducts / 12)}
+              count={Math.ceil(totalProducts / productsQuantityOnPage())}
               page={pageNumber}
               variant="outlined"
               shape="rounded"
               onChange={handleChangePage}
             />
           </Stack>
-        </Box>
-      </Box>
+        </PaginationContainer>
+      </HomePageContainer>
     </MainContainer>
   );
 };

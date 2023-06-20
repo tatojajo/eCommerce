@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
-import { isAuthenticated } from "../../../Helpers/Auth/isAuthenticated";
-import { useTranslation } from "react-i18next";
+import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from 'react';
+import { isAuthenticated } from '../../../Helpers/Auth/isAuthenticated';
+import { useTranslation } from 'react-i18next';
 import {
   AppBar,
   Container,
@@ -15,9 +15,9 @@ import {
   MenuItem,
   Divider,
   ListItemIcon,
-  Menu,
-} from "@mui/material";
-import { Home, Logout, Settings } from "@mui/icons-material";
+  Menu
+} from '@mui/material';
+import { Home, Logout, Settings } from '@mui/icons-material';
 
 const AdminHeader = () => {
   const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
@@ -25,7 +25,7 @@ const AdminHeader = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const user: User = JSON.parse(localStorage.getItem("User") as string);
+  const user: User = JSON.parse(localStorage.getItem('User') as string);
 
   const handleAdminMenu = () => {
     setIsAdminMenuOpen(true);
@@ -35,20 +35,19 @@ const AdminHeader = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("AccessToken");
-    localStorage.removeItem("User");
+    localStorage.removeItem('AccessToken');
+    localStorage.removeItem('User');
   };
   return (
     <AppBar>
       <Container maxWidth="xl">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Toolbar disableGutters>
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
             <IconButton>
               <Home />
             </IconButton>
@@ -56,19 +55,18 @@ const AdminHeader = () => {
               T-Shop
             </Typography>
           </Box>
-         
+
           <Box>
             <Box display="flex" alignItems="center">
               <Button
                 ref={anchorRef}
                 id="user-menu-button"
-                aria-controls={isAdminMenuOpen ? "user menu" : undefined}
-                aria-expanded={isAdminMenuOpen ? "true" : undefined}
+                aria-controls={isAdminMenuOpen ? 'user menu' : undefined}
+                aria-expanded={isAdminMenuOpen ? 'true' : undefined}
                 aria-haspopup="true"
                 onClick={() => {
                   if (isAuthenticated().isAdmin) handleAdminMenu();
-                }}
-              >
+                }}>
                 <Avatar>{user?.firstName[0]}</Avatar>
 
                 <Typography ml={1} variant="body2">
@@ -85,38 +83,36 @@ const AdminHeader = () => {
                   PaperProps={{
                     elevation: 10,
                     sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                      overflow: 'visible',
+                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                       mt: 1.5,
-                      "& .MuiAvatar-root": {
+                      '& .MuiAvatar-root': {
                         width: 32,
                         height: 32,
                         ml: -0.5,
-                        mr: 1,
+                        mr: 1
                       },
-                      "&:before": {
+                      '&:before': {
                         content: '""',
-                        display: "block",
-                        position: "absolute",
+                        display: 'block',
+                        position: 'absolute',
                         top: 0,
                         right: 14,
                         width: 10,
                         height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
-                    },
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0
+                      }
+                    }
                   }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
                   <MenuItem
                     onClick={() => {
-                      isAuthenticated().isAdmin && navigate("/user");
+                      isAuthenticated().isAdmin && navigate('/user');
                       setIsAdminMenuOpen(false);
-                    }}
-                  >
+                    }}>
                     <Avatar /> My account
                   </MenuItem>
                   <Divider />
@@ -130,13 +126,12 @@ const AdminHeader = () => {
                   <MenuItem
                     onClick={() => {
                       handleLogout();
-                      navigate("/");
-                    }}
-                  >
+                      navigate('/');
+                    }}>
                     <ListItemIcon>
                       <Logout fontSize="small" />
                     </ListItemIcon>
-                    {t("global.logout")}
+                    {t('global.logout')}
                   </MenuItem>
                 </Menu>
               )}

@@ -22,15 +22,21 @@ import {
   Paper,
   Typography
 } from '@mui/material';
-import { AddShoppingCart, ArrowLeft, ArrowRight, Star, StarBorder } from '@mui/icons-material';
-import { CardContainer, ProductLink } from './ProductCardStyle';
+import {
+  AddShoppingCart,
+  ArrowLeft,
+  ArrowRight,
+  Height,
+  Star,
+  StarBorder
+} from '@mui/icons-material';
+import { CardBts, CardContainer, ProductLink } from './ProductCardStyle';
+import palette from '../../theme/palette';
 
 const ProductCard = ({ product }: ProductCartProps) => {
-  const [reserveColor, setReserveColo] = useState('red');
   const [productImage, setProductImage] = useState(0);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { favorites, reservedProducts } = useAppSelector<HomeState>((state) => state.homeReducer);
   const myReservedProducts = localStorage.getItem('Reserved_Products');
   const parsedReservedProducts = myReservedProducts ? JSON.parse(myReservedProducts) : [];
@@ -62,16 +68,13 @@ const ProductCard = ({ product }: ProductCartProps) => {
     const reserved = reservedProducts.find((item) => item.id === product.id);
     if (!reserved) dispatch(reservedProduct(product));
   };
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const newColor = reserveColor === 'red' ? 'orange' : 'red';
-  //     setReserveColo(newColor);
-  //   }, 100);
-
-  //   return () => clearInterval(interval);
-  // }, [myReservedProducts, favorites]);
   return (
-    <Paper elevation={10} sx={{ position: 'relative' }}>
+    <Paper
+      elevation={10}
+      sx={{
+        position: 'relative',
+        height: '100%'
+      }}>
       <CardContainer>
         <CardMedia component="div" sx={{ height: '140px', width: '140px', position: 'relative' }}>
           <IconButton
@@ -109,13 +112,14 @@ const ProductCard = ({ product }: ProductCartProps) => {
             {product.title}
           </ProductLink>
 
-          <Typography variant="body2" color="error" sx={{ marginTop: '10px', fontWeight: '900' }}>
+          <Typography color="error" sx={{ marginTop: '10px' }}>
             {t('global.price')}: ${Number(product.price).toFixed(2)}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardBts>
           <Button
             variant="contained"
+            color="primary"
             onClick={() => {
               dispatch(addProductCart(product));
               toast(() =>
@@ -127,13 +131,14 @@ const ProductCard = ({ product }: ProductCartProps) => {
           </Button>
 
           <Button
-            sx={{ backgroundColor: 'yellow' }}
+            variant="outlined"
+            color="secondary"
             onClick={() => {
               handleFavProduct(product);
             }}>
             {isProductInFavorites ? <Star /> : <StarBorder />}
           </Button>
-        </CardActions>
+        </CardBts>
         <Box
           sx={{
             position: 'absolute',
@@ -150,11 +155,14 @@ const ProductCard = ({ product }: ProductCartProps) => {
           }}
           onClick={() => reserveProduct(product)}>
           {isProductReserved ? (
-            <Typography variant="h4" color="initial">
+            <Typography variant="h4Montserrat" color="initial">
               {t('global.reserved')}
             </Typography>
           ) : (
-            <Typography variant="h4" color="initial">
+            <Typography
+              onClick={() => toast(() => t('global.product_has_successfully_reserved'))}
+              variant="h4Montserrat"
+              color="initial">
               {t('global.reserve')}
             </Typography>
           )}

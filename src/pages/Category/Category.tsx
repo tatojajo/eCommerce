@@ -25,7 +25,7 @@ import { categories } from '../../component/Header/categories';
 import mainBrands from '../../component/Brands/mainBrands';
 import { getFilteredProducts } from '../../Helpers/Services/products';
 import { saveProductsToFilter } from '../Home/redux/HomeActions/HomeActions';
-import { SavedSearch } from '@mui/icons-material';
+import { FilterCenterFocus, SavedSearch } from '@mui/icons-material';
 import ProductCard from '../../component/ProductCard';
 import useDebounce from '../../Helpers/CustomHooks/useBoolean/useDebounce';
 
@@ -88,8 +88,8 @@ const Category = () => {
   const [searchWord, setSeachWord] = useState('');
   const debounceValue = useDebounce(searchWord);
 
-  const [minPrice, setMinPrice] = useState<string | number>('');
-  const [maxPrice, setMaxPrice] = useState<string | number>('');
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
 
   const initialCuantity = 5;
   const startIndex = (pageNumber - 1) * 10;
@@ -100,21 +100,6 @@ const Category = () => {
   const displayedCategories = showAllCategories ? categories : categories.slice(0, initialCuantity);
   const displayBrands = showAllBrands ? mainBrands : mainBrands.slice(0, initialCuantity);
 
-  const handleApplyPrice = () => {
-    const newMinPrice = Number(minPrice);
-    const newMaxPrice = Number(maxPrice);
-
-    if (newMinPrice <= newMaxPrice) {
-      setPriceValue([newMinPrice, newMaxPrice]);
-      const filterPrice: ProductItem[] = productsToFilter.filter((product: ProductItem) => {
-        const productPrice = Number(product.price);
-        return productPrice >= newMinPrice && productPrice <= newMaxPrice;
-      });
-
-      dispatch(saveProductsToFilter(filterPrice, filterPrice.length));
-    }
-  };
-
   const handleShowMoreCategories = () => {
     setShowallCategories((prev) => !prev);
   };
@@ -123,12 +108,19 @@ const Category = () => {
   };
   const setCategory = (category: string) => {
     setCategoryValue(category);
+    setPageNumber(1);
   };
   const setBrand = (brand: string) => {
     setBrandValue(brand);
+    setPageNumber(1);
   };
   const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
     setPageNumber(value);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   };
 
   useEffect(() => {
@@ -142,14 +134,13 @@ const Category = () => {
             const { data } = await getFilteredProducts(categoryValue, brandValue);
 
             const prices = data.products.map((product: ProductItem) => Number(product.price));
-            const maxPrice = Math.max(...prices);
-            const minPrice = Math.min(...prices);
-            setMinPrice(minPrice);
-            setMaxPrice(maxPrice);
+            const productsMaxPrice = Math.max(...prices);
+            const productsMinPrice = Math.min(...prices);
 
-            setPriceValue([minPrice, maxPrice]);
+            setPriceValue([productsMinPrice, productsMaxPrice]);
 
             if (debounceValue) {
+              console.log('debpunce');
               const filteredProducts = data.products.filter((product: ProductItem) => {
                 const productTitle = product.title.toLowerCase();
                 const productDescription = product.description.toLowerCase();
@@ -164,13 +155,36 @@ const Category = () => {
               return dispatch(saveProductsToFilter(filteredProducts, filteredProducts.length));
             }
 
-            dispatch(saveProductsToFilter(data.products, data.total_found));
+            if (
+              Number(minPrice) <= Number(maxPrice) ||
+              (Number(minPrice) > 0 && Number(maxPrice === 0)) ||
+              (Number(minPrice) === 0 && Number(maxPrice) > 0)
+            ) {
+              const filterPrice: ProductItem[] = data.products.filter((product: ProductItem) => {
+                const productPrice = Number(product.price);
+                if (minPrice > 0 && maxPrice === 0) {
+                  return productPrice >= Number(minPrice);
+                }
+                if (maxPrice > 0 && minPrice === 0) {
+                  return productPrice <= Number(maxPrice);
+                }
+                if (minPrice < maxPrice) {
+                  return productPrice >= Number(minPrice) && productPrice <= Number(maxPrice);
+                }
+              });
+              console.log(filterPrice);
+
+              dispatch(saveProductsToFilter(filterPrice, filterPrice.length));
+            }
+
+            if (minPrice === 0 && maxPrice === 0)
+              return dispatch(saveProductsToFilter(data.products, data.total_found));
           } catch (error) {
             console.log(error);
           } finally {
             timeForLoading = setTimeout(() => {
               setLoading(false);
-            }, 1000);
+            }, 5000);
           }
         };
         getProducts();
@@ -178,11 +192,12 @@ const Category = () => {
     } catch (error) {
       console.log(error);
     }
+
     return () => {
       isCanceled = true;
       if (timeForLoading) clearTimeout(timeForLoading);
     };
-  }, [categoryValue, brandValue, debounceValue]);
+  }, [categoryValue, brandValue, debounceValue, minPrice, maxPrice]);
   return (
     <Box sx={{ display: 'flex' }}>
       <Drawer
@@ -233,20 +248,15 @@ const Category = () => {
               <TextField
                 label="Min Price"
                 value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
+                onChange={(e) => setMinPrice(Number(e.target.value))}
               />
             </Grid>
             <Grid item sm={6}>
               <TextField
                 label="Max Price"
                 value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
               />
-            </Grid>
-            <Grid item sm={12} textAlign="center">
-              <Button variant="outlined" color="primary" onClick={handleApplyPrice}>
-                Apply
-              </Button>
             </Grid>
           </Grid>
         </Paper>

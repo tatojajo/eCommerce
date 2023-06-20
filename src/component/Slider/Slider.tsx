@@ -2,8 +2,8 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { Background } from './sliderStyles';
-import { Box, ListItem, ListItemButton, Typography } from '@mui/material';
+import { Background, CategoryDisplayOnSlide, SliderImage, SliderTitle } from './sliderStyles';
+import { Box, ListItemButton } from '@mui/material';
 import { moveToProductPage } from '../../pages/Home/redux/HomeActions/HomeActions';
 import { useNavigate } from 'react-router-dom';
 import { categories } from '../Header/categories';
@@ -11,53 +11,65 @@ import { categories } from '../Header/categories';
 const MainSlider = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { sliderImages } = useAppSelector<HomeState>((state) => state.homeReducer);
+  const { sliderImages, searchedResults } = useAppSelector<HomeState>((state) => state.homeReducer);
 
   var settings = {
     dots: true,
     infinite: true,
-    speed: 5000,
+    speed: 7000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 6000,
     slickNext: false,
     slickPrevious: false,
     swipe: true,
-    arrows: false
+    arrows: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
   };
 
   return (
-    <Box sx={{ position: 'relative' }}>
-      <Box
+    <Box sx={{ position: 'relative', mt: 10 }}>
+      <CategoryDisplayOnSlide
         sx={{
-          position: 'absolute',
-          zIndex: '1',
-          overflowY: 'scroll',
-          height: '420px',
-          left: '10%',
-          '&::-webkit-scrollbar': {
-            width: '0.3em'
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'transparent'
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: 'gray',
-            borderRadius: '0.25em'
-          }
+          zIndex: searchedResults.length > 0 ? 0 : 1
         }}>
         {categories.map((category) => {
           return (
             <ListItemButton
-            key={category}
-              style={{ color: 'white' }}
+              key={category}
+              style={{ color: 'black' }}
               onClick={() => navigate(`/category/${category}`)}>
               {category}
             </ListItemButton>
           );
         })}
-      </Box>
+      </CategoryDisplayOnSlide>
       <Slider {...settings}>
         {sliderImages.map((product: ProductItem, i) => (
           <Background
@@ -66,17 +78,11 @@ const MainSlider = () => {
               dispatch(moveToProductPage(product));
               navigate(`/product/${product.id}/${product.brand}`);
             }}>
-            <Typography variant="h2" color="limegreen">
+            <SliderTitle variant="h2" color="limegreen">
               <strong>{product.brand}: " </strong>
               {product.title} "
-            </Typography>
-            <img
-              src={product.images?.[0]}
-              alt={`Tshop ${i}`}
-              style={{
-                margin: '25px auto'
-              }}
-            />
+            </SliderTitle>
+            <SliderImage src={product.images?.[0]} alt={`Tshop ${i}`} />
           </Background>
         ))}
       </Slider>

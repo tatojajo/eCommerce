@@ -82,7 +82,8 @@
     "brand_is_not_selected": "Brand is not selected",
     "category_is_not_selected": "Category is not selected",
     "reserve": "Reserve",
-    "reserved": "Reserved"
+    "reserved": "Reserved",
+    "product_has_successfully_reserved": "Product has successfully reserved"
   },
   "ge": {
     "is": "არის",
@@ -162,6 +163,7 @@
     "brand_is_not_selected": "ბრენდი არა არის არჩეული",
     "category_is_not_selected": "კატეგორია არ არის არჩეული",
     "reserve": "დაჯავშნა",
-    "reserved": "დაჯავშნილია"
+    "reserved": "დაჯავშნილია",
+    "product_has_successfully_reserved": "პროდუქტი წარმატებით დაჯავშნა"
   }
 }

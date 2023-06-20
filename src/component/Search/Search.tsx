@@ -1,25 +1,17 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { useNavigate } from "react-router-dom";
-import { t } from "i18next";
+import { FC, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-import {
-  Box,
-  CardContent,
-  CardMedia,
-  Paper,
-  Typography,
-  Button,
-} from "@mui/material";
-import { Search as SearchIcon } from "@mui/icons-material";
-import { CardContainer, ProductLink } from "../ProductCard/ProductCardStyle";
+import { Box, CardContent, CardMedia, Paper, Typography, Button } from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
 
 import {
   moveToProductPage,
-  saveSearchedProducts,
-} from "../../pages/Home/redux/HomeActions/HomeActions";
-import { getSearchedProducts } from "../../Helpers/Services/products";
-import { useTranslation } from "react-i18next";
+  saveSearchedProducts
+} from '../../pages/Home/redux/HomeActions/HomeActions';
+import { getSearchedProducts } from '../../Helpers/Services/products';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { CardContainer, ProductLink } from '../ProductCard/ProductCardStyle';
 
 type SearchProps = {
   debouncedValue: string;
@@ -29,13 +21,11 @@ const Search: FC<SearchProps> = ({ debouncedValue }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const { searchedResults } = useAppSelector<HomeState>(
-    (state) => state.homeReducer
-  );
+  const { searchedResults } = useAppSelector<HomeState>((state) => state.homeReducer);
 
   useEffect(() => {
     let isCanceled = false;
-    
+
     const fetchData = async () => {
       try {
         const searchedProducts = async () => {
@@ -56,31 +46,30 @@ const Search: FC<SearchProps> = ({ debouncedValue }) => {
     };
   }, [debouncedValue]);
   return (
-    <Box>
+    <Box sx={{zIndex:1}}>
       {searchedResults.length >= 0 && (
         <Paper
           sx={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            gap: "10px",
-            backdropFilter: "blur(5px)",
-            padding: "20px",
-          }}
-        >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            gap: '10px',
+            backdropFilter: 'blur(5px)',
+            padding: '20px'
+          }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <SearchIcon color="error" />
             {searchedResults.length > 0 ? (
               <Typography variant="h3" color="initial">
-                {t("global.search_results")}
+                {t('global.search_results')}
               </Typography>
             ) : (
               <Typography variant="h3" color="initial">
-                {t("global.results_not_found")}
+                {t('global.results_not_found')}
               </Typography>
             )}
           </Box>
-          <Box sx={{ display: "flex", gap: "10px" }}>
+          <Box sx={{ display: 'flex', gap: '10px' }}>
             {searchedResults.map((product, index) => {
               return (
                 index <= 5 && (
@@ -89,31 +78,27 @@ const Search: FC<SearchProps> = ({ debouncedValue }) => {
                       <CardMedia
                         component="div"
                         sx={{
-                          height: "140px",
-                          width: "140px",
-                        }}
-                      >
+                          height: '140px',
+                          width: '140px'
+                        }}>
                         <img
                           src={product.images[0]}
                           alt={product.title}
-                          style={{ height: "100%", width: "100%" }}
+                          style={{ height: '100%', width: '100%' }}
                         />
                       </CardMedia>
                       <CardContent>
                         <ProductLink
                           to={`/product/${product.categories}/${product.brand}`}
-                          onClick={() => dispatch(moveToProductPage(product))}
-                        >
+                          onClick={() => dispatch(moveToProductPage(product))}>
                           {product.title}
                         </ProductLink>
 
                         <Typography
                           variant="body2"
                           color="error"
-                          sx={{ marginTop: "10px", fontWeight: "900" }}
-                        >
-                          {t("global.price")}: $
-                          {Number(product.price).toFixed(2)}
+                          sx={{ marginTop: '10px', fontWeight: '900' }}>
+                          {t('global.price')}: ${Number(product.price).toFixed(2)}
                         </Typography>
                       </CardContent>
                     </CardContainer>
@@ -127,9 +112,8 @@ const Search: FC<SearchProps> = ({ debouncedValue }) => {
               variant="text"
               onClick={() => {
                 navigate(`/search/${debouncedValue}`);
-              }}
-            >
-              {t("global.see_more")}
+              }}>
+              {t('global.see_more')}
             </Button>
           )}
         </Paper>

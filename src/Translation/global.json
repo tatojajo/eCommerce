@@ -73,8 +73,17 @@
     "tv": "Tv",
     "buy_now": "By Now",
     "similar_products": "Similar Products",
-    "found":"Found",
-    "details":"Details"
+    "found": "Found",
+    "details": "Details",
+    "product_added_to_cart_check_your_cart_to_complete_your_purchase": "Product added to cart Check your cart to complete your purchase.",
+    "see_more": "See More",
+    "favorites": "Favorites",
+    "close": "Close",
+    "brand_is_not_selected": "Brand is not selected",
+    "category_is_not_selected": "Category is not selected",
+    "reserve": "Reserve",
+    "reserved": "Reserved",
+    "product_has_successfully_reserved": "Product has successfully reserved"
   },
   "ge": {
     "is": "არის",
@@ -145,7 +154,16 @@
     "tv": "ტელევიზორი",
     "buy_now": "ყიდვა",
     "similar_products": "მსგავსი პროდუქტები",
-    "found":"მოიძებნა",
-    "details":"დეტალები"
+    "found": "მოიძებნა",
+    "details": "დეტალები",
+    "product_added_to_cart_check_your_cart_to_complete_your_purchase": "პროდუქტი დამატებულია კალათაში. შეამოწმეთ თქვენი კალათა შესყიდვის დასასრულებლად.",
+    "see_more": "მეტის ნახვა",
+    "favorites": "სასურველი პროდუქტები",
+    "close": "დახურვა",
+    "brand_is_not_selected": "ბრენდი არა არის არჩეული",
+    "category_is_not_selected": "კატეგორია არ არის არჩეული",
+    "reserve": "დაჯავშნა",
+    "reserved": "დაჯავშნილია",
+    "product_has_successfully_reserved": "პროდუქტი წარმატებით დაჯავშნა"
   }
 }

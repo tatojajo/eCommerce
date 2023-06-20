@@ -16,7 +16,9 @@ import {
   SET_FAVORITE_PRODUCTS,
   SET_LOADING,
   SAVE_SIMILAR_PRODUCTS,
-} from "./HomeActions";
+  SAVE_PRODUCTS_TO_FILTER,
+  RESERVE_PRODUCT
+} from './HomeActions';
 
 export type SAVE_PRODUCTS_DATA_ACTION = {
   type: typeof SAVE_PRODUCTS_DATA;
@@ -103,6 +105,17 @@ export type SAVE_SIMILAR_PRODUCTS_ACTION = {
   type: typeof SAVE_SIMILAR_PRODUCTS;
   products: ProductItem[];
 };
+
+export type SAVE_PRODUCTS_TO_FILTER_ACTION = {
+  type: typeof SAVE_PRODUCTS_TO_FILTER;
+  products: ProductItem[];
+  total_found: number;
+};
+
+export type RESERVE_PRODUCT_ACTION = {
+  type: typeof RESERVE_PRODUCT;
+  product: ProductItem;
+};
 export type HOME_ACTIONS =
   | SAVE_PRODUCTS_DATA_ACTION
   | SAVE_PTODUCTS_TOTAL_AMOOUNT_ACTION
@@ -120,4 +133,6 @@ export type HOME_ACTIONS =
   | REMOVE_FAVORITE_PRODUCT_ACTION
   | SELECT_BRAND_ACTION
   | SELECTED_BRANDS_PRODUCTS_ACTION
-  | SAVE_SIMILAR_PRODUCTS_ACTION;
+  | SAVE_SIMILAR_PRODUCTS_ACTION
+  | SAVE_PRODUCTS_TO_FILTER_ACTION
+  | RESERVE_PRODUCT_ACTION;

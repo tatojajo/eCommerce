@@ -16,34 +16,36 @@ interface AppThemeProps {
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
-    h1Roboto: React.CSSProperties;
-    h2Roboto: React.CSSProperties;
-    h3Roboto: React.CSSProperties;
-    h4Roboto?: React.CSSProperties;
-    subtitle1Roboto?: React.CSSProperties;
-    subtitle2Roboto?: React.CSSProperties;
+    h1Montserrat: React.CSSProperties;
+    h2Montserrat: React.CSSProperties;
+    h3Montserrat: React.CSSProperties;
+    h4Montserrat?: React.CSSProperties;
+    subtitle1Montserrat?: React.CSSProperties;
+    subtitle2Montserrat?: React.CSSProperties;
+    caption2?: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
-    h1Roboto?: React.CSSProperties;
-    h2Roboto?: React.CSSProperties;
-    h3Roboto?: React.CSSProperties;
-    h4Roboto?: React.CSSProperties;
-    subtitle1Roboto?: React.CSSProperties;
-    subtitle2Roboto?: React.CSSProperties;
+    h1Montserrat?: React.CSSProperties;
+    h2Montserrat?: React.CSSProperties;
+    h3Montserrat?: React.CSSProperties;
+    h4Montserrat?: React.CSSProperties;
+    subtitle1Montserrat?: React.CSSProperties;
+    subtitle2Montserrat?: React.CSSProperties;
+    body2Montserrat?: React.CSSProperties;
   }
 }
 
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
-    h1Roboto: true;
-    h2Roboto: true;
-    h3Roboto: true;
-    h4Roboto: true;
-    subtitle1Roboto: true;
-    subtitle2Roboto: true;
+    h1Montserrat: true;
+    h2Montserrat: true;
+    h3Montserrat: true;
+    h4Montserrat: true;
+    subtitle1Montserrat: true;
+    subtitle2Montserrat: true;
   }
 }
 
@@ -67,6 +69,10 @@ export type PaletteColorKey = keyof SimplePaletteColorOptions;
 
 export const appTheme = createTheme({
   ...theme,
+  // palette: {
+  //   ...theme.palette,
+  //   mode: 'light'
+  // },
 }) as unknown as CustomThemeOptions;
 
 export const AppTheme = (props: AppThemeProps): ReactElement => {

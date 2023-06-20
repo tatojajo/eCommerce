@@ -1,19 +1,22 @@
 type ProductItem = {
   amount: string;
   brand: string;
-  categories: string;
+  categories: string[];
   description: string;
   id: string;
   images: string[];
-  price: number;
+  price: number | string;
   rating: string;
   title: string;
+  favorite?: boolean;
 };
 type CartProductItem = ProductItem & {
   quantity: number;
 };
 type HomeState = {
   selectedBrandsProducts: ProductItem[];
+  productsToFilter: ProductItem[];
+  reservedProducts: ProductItem[];
   searchedResults: ProductItem[];
   similarProducts: ProductItem[];
   cartItems: CartProductItem[];
@@ -21,6 +24,7 @@ type HomeState = {
   products: ProductItem[];
   sliderImages: ProductItem[];
   selectedProduct: CartProductItem | null;
+  totalProductsToFilter: number;
   totalSearchedProducts: number;
   selectedCategory: Categories;
   totalProducts: number;
@@ -43,6 +47,8 @@ interface ProductCartProps {
 
 type AdminState = {
   allProducts: ProductItem[];
+  editabeProduct: ProductItem | null;
+  brands: string[];
 };
 
 type Categories = {

@@ -1,68 +1,87 @@
-import { useEffect, useState } from "react";
-import Carousel from "react-material-ui-carousel";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { useTranslation } from 'react-i18next';
 
 import {
   addProductCart,
   moveToProductPage,
-  saveSimilarProducts,
-} from "../Home/redux/HomeActions/HomeActions";
+  saveSimilarProducts
+} from '../Home/redux/HomeActions/HomeActions';
 
-import { Box, Typography, Button, IconButton, Paper } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  Paper,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from '@mui/material';
 import {
   ArrowDropDown,
   ArrowDropUp,
+  ArrowLeft,
+  ArrowRight,
   Circle,
-  ContentPaste,
   ContentPasteSearch,
   Description,
   LabelImportant,
+  PanoramaFishEye,
   ShoppingBag,
-  ShoppingCart,
-} from "@mui/icons-material";
+  ShoppingCart
+} from '@mui/icons-material';
 import {
   ProductInfoWrapper,
-  ProductImagesWraper,
   ProductImagesContainer,
   SliderImageWraper,
   Image,
   ProductDescription,
   ProductBtns,
-} from "./ProductPageStyle";
-import { selectedBrandProducts } from "../../Helpers/Services/products";
-import { BrandImage, BrandPaper } from "../../component/Brands/BrandsStyles";
-import Slider from "react-slick";
-import ProductCard from "../../component/ProductCard";
+  ProductConatiner,
+  ProductTitle,
+  ProductBrand,
+  ProductImage,
+  MoreInfo,
+  SimilarProductsButtons,
+  SimilarProductsContainer,
+  SimilarProductsHeader,
+  MainImageWrapper,
+  QuantityContainer
+} from './ProductPageStyle';
+import { selectedBrandProducts } from '../../Helpers/Services/products';
+import ProductCard from '../../component/ProductCard';
 
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 5000,
-  slidesToShow: 7,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 2000,
-  slickNext: false,
-  slickPrevious: false,
-  swipe: true,
-  arrows: false,
-};
+function similarProductsQuantity() {
+  if (window.innerWidth >= 1536) return 6;
+  if (window.innerWidth >= 1370) return 4;
+  if (window.innerWidth >= 1200) return 4;
+  if (window.innerWidth >= 900) return 4;
+  if (window.innerWidth >= 600) return 4;
+  return 4;
+}
+
+const productColors = ['#d32f2f', '#0288d1', '#ed6c02', '#ffffff'];
 
 const Product = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [productImage, setProductImage] = useState<number>(0);
-  const [color, setColor] = useState<string>("#d32f2f");
+  const [color, setColor] = useState<string>('#ffffff');
+  console.log(color);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const { selectedProduct, similarProducts } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
-  console.log(selectedProduct);
+
   const increaseQuntity = () => {
     const increasedQuantity = selectedProduct && {
       ...selectedProduct,
-      quantity: selectedProduct.quantity + 1,
+      quantity: selectedProduct.quantity + 1
     };
     dispatch(moveToProductPage(increasedQuantity!));
   };
@@ -71,118 +90,114 @@ const Product = () => {
     if (selectedProduct?.quantity === 1) return;
     const decreasedQuantity = selectedProduct && {
       ...selectedProduct,
-      quantity: selectedProduct.quantity - 1,
+      quantity: selectedProduct?.quantity - 1
     };
     dispatch(moveToProductPage(decreasedQuantity!));
+  };
+  const startIndex = (pageNumber - 1) * similarProductsQuantity();
+  const pageSize = similarProductsQuantity();
+
+  const hanldleNextSimilarProducts = () => {
+    setPageNumber((prev) => prev + 1);
+  };
+  const hanldlePrevSimilarProducts = () => {
+    setPageNumber((prev) => prev - 1);
+  };
+
+  const handleCloseDetails = () => {
+    setIsDescriptionOpen(false);
   };
 
   useEffect(() => {
     try {
       const similarProducts = async () => {
-        const { data } = await selectedBrandProducts(selectedProduct!.brand);
+        const { data } = await selectedBrandProducts(pageSize, startIndex, selectedProduct!.brand);
+        if (data.total_found === 1) return setPageNumber((prev) => prev);
         dispatch(saveSimilarProducts(data.products));
       };
       similarProducts();
     } catch (error) {
       console.log(error);
     }
-  }, [selectedProduct]);
+  }, [selectedProduct!.id, pageNumber]);
 
   return (
-    <Box
-      sx={{
-        width: "90%",
-        margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <ProductConatiner>
       <ProductInfoWrapper>
-        <ProductImagesWraper>
-          <ProductImagesContainer maxWidth="sm">
-            <SliderImageWraper>
-              {selectedProduct?.images.map((image, index) => {
-                return (
-                  index < 4 && (
-                    <Image
-                      key={index}
-                      src={image}
-                      index={index}
-                      productImage={productImage}
-                      onClick={() => setProductImage(index)}
-                      alt="image"
-                    />
-                  )
-                );
-              })}
-            </SliderImageWraper>
-            <Box>
-              <img
-                src={selectedProduct?.images[productImage]}
-                alt=""
-                style={{
-                  backgroundColor: `${color}`,
-                  borderRadius: "10px",
-                  padding: "10px",
-                  width: "300px",
-                  height: "250px",
-                }}
-              />
-            </Box>
-          </ProductImagesContainer>
-        </ProductImagesWraper>
+        <ProductImagesContainer>
+          <SliderImageWraper>
+            {selectedProduct?.images.map((image, index) => {
+              return (
+                index < 4 && (
+                  <Image
+                    key={index}
+                    src={image}
+                    index={index}
+                    productImage={productImage}
+                    onClick={() => setProductImage(index)}
+                    alt="image"
+                  />
+                )
+              );
+            })}
+          </SliderImageWraper>
+          <MainImageWrapper>
+            <ProductImage
+              src={selectedProduct?.images[productImage]}
+              alt=""
+              style={{
+                backgroundColor: `${color}`
+              }}
+            />
+          </MainImageWrapper>
+        </ProductImagesContainer>
         <ProductDescription>
-          <Typography
-            variant="h6"
-            color="initial"
-            sx={{ display: "flex", alignItems: "center", gap: "5px" }}
-          >
-            <LabelImportant />
-            {t("global.brand")}: <strong>{selectedProduct?.brand}</strong>
-          </Typography>
-          <Typography variant="h6" color="initial">
+          <ProductTitle variant="h6" color="initial">
             {selectedProduct?.title}
-          </Typography>
+          </ProductTitle>
+          <ProductBrand variant="h6" color="initial">
+            <LabelImportant color="info" />
+            {t('global.brand')}: <strong>{selectedProduct?.brand}</strong>
+          </ProductBrand>
           <Typography variant="h6" color="initial">
-            {t("global.category")}: {selectedProduct?.categories}
+            <strong>{t('global.category')}</strong>: {selectedProduct?.categories}
           </Typography>
           <Box>
-            <strong>{t("global.colors")}:</strong>
-
-            <IconButton onClick={() => setColor("#d32f2f")}>
-              <Circle color="error" />
-            </IconButton>
-            <IconButton onClick={() => setColor("#0288d1")}>
-              <Circle color="info" />
-            </IconButton>
-            <IconButton onClick={() => setColor("#ed6c02")}>
-              <Circle color="warning" />
-            </IconButton>
+            <strong>{t('global.colors')}:</strong>
+            {productColors.map((imageColor, index) => {
+              return (
+                <IconButton key={imageColor} onClick={() => setColor(imageColor)}>
+                  <Box
+                    sx={{
+                      width: '18px',
+                      height: '18px',
+                      bgcolor: imageColor,
+                      borderRadius: '50px'
+                    }}></Box>
+                </IconButton>
+              );
+            })}
           </Box>
           <Typography variant="h6" color="initial">
-            <strong>{t("global.price")}: </strong>$
-            {Number(selectedProduct?.price).toFixed(2)}
+            <strong>{t('global.price')}: </strong>${Number(selectedProduct?.price).toFixed(2)}
           </Typography>
           <ProductBtns>
             <Button
               variant="contained"
               color="primary"
-              onClick={() => dispatch(addProductCart(selectedProduct!))}
-            >
-              {t("global.add")} <ShoppingCart />
+              onClick={() => dispatch(addProductCart(selectedProduct!))}>
+              {t('global.add')} <ShoppingCart />
             </Button>
             <Button variant="contained" color="secondary">
-              {t("global.buy_now")}
+              {t('global.buy_now')}
               <ShoppingBag />
             </Button>
-            <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <QuantityContainer>
               <Typography variant="h5" color="initial">
                 <strong>Qty: </strong>
-                <span style={{ color: "red", fontWeight: 700 }}>
-                  {selectedProduct!.quantity}
-                </span>
+                <span style={{ color: 'red', fontWeight: 700 }}>{selectedProduct?.quantity}</span>
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <IconButton onClick={increaseQuntity}>
                   <ArrowDropUp />
                 </IconButton>
@@ -190,65 +205,65 @@ const Product = () => {
                   <ArrowDropDown />
                 </IconButton>
               </Box>
-            </Box>
+            </QuantityContainer>
           </ProductBtns>
-          <Box
-            sx={{
-              border: "1px solid",
-              maxWidth: "220px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: "5px",
-              borderRadius: "15px",
-              backgroundColor: "lightgrey",
-              cursor: "pointer",
-            }}
-            onClick={() => setIsDescriptionOpen((prev) => !prev)}
-          >
-            <Typography variant="h1" color="initial">
-              <Description color="info" /> {t("global.more_info")}
-              <IconButton>
-                {isDescriptionOpen ? <ArrowDropUp /> : <ArrowDropDown />}
-              </IconButton>
+          <MoreInfo variant="outlined" onClick={() => setIsDescriptionOpen((prev) => !prev)}>
+            <Typography variant="h5" color="initial">
+              <Description color="info" /> {t('global.more_info')}
             </Typography>
-          </Box>
+          </MoreInfo>
         </ProductDescription>
       </ProductInfoWrapper>
-      <Box>
-        {isDescriptionOpen && (
-          <Paper elevation={4} sx={{ p: 3 }}>
-            <Typography variant="h1" color="initial">
-              {t("global.details")}:
-            </Typography>
-            <Paper elevation={3} sx={{ padding: "10px", marginTop: "10px" }}>
+      <Dialog open={isDescriptionOpen} onClose={handleCloseDetails}>
+        <DialogTitle>
+          <Typography variant="h1" color="initial">
+            {t('global.details')}:
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Paper elevation={5} sx={{ padding: '20px', marginTop: '10px' }}>
               {selectedProduct?.description}
             </Paper>
-          </Paper>
-        )}
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          marginTop: `${isDescriptionOpen}` && "50px",
-        }}
-      >
-        <Box>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDetails} color="tertiary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <SimilarProductsContainer>
+        <SimilarProductsHeader>
           <Typography variant="h1" color="initial">
-            <ContentPasteSearch color="success" />{" "}
-            {t("global.similar_products")}
+            <ContentPasteSearch color="success" /> {t('global.similar_products')}
           </Typography>
-          <Box mt={5}>
-            <Slider {...settings}>
-              {similarProducts.map((product, index) => {
-                return <ProductCard key={index} product={product} />;
-              })}
-            </Slider>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+          <SimilarProductsButtons>
+            <Button variant="outlined" onClick={hanldlePrevSimilarProducts}>
+              <ArrowLeft />
+            </Button>
+            <Button variant="outlined" onClick={hanldleNextSimilarProducts}>
+              <ArrowRight />
+            </Button>
+          </SimilarProductsButtons>
+        </SimilarProductsHeader>
+        <Grid
+          container
+          spacing={1}
+          sx={{
+            marginTop: '30px'
+          }}>
+          {similarProducts.map((product, index) => {
+            return (
+              <Grid item xs={12} sm={6} md={3} lg={3} xl={2}>
+                <ProductCard key={index} product={product} />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </SimilarProductsContainer>
+    </ProductConatiner>
   );
 };
 

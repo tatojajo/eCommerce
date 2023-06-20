@@ -1,8 +1,7 @@
-
 body {
+  width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* background-image: url('https://static.vecteezy.com/system/resources/previews/005/263/666/non_2x/shop-online-concept-shopping-cart-search-credit-card-and-bag-virtual-icon-on-blue-background-digital-marketing-e-commerce-quarantine-to-save-life-from-coronavirus-free-vector.jpg'); */
-  /* max-width: 1500px; */
+  overflow-x: hidden;
 }

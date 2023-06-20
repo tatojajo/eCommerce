@@ -1,9 +1,10 @@
-import { styled, Box, Toolbar, TextField } from "@mui/material";
+import { styled, Box, Toolbar, TextField, alpha, InputBase } from "@mui/material";
 
 export const HeaderWraper = styled(Toolbar)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 `;
 
 export const LogoTitle = styled(Box)`
@@ -26,60 +27,43 @@ export const UserContainer = styled(Box)`
   justify-content: space-between;
 `;
 
-export const RoundedTextField = styled(TextField)`
-  & .MuiOutlinedInput-root {
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    background-color: #f0f0f0;
-    width: 200px;
-    height: 48px;
-    &:hover .MuiOutlinedInput-notchedOutline {
-      border-left-color: blue;
-      border-top-color: blue;
-      border-bottom-color: blue;
-    }
-    & .MuiOutlinedInput-notchedOutline {
-      border-top: 2px solid #ced4da;
-      border-bottom: 2px solid #ced4da;
-      border-left: 2px solid #ced4da;
-      border-right: transparent;
-    }
-  }
-`;
+export const SearchInput = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: "50px",
+  backgroundColor: "lightgrey",
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
 
-export const customStyles = {
-  control: (provided: any, state: any) => ({
-    ...provided,
-    borderTop: state.isFocused ? "2px solid #3366ff" : "2px solid #ced4da",
-    borderBottom: state.isFocused ? "2px solid #3366ff" : "2px solid #ced4da",
-    borderRight: state.isFocused ? "2px solid #3366ff" : "2px solid #ced4da",
-    borderLeft: state.isFocused ? "none" : "none",
-    height: "48px",
-    maxWidth: "160px",
-    minWidth: "160px",
-    backgroundColor: "#f0f0f0",
-    borderTopLeftRadius: "0px",
-    borderBottomLeftRadius: "0px",
-    borderTopRightRadius: "20px",
-    borderBottomRightRadius: "20px",
+export const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
 
-    "&:hover": {
-      borderColor: "#3366ff",
-      borderTopColor: "blue",
-      borderBottomColor: "blue",
-      borderRightColor: "blue",
-      borderLeftColor: "transparent",
+export const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
     },
-  }),
-  option: (provided: any, state: any) => ({
-    ...provided,
-    backgroundColor: state.isSelected ? "#3366ff" : "transparent",
-    color: state.isSelected ? "#ffffff" : "#333333",
-  }),
-  placeholder: (provided: any) => ({
-    ...provided,
-    color: "#6c757d",
-  }),
-};
+  },
+}));

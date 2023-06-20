@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,11 +11,13 @@ import {
   TextFieldContainer,
 } from "./SignInSyled";
 import { userlogin } from "../../Helpers/Services/user";
+
+import Register from "../Register";
 import { isAuthenticated } from "../../Helpers/Auth/isAuthenticated";
 
 interface SignInProps {
-  open: boolean;
-  setOpen: Function;
+  isSignInOpen: boolean;
+  setIsSignInOpen: Function;
 }
 
 const signInValidationSchema = yup.object().shape({
@@ -26,9 +29,10 @@ const signInValidationSchema = yup.object().shape({
     .max(12, "Password length cannot exceed more than 12 characters"),
 });
 
-console.log(isAuthenticated());
-const SignIn = ({ open, setOpen }: SignInProps) => {
+const SignIn: FC<SignInProps> = ({ isSignInOpen, setIsSignInOpen }) => {
   const navigate = useNavigate();
+  const {isAdmin} = isAuthenticated()
+  const [isRegister, setIsRegister] = useState<boolean>(false);
   const { t } = useTranslation();
   const {
     register,
@@ -39,12 +43,14 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
     resolver: yupResolver(signInValidationSchema),
   });
   const onSubmit: SubmitHandler<SignInInitialValue> = async (user) => {
-    console.log(user);
+    
     try {
       const { data } = await userlogin(user);
+      console.log(data)
       localStorage.setItem("AccessToken", data.AccessToken);
       localStorage.setItem("User", JSON.stringify(data.User));
-      setOpen(false);
+      if(user.email === 'admin' && user.password === 'admin')navigate('/admin-page')
+      setIsSignInOpen(false);
     } catch (error) {
       console.log(error);
     }
@@ -52,12 +58,20 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
 
   const handleClose = () => {
     navigate("/");
-    setOpen(false);
+    setIsSignInOpen(false);
   };
 
-  return (
+  return isRegister ? (
+    <Register isRegister={isRegister} setIsRegister={setIsRegister}/>
+  ) : (
     <div>
-      <LoginDialoglBox open={open} onClose={handleClose}>
+      <LoginDialoglBox
+        open={isSignInOpen}
+        onClose={handleClose}
+        PaperProps={{
+          style: { borderRadius: "20px" },
+        }}
+      >
         <SignInContainer>
           <Box
             sx={{
@@ -93,11 +107,17 @@ const SignIn = ({ open, setOpen }: SignInProps) => {
             </Box>
           </TextFieldContainer>
           <Box>
-            <Typography variant="subtitle1" color="initial">
+            <Typography variant="h6" color="initial">
               {t("global.don't_have_an_account")}?
-              <Link to="/register" onClick={() => setOpen(false)}>
+              <Button
+                variant="text"
+                onClick={() => {
+                  setIsRegister((prev) => !prev);
+                  setIsSignInOpen(false);
+                }}
+              >
                 {t("global.register")}
-              </Link>
+              </Button>
             </Typography>
           </Box>
         </SignInContainer>

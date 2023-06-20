@@ -1,3 +1,3 @@
-import Header  from "./Header";
+import AdminHeader  from "./Header";
 
-export default Header
+export default AdminHeader

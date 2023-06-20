@@ -1,24 +1,21 @@
 
 
-const categories = [
-    "Mobile Phones",
+export const categories = [
+    "Mobile",
     "Laptops",
     "Tablets",
     "Headphones",
     "Cameras",
-    "Gaming Consoles",
+    "Consoles",
     "Smartwatches",
     "Printers",
     "Speakers",
     "Monitors",
-    "Computer Accessories",
-    "Networking Devices",
-    "Home Appliances",
-    "Smart Home Devices",
-    "Wearable Devices",
-    "Virtual Reality",
-    "Car Electronics",
-    "Audio Equipment",
+    // "Computer_Accessories",
+    // "Wearable_Devices",
+    // "Virtual_Reality",
+    // "Car_Electronics",
+    // "Audio_Equipment",
   ];
   
   export  const options:Categories[] = categories.map((category, index) => ({

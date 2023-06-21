@@ -67,7 +67,7 @@ export const primary: Record<string, string> = {
   main: '#005f5bde',
   dark: '#002624de',
   darkGrey: '#646b6ade',
-  light: '##aad5d3de',
+  light: '#aad5d3de',
   white: '#edf1f1de'
 };
 
@@ -84,12 +84,12 @@ const background: Record<BackgroundColors, string> = {
   pastelBlue: '#4c4cff'
 };
 const text: Record<string, string> = {
-  primary: '#444398de',
+  primary: '#444398',
   secondary: '#7f5200'
 };
 
 const secondary: Record<string, string> = {
-  main: '#ef7b00de',
+  main: '#ef7b00',
   dark: '#7f4100de',
   light: '#e1bc94de'
 };

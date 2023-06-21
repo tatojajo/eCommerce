@@ -3,7 +3,7 @@ import sliderBg from '../../images/slider-images-bg.jpg';
 
 export const Background = styled(Box)`
   width: 100%;
-  height: 400px;
+  height: 300px;
   padding: 20px;
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${sliderBg});
   background-repeat: no-repeat;
@@ -48,8 +48,8 @@ export const SliderImage = styled('img')`
 export const CategoryDisplayOnSlide = styled(Box)`
   direction: rtl;
   position: absolute;
-  top: 10px;
-  height: 430px;
+  top:0px;
+  height: 340px;
   right: 10%;
   background-color: #f5f5f5;
 
@@ -68,7 +68,7 @@ export const CategoryDisplayOnSlide = styled(Box)`
   @media (max-width: 900px) {
     right: 1px;
     overflow-y: auto;
-    height: 320px;
+    height: 330px;
   }
 
   @media (max-width: 600px) {

@@ -13,6 +13,7 @@ import xiaomi from "../../images/brands/xiaomi.png";
 import sony from "../../images/brands/sony.png";
 import microsoft from "../../images/brands/microsoft.png";
 
+
 const mainBrands = [
   {
     brand: "Apple",

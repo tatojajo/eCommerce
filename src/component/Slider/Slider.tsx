@@ -78,7 +78,7 @@ const MainSlider = () => {
               dispatch(moveToProductPage(product));
               navigate(`/product/${product.id}/${product.brand}`);
             }}>
-            <SliderTitle variant="h2" color="limegreen">
+            <SliderTitle variant='h4Montserrat' color="limegreen">
               <strong>{product.brand}: " </strong>
               {product.title} "
             </SliderTitle>

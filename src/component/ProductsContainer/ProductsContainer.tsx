@@ -33,9 +33,8 @@ const ProductsContainer = () => {
   );
 
   function productsQuantityOnPage() {
-    if (window.innerWidth >= 1282) return 15;
-    if (window.innerWidth >= 1094) return 12;
-    if (window.innerWidth >= 900) return 9;
+    if (window.innerWidth >= 1200) return 15;
+    if (window.innerWidth >= 900) return 8;
     if (window.innerWidth >= 600) return 6;
     return 4;
   }
@@ -77,7 +76,7 @@ const ProductsContainer = () => {
         <HotOffersContainer>
           <HotOffers>
             <Whatshot fontSize="large" color="error" />
-            <Typography variant='h2Montserrat'>{t('global.hot_offers')}</Typography>
+            <Typography variant='h1Montserrat'>{t('global.hot_offers')}</Typography>
           </HotOffers>
           <ProductContainer>
             {products.map((product) => {

@@ -72,7 +72,7 @@
     "watch": "Watch",
     "tv": "Tv",
     "buy_now": "By Now",
-    "similar_products": "Similar Products",
+    "related_products": "Related Products",
     "found": "Found",
     "details": "Details",
     "product_added_to_cart_check_your_cart_to_complete_your_purchase": "Product added to cart Check your cart to complete your purchase.",
@@ -83,7 +83,14 @@
     "category_is_not_selected": "Category is not selected",
     "reserve": "Reserve",
     "reserved": "Reserved",
-    "product_has_successfully_reserved": "Product has successfully reserved"
+    "product_has_successfully_reserved": "Product has successfully reserved",
+    "categories": "Categories",
+    "brands": "Brands",
+    "send": "Send",
+    "contact us": "Contact Us",
+    "message successfully sent, we will contact you soon": "Message successfully sent, we will contact you soon",
+    "message":"Message",
+    "back to shop":"back to shop"
   },
   "ge": {
     "is": "არის",
@@ -153,7 +160,7 @@
     "watch": "საათი",
     "tv": "ტელევიზორი",
     "buy_now": "ყიდვა",
-    "similar_products": "მსგავსი პროდუქტები",
+    "related_products": "მსგავსი პროდუქტები",
     "found": "მოიძებნა",
     "details": "დეტალები",
     "product_added_to_cart_check_your_cart_to_complete_your_purchase": "პროდუქტი დამატებულია კალათაში. შეამოწმეთ თქვენი კალათა შესყიდვის დასასრულებლად.",
@@ -163,7 +170,14 @@
     "brand_is_not_selected": "ბრენდი არა არის არჩეული",
     "category_is_not_selected": "კატეგორია არ არის არჩეული",
     "reserve": "დაჯავშნა",
-    "reserved": "დაჯავშნილია",
-    "product_has_successfully_reserved": "პროდუქტი წარმატებით დაჯავშნა"
+    "reserved": "დაჯავშნილი",
+    "product_has_successfully_reserved": "პროდუქტი წარმატებით დაჯავშნა",
+    "categories": "კატეგორიები",
+    "brands": "ბრენდები",
+    "send": "გაგზავნა",
+    "contact us": "დაგვიკავშირდით",
+    "message successfully sent, we will contact you soon": "შეტყობინება წარმატებით გაიგზავნა, ჩვენ მალე დაგიკავშირდებით",
+    "message":"შეტყობინება",
+    "back to shop":"მაღაზიაში დაბრუნება"
   }
 }

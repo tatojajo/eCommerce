@@ -8,7 +8,7 @@ import { styled, Box, Container } from '@mui/system';
 export const ProductConatiner = styled(Paper)`
   width: 90%;
   padding: 10px;
-  margin: 25px auto;
+  margin: 120px auto;
   display: flex;
   flex-direction: column;
   flex-grow: 1;

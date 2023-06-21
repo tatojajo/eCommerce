@@ -41,7 +41,9 @@ import {
   Logout,
   Menu as MenuIcon,
   Settings,
-  Storefront
+  Storefront,
+  Favorite,
+  FavoriteBorder
 } from '@mui/icons-material';
 import i18next from 'i18next';
 import { useRef, useState } from 'react';
@@ -180,7 +182,7 @@ const Header = () => {
                     navigate('/?favorites');
                   }}>
                   <Badge badgeContent={favorites.length} color="success">
-                    {favorites.length > 0 ? <Star /> : <StarBorderOutlined />}
+                    {favorites.length > 0 ? <Favorite /> : <FavoriteBorder />}
                   </Badge>
                 </IconButton>
               </Box>
@@ -283,26 +285,25 @@ const Header = () => {
       <BreadCrumbs />
       <Box
         sx={{
-          display: debouncedValue.length === 0 ? 'none' : 'flex',
+          display: debouncedValue.length === 0 ? 'none' : 'block',
           width: '100%',
           height: '100%',
           alignItems: 'center',
           justifyContent: 'start',
           flexDirection: 'column',
-          gap: '10px',
           position: 'fixed',
-          top: '60px',
+          top: '99px',
           left: '50%',
           transform: ' translate(-50%, 0%)',
           zIndex: 1,
-          backdropFilter: 'blur(5px)',
+          backdropFilter: 'blur(1px)',
           backgroundColor: 'rgba(255, 255, 255, 0.5)',
           padding: '20px'
         }}
         onClick={() => setSearchValue('')}>
         {searchValue && <Search debouncedValue={debouncedValue} />}
-        {isFavOpen && <Favorites isFavOpen={isFavOpen} setIsFavOpen={setIsFavOpen} />}
       </Box>
+      {isFavOpen && <Favorites isFavOpen={isFavOpen} setIsFavOpen={setIsFavOpen} />}
     </AppBar>
   );
 };

@@ -15,19 +15,39 @@ import {
   Typography,
   alpha,
   styled,
-  Grid
+  Grid,
+  Autocomplete,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  SelectChangeEvent
 } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { categories } from '../../component/Header/categories';
 import mainBrands from '../../component/Brands/mainBrands';
-import { getFilteredProducts } from '../../Helpers/Services/products';
+import { getFilteredProducts, productsNextpage } from '../../Helpers/Services/products';
 import { saveProductsToFilter } from '../Home/redux/HomeActions/HomeActions';
 import { FilterCenterFocus, SavedSearch } from '@mui/icons-material';
 import ProductCard from '../../component/ProductCard';
 import useDebounce from '../../Helpers/CustomHooks/useBoolean/useDebounce';
+import {
+  BrandsListContainer,
+  CategoryListContainer,
+  CategoryPageDrawer,
+  CategoyPageContainer,
+  DetailsTypography,
+  FIlteredProductsContainer,
+  FilteredproductsGridContainer,
+  KayWordSearchInputConatiner,
+  LoaderContainer,
+  MobileTabletFilterMenu,
+  PriceRangeContainer,
+  SelectidFilteriDetails
+} from './CategoryStyles';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -70,9 +90,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 
+type Brand = {
+  brand: string;
+  img: string;
+};
+
 const Category = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const location = useLocation();
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
@@ -92,8 +118,8 @@ const Category = () => {
   const [maxPrice, setMaxPrice] = useState<number>(0);
 
   const initialCuantity = 5;
-  const startIndex = (pageNumber - 1) * 10;
-  const finalIndex = startIndex + 10;
+  const startIndex = (pageNumber - 1) * 12;
+  const finalIndex = startIndex + 12;
 
   const productsPerPage = productsToFilter.slice(startIndex, finalIndex);
 
@@ -123,104 +149,134 @@ const Category = () => {
     });
   };
 
+  const handleBrenadSelect = (event: SelectChangeEvent) => {
+    setBrandValue(event.target.value);
+    setPageNumber(1);
+  };
+
+  const handleCategorySelect = (event: SelectChangeEvent) => {
+    setCategoryValue(event.target.value);
+    setPageNumber(1);
+  };
   useEffect(() => {
     let isCanceled = false;
-    let timeForLoading: NodeJS.Timeout | null = null;
-    try {
-      if (!isCanceled) {
-        const getProducts = async () => {
-          setLoading(true);
-          try {
-            const { data } = await getFilteredProducts(categoryValue, brandValue);
+    let loadingTimeout: NodeJS.Timeout;
 
-            const prices = data.products.map((product: ProductItem) => Number(product.price));
-            const productsMaxPrice = Math.max(...prices);
-            const productsMinPrice = Math.min(...prices);
+    const getProducts = async () => {
+      setLoading(true);
+      try {
+        const { data } = await getFilteredProducts(categoryValue, brandValue);
 
-            setPriceValue([productsMinPrice, productsMaxPrice]);
+        const prices = data.products.map((product: ProductItem) => Number(product.price));
+        const productsMaxPrice = Math.max(...prices);
+        const productsMinPrice = Math.min(...prices);
+        setPriceValue([productsMinPrice, productsMaxPrice]);
 
-            if (debounceValue) {
-              console.log('debpunce');
-              const filteredProducts = data.products.filter((product: ProductItem) => {
-                const productTitle = product.title.toLowerCase();
-                const productDescription = product.description.toLowerCase();
-                const debounceValueToLowerCase = debounceValue.toLowerCase();
-                const filterResults =
-                  productTitle.includes(debounceValueToLowerCase) ||
-                  productDescription.includes(debounceValueToLowerCase);
+        let filteredProducts = data.products;
 
-                return filterResults;
-              });
+        if (debounceValue) {
+          const debounceValueToLowerCase = debounceValue.toLowerCase();
+          filteredProducts = data.products.filter((product: ProductItem) => {
+            const productTitle = product.title.toLowerCase();
+            const productDescription = product.description.toLowerCase();
+            return (
+              productTitle.includes(debounceValueToLowerCase) ||
+              productDescription.includes(debounceValueToLowerCase)
+            );
+          });
+        }
 
-              return dispatch(saveProductsToFilter(filteredProducts, filteredProducts.length));
-            }
+        if (minPrice !== 0 || maxPrice !== 0) {
+          filteredProducts = filteredProducts.filter((product: ProductItem) => {
+            const productPrice = Number(product.price);
+            return (
+              (minPrice === 0 || productPrice >= minPrice) &&
+              (maxPrice === 0 || productPrice <= maxPrice)
+            );
+          });
+        }
 
-            if (
-              Number(minPrice) <= Number(maxPrice) ||
-              (Number(minPrice) > 0 && Number(maxPrice === 0)) ||
-              (Number(minPrice) === 0 && Number(maxPrice) > 0)
-            ) {
-              const filterPrice: ProductItem[] = data.products.filter((product: ProductItem) => {
-                const productPrice = Number(product.price);
-                if (minPrice > 0 && maxPrice === 0) {
-                  return productPrice >= Number(minPrice);
-                }
-                if (maxPrice > 0 && minPrice === 0) {
-                  return productPrice <= Number(maxPrice);
-                }
-                if (minPrice < maxPrice) {
-                  return productPrice >= Number(minPrice) && productPrice <= Number(maxPrice);
-                }
-              });
-              console.log(filterPrice);
-
-              dispatch(saveProductsToFilter(filterPrice, filterPrice.length));
-            }
-
-            if (minPrice === 0 && maxPrice === 0)
-              return dispatch(saveProductsToFilter(data.products, data.total_found));
-          } catch (error) {
-            console.log(error);
-          } finally {
-            timeForLoading = setTimeout(() => {
-              setLoading(false);
-            }, 5000);
-          }
-        };
-        getProducts();
+        dispatch(saveProductsToFilter(filteredProducts, filteredProducts.length));
+      } catch (error) {
+        console.log(error);
+      } finally {
+        loadingTimeout = setTimeout(() => {
+          setLoading(false);
+        }, 5000);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    };
+
+    getProducts();
 
     return () => {
       isCanceled = true;
-      if (timeForLoading) clearTimeout(timeForLoading);
+      clearTimeout(loadingTimeout);
     };
   }, [categoryValue, brandValue, debounceValue, minPrice, maxPrice]);
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Drawer
-        sx={{
-          marginTop: '64px',
-          width: 240,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: 300,
-            overflowY: 'auto',
-            boxSizing: 'border-box',
-            marginTop: '100px',
-            padding: '20px',
+    <CategoyPageContainer>
+      <MobileTabletFilterMenu>
+        <Box
+          sx={{
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
-            gap: '20px',
-            paddingBottom: '100px'
-          }
-        }}
-        variant="permanent"
-        anchor="left">
-        <Paper sx={{ minWidth: '200px', padding: '10px' }}>
+            justifyContent: 'space-between',
+            width: '100%'
+          }}>
+          <PriceRangeContainer>
+            <Grid container spacing={1}>
+              <Grid item sm={6} xs={6}>
+                <TextField
+                  size="small"
+                  label="Min Price"
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(Number(e.target.value))}
+                />
+              </Grid>
+              <Grid item sm={6} xs={6}>
+                <TextField
+                  size="small"
+                  label="Max Price"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                />
+              </Grid>
+            </Grid>
+          </PriceRangeContainer>
+          <Paper>
+            <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
+              <InputLabel>Brands</InputLabel>
+              <Select value={brandValue} onChange={handleBrenadSelect} autoWidth label="Brand">
+                {mainBrands.map((brand) => {
+                  return (
+                    <MenuItem value={brand.brand} key={brand.brand}>
+                      {brand.brand}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Paper>
+          <Paper>
+            <FormControl sx={{ m: 1, maxWidth: 80 }} size="small">
+              <InputLabel>Categories</InputLabel>
+              <Select
+                value={categoryValue}
+                onChange={handleCategorySelect}
+                autoWidth
+                label="Categories">
+                {categories.map((category) => {
+                  return (
+                    <MenuItem value={category} key={category}>
+                      {category}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Paper>
+        </Box>
+        <KayWordSearchInputConatiner>
           <Search>
             <SearchIconWrapper>
               <SavedSearch />
@@ -231,8 +287,22 @@ const Category = () => {
               onChange={(e) => setSeachWord(e.target.value)}
             />
           </Search>
-        </Paper>
-        <Paper sx={{ minWidth: '200px', padding: '10px' }}>
+        </KayWordSearchInputConatiner>
+      </MobileTabletFilterMenu>
+      <CategoryPageDrawer variant="permanent" anchor="left">
+        <KayWordSearchInputConatiner>
+          <Search>
+            <SearchIconWrapper>
+              <SavedSearch />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => setSeachWord(e.target.value)}
+            />
+          </Search>
+        </KayWordSearchInputConatiner>
+        <PriceRangeContainer>
           <Typography variant="h5" color="initial">
             Price Range
           </Typography>
@@ -259,15 +329,20 @@ const Category = () => {
               />
             </Grid>
           </Grid>
-        </Paper>
-        <Paper elevation={4} sx={{ minWidth: '150px', padding: '10px' }}>
-          <Typography variant="h4" color="initial">
-            {t('global.category')}
+        </PriceRangeContainer>
+        <CategoryListContainer elevation={4}>
+          <Typography variant="h1Montserrat" color="initial">
+            {t('global.categories')}
           </Typography>
           <List>
             {displayedCategories.map((category, index) => {
               return (
-                <ListItemButton key={index} onClick={() => setCategory(category)}>
+                <ListItemButton
+                  key={index}
+                  onClick={() => {
+                    navigate(`/category/${category}`);
+                    setCategory(category);
+                  }}>
                   {category}
                 </ListItemButton>
               );
@@ -279,10 +354,10 @@ const Category = () => {
           {showAllCategories && (
             <Button onClick={handleShowMoreCategories}>{t('global.close')}</Button>
           )}
-        </Paper>
-        <Paper elevation={4} sx={{ minWidth: '150px', padding: '10px' }}>
-          <Typography variant="h4" color="initial">
-            {t('global.brand')}
+        </CategoryListContainer>
+        <BrandsListContainer elevation={4}>
+          <Typography variant="h1Montserrat" color="initial">
+            {t('global.brands')}
           </Typography>
           <List>
             {displayBrands.map((brand, index) => {
@@ -297,82 +372,68 @@ const Category = () => {
             <Button onClick={showMoreBrands}>{t('global.see_more')}</Button>
           )}
           {showAllBrands && <Button onClick={showMoreBrands}>{t('global.close')}</Button>}
-        </Paper>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, bgcolor: 'background.default', p: 9 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            padding: '30px',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '30px'
-          }}>
-          <Typography variant="h6" color="initial">
+        </BrandsListContainer>
+      </CategoryPageDrawer>
+
+      <FIlteredProductsContainer component="main">
+        <SelectidFilteriDetails>
+          <DetailsTypography variant="h2Montserrat" color="initial">
             {t('global.brand')}:{' '}
             {brandValue ? (
               <strong>{brandValue}</strong>
             ) : (
-              <strong>{t('global.brand_is_not_selected')}</strong>
+              <strong style={{ color: 'red' }}>{t('global.brand_is_not_selected')}!</strong>
             )}
-          </Typography>
-          <Typography variant="h6" color="initial">
+          </DetailsTypography>
+          <DetailsTypography variant="h2Montserrat" color="initial">
             {t('global.category')}:{' '}
             {categoryValue ? (
               <strong>{categoryValue}</strong>
             ) : (
               <strong>{t('global.category')}</strong>
             )}
-          </Typography>
-          <Typography variant="h6" color="initial">
+          </DetailsTypography>
+          <DetailsTypography variant="h2Montserrat" color="initial">
             {t('global.total')}:{' '}
             {totalProductsToFilter && (
               <strong>
                 {totalProductsToFilter} {t('global.product')}
               </strong>
             )}
-          </Typography>
-        </Box>
-        <Paper
-          elevation={5}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
-          }}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '10px',
-              padding: '10px',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-            {loading ? (
-              <Typography variant="body1">
-                <CircularProgress color="success" />
-              </Typography>
-            ) : (
-              productsPerPage.map((product, index) => <ProductCard key={index} product={product} />)
-            )}
-          </Box>
-          {productsToFilter && (
-            <Box>
-              <Stack spacing={2} mt={4}>
-                <Pagination
-                  count={Math.ceil(totalProductsToFilter / 10)}
-                  page={pageNumber}
-                  variant="outlined"
-                  shape="rounded"
-                  onChange={handleChangePage}
-                />
-              </Stack>
-            </Box>
+          </DetailsTypography>
+        </SelectidFilteriDetails>
+
+        <FilteredproductsGridContainer>
+          {loading ? (
+            <LoaderContainer sx={{ gridTemplateColumns: loading && '1fr 1fr' }}>
+              <CircularProgress color="success" />
+            </LoaderContainer>
+          ) : (
+            productsPerPage.map((product, index) => {
+              return (
+                <Box key={index}>
+                  <ProductCard product={product} />
+                </Box>
+              );
+            })
           )}
-        </Paper>
-      </Box>
-    </Box>
+        </FilteredproductsGridContainer>
+
+        {productsToFilter && (
+          <Box>
+            <Stack spacing={2} mt={4}>
+              <Pagination
+                count={Math.ceil(totalProductsToFilter / 12)}
+                page={pageNumber}
+                variant="outlined"
+                shape="rounded"
+                onChange={handleChangePage}
+              />
+            </Stack>
+          </Box>
+        )}
+      </FIlteredProductsContainer>
+    </CategoyPageContainer>
   );
 };
 

@@ -78,7 +78,6 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
   const handleAddNewImage = () => {
     setAddingImage((prev) => !prev);
   };
-  console.log(brands);
   useEffect(() => {
     const getBrands = async () => {
       const { data } = await getAllBrands();

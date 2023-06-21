@@ -26,6 +26,8 @@ import {
   AddShoppingCart,
   ArrowLeft,
   ArrowRight,
+  Favorite,
+  FavoriteBorder,
   Height,
   Star,
   StarBorder
@@ -131,12 +133,12 @@ const ProductCard = ({ product }: ProductCartProps) => {
           </Button>
 
           <Button
-            variant="outlined"
-            color="secondary"
+            variant="text"
+            color="primary"
             onClick={() => {
               handleFavProduct(product);
             }}>
-            {isProductInFavorites ? <Star /> : <StarBorder />}
+            {isProductInFavorites ? <Favorite fontSize='large' color='error' /> : <FavoriteBorder fontSize='large' color='warning' />}
           </Button>
         </CardBts>
         <Box

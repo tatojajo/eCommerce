@@ -74,7 +74,7 @@ const Product = () => {
   console.log(color);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState<boolean>(false);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const { selectedProduct, similarProducts } = useAppSelector<HomeState>(
+  const { selectedProduct, similarProducts, productsToFilter } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
 
@@ -107,7 +107,7 @@ const Product = () => {
   const handleCloseDetails = () => {
     setIsDescriptionOpen(false);
   };
-
+console.log(selectedProduct?.categories[1])
   useEffect(() => {
     try {
       const similarProducts = async () => {
@@ -207,10 +207,8 @@ const Product = () => {
               </Box>
             </QuantityContainer>
           </ProductBtns>
-          <MoreInfo variant="outlined" onClick={() => setIsDescriptionOpen((prev) => !prev)}>
-            <Typography variant="h5" color="initial">
-              <Description color="info" /> {t('global.more_info')}
-            </Typography>
+          <MoreInfo variant="outlined" onClick={() => setIsDescriptionOpen(true)}>
+            <Description color="info" /> {t('global.more_info')}
           </MoreInfo>
         </ProductDescription>
       </ProductInfoWrapper>
@@ -221,23 +219,20 @@ const Product = () => {
           </Typography>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <Paper elevation={5} sx={{ padding: '20px', marginTop: '10px' }}>
-              {selectedProduct?.description}
-            </Paper>
-          </DialogContentText>
+          <Paper elevation={5} sx={{ padding: '20px', marginTop: '10px' }}>
+            {selectedProduct?.description}
+          </Paper>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDetails} color="tertiary">
             Cancel
           </Button>
         </DialogActions>
-      </Dialog>
-
+      </Dialog>{' '}
       <SimilarProductsContainer>
         <SimilarProductsHeader>
           <Typography variant="h1" color="initial">
-            <ContentPasteSearch color="success" /> {t('global.similar_products')}
+            <ContentPasteSearch color="success" /> {t('global.related_products')}
           </Typography>
           <SimilarProductsButtons>
             <Button variant="outlined" onClick={hanldlePrevSimilarProducts}>
@@ -256,7 +251,7 @@ const Product = () => {
           }}>
           {similarProducts.map((product, index) => {
             return (
-              <Grid item xs={12} sm={6} md={3} lg={3} xl={2}>
+              <Grid key={product.id} item xs={12} sm={6} md={3} lg={3} xl={2}>
                 <ProductCard key={index} product={product} />
               </Grid>
             );

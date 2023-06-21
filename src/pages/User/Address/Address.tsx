@@ -100,7 +100,7 @@ const Address = () => {
           <form
             onSubmit={handleSubmit(onSubmit)}
             style={{
-              width: '80%'
+              width: '30%'
             }}>
             <Grid item xs={12} sm={4}>
               <Typography mb={1} variant="body2" color="initial">

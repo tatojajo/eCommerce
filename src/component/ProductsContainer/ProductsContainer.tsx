@@ -33,9 +33,8 @@ const ProductsContainer = () => {
   );
 
   function productsQuantityOnPage() {
-    if (window.innerWidth >= 1282) return 15;
-    if (window.innerWidth >= 1094) return 12;
-    if (window.innerWidth >= 900) return 9;
+    if (window.innerWidth >= 1200) return 15;
+    if (window.innerWidth >= 900) return 8;
     if (window.innerWidth >= 600) return 6;
     return 4;
   }

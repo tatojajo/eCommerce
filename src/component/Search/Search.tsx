@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Box, CardContent, CardMedia, Paper, Typography, Button } from '@mui/material';
+import { Box, CardContent, CardMedia, Paper, Typography, Button, Grid } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 
 import {
@@ -46,7 +46,7 @@ const Search: FC<SearchProps> = ({ debouncedValue }) => {
     };
   }, [debouncedValue]);
   return (
-    <Box sx={{zIndex:1}}>
+    <Box sx={{ zIndex: 1 }}>
       {searchedResults.length >= 0 && (
         <Paper
           sx={{
@@ -60,53 +60,55 @@ const Search: FC<SearchProps> = ({ debouncedValue }) => {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <SearchIcon color="error" />
             {searchedResults.length > 0 ? (
-              <Typography variant="h3" color="initial">
+              <Typography variant="h3Montserrat" color="initial">
                 {t('global.search_results')}
               </Typography>
             ) : (
-              <Typography variant="h3" color="initial">
+              <Typography variant="h2Montserrat" color="initial">
                 {t('global.results_not_found')}
               </Typography>
             )}
           </Box>
-          <Box sx={{ display: 'flex', gap: '10px' }}>
+          <Grid container spacing={2}>
             {searchedResults.map((product, index) => {
-              return (
+              return ( 
                 index <= 5 && (
-                  <Paper elevation={10}>
-                    <CardContainer>
-                      <CardMedia
-                        component="div"
-                        sx={{
-                          height: '140px',
-                          width: '140px'
-                        }}>
-                        <img
-                          src={product.images[0]}
-                          alt={product.title}
-                          style={{ height: '100%', width: '100%' }}
-                        />
-                      </CardMedia>
-                      <CardContent>
-                        <ProductLink
-                          to={`/product/${product.categories}/${product.brand}`}
-                          onClick={() => dispatch(moveToProductPage(product))}>
-                          {product.title}
-                        </ProductLink>
+                  <Grid key={product.id} item xs={12} sm={4} md={3}>
+                    <Paper elevation={10}>
+                      <CardContainer>
+                        <CardMedia
+                          component="div"
+                          sx={{
+                            height: '140px',
+                            width: '140px'
+                          }}>
+                          <img
+                            src={product.images[0]}
+                            alt={product.title}
+                            style={{ height: '100%', width: '100%' }}
+                          />
+                        </CardMedia>
+                        <CardContent>
+                          <ProductLink
+                            to={`/product/${product.categories}/${product.brand}`}
+                            onClick={() => dispatch(moveToProductPage(product))}>
+                            {product.title}
+                          </ProductLink>
 
-                        <Typography
-                          variant="body2"
-                          color="error"
-                          sx={{ marginTop: '10px', fontWeight: '900' }}>
-                          {t('global.price')}: ${Number(product.price).toFixed(2)}
-                        </Typography>
-                      </CardContent>
-                    </CardContainer>
-                  </Paper>
+                          <Typography
+                            variant="body2"
+                            color="error"
+                            sx={{ marginTop: '10px', fontWeight: '900' }}>
+                            {t('global.price')}: ${Number(product.price).toFixed(2)}
+                          </Typography>
+                        </CardContent>
+                      </CardContainer>
+                    </Paper>
+                  </Grid>
                 )
               );
             })}
-          </Box>
+          </Grid>
           {searchedResults.length > 0 && (
             <Button
               variant="text"

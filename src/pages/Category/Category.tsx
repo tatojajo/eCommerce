@@ -216,8 +216,13 @@ const Category = () => {
   return (
     <CategoyPageContainer>
       <MobileTabletFilterMenu>
-     
-        <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%',}}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%'
+          }}>
           <PriceRangeContainer>
             <Grid container spacing={1}>
               <Grid item sm={6} xs={6}>
@@ -239,7 +244,7 @@ const Category = () => {
             </Grid>
           </PriceRangeContainer>
           <Paper>
-            <FormControl sx={{ m: 1, minWidth: 80}} size="small">
+            <FormControl sx={{ m: 1, minWidth: 80 }} size="small">
               <InputLabel>Brands</InputLabel>
               <Select value={brandValue} onChange={handleBrenadSelect} autoWidth label="Brand">
                 {mainBrands.map((brand) => {
@@ -406,8 +411,8 @@ const Category = () => {
           ) : (
             productsPerPage.map((product, index) => {
               return (
-                <Box>
-                  <ProductCard key={index} product={product} />
+                <Box key={index}>
+                  <ProductCard product={product} />
                 </Box>
               );
             })

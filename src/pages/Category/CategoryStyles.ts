@@ -4,7 +4,7 @@ export const CategoyPageContainer = styled(Box)`
   display: flex;
   margin-top: 100px;
   overflow-y: hidden;
-  @media (max-width: 900px) {
+  @media (max-width: 1039px) {
     margin-top: 120px;
     flex-direction: column;
     align-items: center;
@@ -30,14 +30,14 @@ export const CategoryPageDrawer = styled(Drawer)`
     gap: 20px;
     padding-bottom: 100px;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 1039px) {
     display: none;
   }
 `;
 
 export const MobileTabletFilterMenu = styled(Paper)`
   display: none;
-  @media (max-width: 900px) {
+  @media (max-width: 1039px) {
     display: flex;
     width: 90%;
     padding: 10px;

@@ -84,8 +84,13 @@
     "reserve": "Reserve",
     "reserved": "Reserved",
     "product_has_successfully_reserved": "Product has successfully reserved",
-    "categories":"Categories",
-    "brands":"Brands"
+    "categories": "Categories",
+    "brands": "Brands",
+    "send": "Send",
+    "contact us": "Contact Us",
+    "message successfully sent, we will contact you soon": "Message successfully sent, we will contact you soon",
+    "message":"Message",
+    "back to shop":"back to shop"
   },
   "ge": {
     "is": "არის",
@@ -165,9 +170,14 @@
     "brand_is_not_selected": "ბრენდი არა არის არჩეული",
     "category_is_not_selected": "კატეგორია არ არის არჩეული",
     "reserve": "დაჯავშნა",
-    "reserved": "დაჯავშნილია",
+    "reserved": "დაჯავშნილი",
     "product_has_successfully_reserved": "პროდუქტი წარმატებით დაჯავშნა",
-    "categories":"კატეგორიები",
-    "brands":"ბრენდები"
+    "categories": "კატეგორიები",
+    "brands": "ბრენდები",
+    "send": "გაგზავნა",
+    "contact us": "დაგვიკავშირდით",
+    "message successfully sent, we will contact you soon": "შეტყობინება წარმატებით გაიგზავნა, ჩვენ მალე დაგიკავშირდებით",
+    "message":"შეტყობინება",
+    "back to shop":"მაღაზიაში დაბრუნება"
   }
 }

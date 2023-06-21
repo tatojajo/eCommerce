@@ -55,3 +55,35 @@ type Categories = {
   value: string;
   label: string;
 };
+
+
+
+type RegisterInitialValue = {
+  firstName: string;
+  lastName: string;
+  phoneNumber: number | string;
+  email: string;
+  password: string;
+};
+
+type SignInInitialValue = {
+  email: string;
+  password: string;
+};
+
+type User = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+};
+
+
+type ContactForm = {
+  firstName:string
+  lastName:string
+  email:string
+  phoneNumber:string
+  message:string
+}

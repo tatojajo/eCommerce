@@ -181,12 +181,15 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) 
         totalSearchedProducts: total_found
       };
     case SEARCHED_PRODUCTS_NEXT_PAGE_DATA:
-      const prevPage = [...state.searchedResults];
+      let prevPage = [...state.searchedResults];
       const moreProducts = [...prevPage, ...action.products];
+      let uniqueProducts = moreProducts.filter((product, index) => {
+        return moreProducts.indexOf(product) === index;
+    });
 
       return {
         ...state,
-        searchedResults: moreProducts
+        searchedResults: uniqueProducts
       };
     case SET_FAVORITE_PRODUCTS:
       return { ...state, favorites: [...state.favorites, action.product] };

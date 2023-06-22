@@ -19,7 +19,8 @@ import {
   SET_LOADING,
   SAVE_SIMILAR_PRODUCTS,
   SAVE_PRODUCTS_TO_FILTER,
-  RESERVE_PRODUCT
+  RESERVE_PRODUCT,
+  CHANGE_THEME
 } from './HomeActions/HomeActions';
 import { HOME_ACTIONS } from './HomeActions/HomeTypes';
 
@@ -45,7 +46,8 @@ const initialState: HomeState = {
   selectedProduct: null,
   selectedBrand: '',
   loading: false,
-  error: null
+  error: null,
+  themeMode: 'light'
 };
 
 const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) => {
@@ -185,7 +187,7 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) 
       const moreProducts = [...prevPage, ...action.products];
       let uniqueProducts = moreProducts.filter((product, index) => {
         return moreProducts.indexOf(product) === index;
-    });
+      });
 
       return {
         ...state,
@@ -227,6 +229,9 @@ const homeReducer = (state = initialState, action: HOME_ACTIONS | CART_ACTIONS) 
       localStorage.setItem('Reserved_Products', JSON.stringify(updateReservedProducts));
       console.log(state.reservedProducts);
       return { ...state, reservedProducts: updateReservedProducts };
+    }
+    case CHANGE_THEME: {
+      return { ...state, themeMode: action.theme };
     }
     default:
       return state;

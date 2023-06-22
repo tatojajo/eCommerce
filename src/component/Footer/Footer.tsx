@@ -42,14 +42,6 @@ const Footer = () => {
             {t('global.contact us')}
           </FooretIcons>
         </ListItem>
-
-        <ListItem>
-          <FooretIcons>
-            <Info sx={{ fontSize: '24px' }} color="warning" />
-            {t('global.about')}
-          </FooretIcons>
-        </ListItem>
-
         <ListItem>
           <FooretIcons onClick={() => setIsFavOpne(true)}>
             <FavoriteRounded sx={{ fontSize: '24px' }} color="error" />

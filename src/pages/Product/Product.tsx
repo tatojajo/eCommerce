@@ -18,7 +18,6 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   DialogActions
 } from '@mui/material';
 import {
@@ -26,11 +25,9 @@ import {
   ArrowDropUp,
   ArrowLeft,
   ArrowRight,
-  Circle,
   ContentPasteSearch,
-  Description,
+  Description as DescriptionIcon,
   LabelImportant,
-  PanoramaFishEye,
   ShoppingBag,
   ShoppingCart
 } from '@mui/icons-material';
@@ -45,15 +42,16 @@ import {
   ProductTitle,
   ProductBrand,
   ProductImage,
-  MoreInfo,
   SimilarProductsButtons,
   SimilarProductsContainer,
   SimilarProductsHeader,
   MainImageWrapper,
   QuantityContainer
 } from './ProductPageStyle';
-import { selectedBrandProducts } from '../../Helpers/Services/products';
+import { relatedProducts, selectedBrandProducts } from '../../Helpers/Services/products';
 import ProductCard from '../../component/ProductCard';
+import Description from './Description';
+import { isAuthenticated } from '../../Helpers/Auth/isAuthenticated';
 
 function similarProductsQuantity() {
   if (window.innerWidth >= 1536) return 6;
@@ -77,7 +75,7 @@ const Product = () => {
   const { selectedProduct, similarProducts, productsToFilter } = useAppSelector<HomeState>(
     (state) => state.homeReducer
   );
-
+  console.log(similarProducts);
   const increaseQuntity = () => {
     const increasedQuantity = selectedProduct && {
       ...selectedProduct,
@@ -98,6 +96,7 @@ const Product = () => {
   const pageSize = similarProductsQuantity();
 
   const hanldleNextSimilarProducts = () => {
+    if (similarProducts.length < similarProductsQuantity()) return;
     setPageNumber((prev) => prev + 1);
   };
   const hanldlePrevSimilarProducts = () => {
@@ -107,11 +106,31 @@ const Product = () => {
   const handleCloseDetails = () => {
     setIsDescriptionOpen(false);
   };
-console.log(selectedProduct?.categories[1])
+
+  const handleByNow = async () => {
+    if (isAuthenticated().isAdmin || isAuthenticated().isUser) {
+      await fetch('http://localhost:4000/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ items: [selectedProduct] })
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((response) => {
+          if (response.url) {
+            window.location.assign(response.url); // Forwarding user to Stripe
+          }
+        });
+    }
+  };
+
   useEffect(() => {
     try {
       const similarProducts = async () => {
-        const { data } = await selectedBrandProducts(pageSize, startIndex, selectedProduct!.brand);
+        const { data } = await relatedProducts(selectedProduct!.brand, startIndex, pageSize);
         if (data.total_found === 1) return setPageNumber((prev) => prev);
         dispatch(saveSimilarProducts(data.products));
       };
@@ -188,7 +207,7 @@ console.log(selectedProduct?.categories[1])
               onClick={() => dispatch(addProductCart(selectedProduct!))}>
               {t('global.add')} <ShoppingCart />
             </Button>
-            <Button variant="contained" color="secondary">
+            <Button onClick={handleByNow} variant="contained" color="secondary">
               {t('global.buy_now')}
               <ShoppingBag />
             </Button>
@@ -207,31 +226,15 @@ console.log(selectedProduct?.categories[1])
               </Box>
             </QuantityContainer>
           </ProductBtns>
-          <MoreInfo variant="outlined" onClick={() => setIsDescriptionOpen(true)}>
-            <Description color="info" /> {t('global.more_info')}
-          </MoreInfo>
+          <Button variant="outlined" onClick={() => setIsDescriptionOpen(true)}>
+            <DescriptionIcon color="info" /> {t('global.more_info')}
+          </Button>
         </ProductDescription>
       </ProductInfoWrapper>
-      <Dialog open={isDescriptionOpen} onClose={handleCloseDetails}>
-        <DialogTitle>
-          <Typography variant="h1" color="initial">
-            {t('global.details')}:
-          </Typography>
-        </DialogTitle>
-        <DialogContent>
-          <Paper elevation={5} sx={{ padding: '20px', marginTop: '10px' }}>
-            {selectedProduct?.description}
-          </Paper>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDetails} color="tertiary">
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>{' '}
+
       <SimilarProductsContainer>
         <SimilarProductsHeader>
-          <Typography variant="h1" color="initial">
+          <Typography variant="h2Montserrat" color="initial">
             <ContentPasteSearch color="success" /> {t('global.related_products')}
           </Typography>
           <SimilarProductsButtons>
@@ -258,6 +261,11 @@ console.log(selectedProduct?.categories[1])
           })}
         </Grid>
       </SimilarProductsContainer>
+      <Description
+        isDescriptionOpen={isDescriptionOpen}
+        handleCloseDetails={handleCloseDetails}
+        selectedProduct={selectedProduct}
+      />
     </ProductConatiner>
   );
 };

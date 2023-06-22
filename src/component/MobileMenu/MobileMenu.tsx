@@ -22,6 +22,8 @@ import { CustomDrawer } from './mobileMenuStyle';
 import {
   ArrowDropDown,
   Category,
+  DarkMode,
+  LightMode,
   Logout,
   Settings,
   ShoppingCart,
@@ -31,6 +33,7 @@ import {
 } from '@mui/icons-material';
 import {
   changePageNumber,
+  changeTheme,
   saveSearchedProducts
 } from '../../pages/Home/redux/HomeActions/HomeActions';
 import { FavCartContainer, LogoTitle } from '../Header/HeaderStyle';
@@ -67,7 +70,9 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const anchorRef = useRef<HTMLButtonElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { favorites, cartItems } = useAppSelector<HomeState>((state) => state.homeReducer);
+  const { favorites, cartItems, themeMode } = useAppSelector<HomeState>(
+    (state) => state.homeReducer
+  );
 
   const user: User = JSON.parse(localStorage.getItem('User') as string);
   const handleCloseMobileMenu = () => {
@@ -243,6 +248,25 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 <ShoppingCart />
               </Badge>
             </IconButton>
+          </Box>
+          <Box>
+            {themeMode === 'dark' ? (
+              <IconButton
+                onClick={() => {
+                  dispatch(changeTheme('light'));
+                  setIsMobileMenuOpen(false);
+                }}>
+                <LightMode />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  dispatch(changeTheme('dark'));
+                  setIsMobileMenuOpen(false);
+                }}>
+                <DarkMode />
+              </IconButton>
+            )}
           </Box>
         </FavCartContainer>
         <Divider />

@@ -18,7 +18,6 @@ type DeleteProductProps = {
 
 const DeleteProduct: FC<DeleteProductProps> = ({ confirmDelete, setConfirmDelete, product }) => {
   const [lastConfirmation, setLastConfirmation] = useState<boolean>(false);
-  console.log(product);
   const handelClose = () => {
     setConfirmDelete(false);
   };
@@ -29,11 +28,11 @@ const DeleteProduct: FC<DeleteProductProps> = ({ confirmDelete, setConfirmDelete
         const deleteConfirmation = async () => {
           const { data } = await deleteProduct(product);
           if (data) {
-            setLastConfirmation(false);
             setConfirmDelete((prev: boolean) => !prev);
           }
         };
         deleteConfirmation();
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

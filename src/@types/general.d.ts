@@ -33,6 +33,7 @@ type HomeState = {
   pageNumber: number;
   loading: boolean;
   error: any;
+  themeMode:string
 };
 
 type UserAddress = {

@@ -8,12 +8,7 @@ import {
   increaseQuantity,
   removeCartItem
 } from '../Home/redux/CartActions/CartActions';
-import {
-  Box,
-  Typography,
-  IconButton,
-  Paper,
-  Button} from '@mui/material';
+import { Box, Typography, IconButton, Paper, Button } from '@mui/material';
 import { ArrowDropDown, ArrowDropUp, Clear } from '@mui/icons-material';
 import {
   AmountInfo,
@@ -33,11 +28,12 @@ import {
   ProductRemoveButton,
   ProductTotalPrice,
   SummaryContainer
-} from './cartStyle';
+} from './CartStyle';
 import { moveToProductPage } from '../Home/redux/HomeActions/HomeActions';
+import { isAuthenticated } from '../../Helpers/Auth/isAuthenticated';
 
 const Cart = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { cartItems } = useAppSelector<HomeState>((state) => state.homeReducer);
   const dispatch = useAppDispatch();
@@ -47,46 +43,26 @@ const Cart = () => {
     [cartItems.length]
   );
 
-  // const handleCheckout = async () => {
-  //   if (isAuthenticated().isUser && cartItems.length > 0) {
-
-  //     await fetch("http://localhost:4000/checkout", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ items: cartItems }),
-  //     })
-  //     .then((response) => {
-  //         return response.json();
-  //       })
-  //       .then((response) => {
-  //         if (response.url) {
-  //           window.location.assign(response.url); // Forwarding user to Stripe
-  //         }
-  //       });
-
-  //       console.log(cartItems[0].quantity)
-  //     }
-  // };
-
   const handleCheckout = async () => {
-    await fetch('http://localhost:4000/checkout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ items: cartItems })
-    })
-      .then((response) => {
-        return response.json();
+    if ((isAuthenticated().isAdmin || isAuthenticated().isUser) && cartItems.length > 0) {
+      await fetch('http://localhost:4000/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ items: cartItems })
       })
-      .then((response) => {
-        if (response.url) {
-          window.location.assign(response.url); // Forwarding user to Stripe
-        }
-      });
+        .then((response) => {
+          return response.json();
+        })
+        .then((response) => {
+          if (response.url) {
+            window.location.assign(response.url); // Forwarding user to Stripe
+          }
+        });
+    }
   };
+
   return (
     <Box sx={{ width: '100%' }}>
       <CartTitle>
@@ -98,7 +74,7 @@ const Cart = () => {
             <Typography fontWeight={700} mt={3} color="error">
               {`${t('global.cart')} ${t('global.is')} ${t('global.empty')}!`}
             </Typography>
-            <Button variant="outlined" color="warning" onClick={()=>navigate('/')}>
+            <Button variant="outlined" color="warning" onClick={() => navigate('/')}>
               {t('global.back to shop')}
             </Button>
           </Box>

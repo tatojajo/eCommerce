@@ -18,7 +18,8 @@ export const SELECT_BRAND = 'SELECT_BRAND';
 export const SELECTED_BRANDS_PRODUCTS = 'SELECTED_BRANDS_PRODUCTS';
 export const SAVE_SIMILAR_PRODUCTS = 'SAVE_SIMILAR_PRODUCTS';
 export const SAVE_PRODUCTS_TO_FILTER = 'SAVE_PRODUCTS_TO_FILTER';
-export const RESERVE_PRODUCT = "RESERVE_PRODUCT"
+export const RESERVE_PRODUCT = 'RESERVE_PRODUCT';
+export const CHANGE_THEME = 'CHANGE_THEME';
 
 export const saveProductsData = (products: ProductItem[]): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_DATA,
@@ -109,13 +110,21 @@ export const saveSimilarProducts = (products: ProductItem[]): HOME_ACTIONS => ({
   products
 });
 
-export const saveProductsToFilter = (products: ProductItem[], total_found: number):HOME_ACTIONS => ({
+export const saveProductsToFilter = (
+  products: ProductItem[],
+  total_found: number
+): HOME_ACTIONS => ({
   type: SAVE_PRODUCTS_TO_FILTER,
   products,
   total_found
 });
 
-export const reservedProduct =(product:ProductItem):HOME_ACTIONS=>({
-  type:RESERVE_PRODUCT,
+export const reservedProduct = (product: ProductItem): HOME_ACTIONS => ({
+  type: RESERVE_PRODUCT,
   product
-})
+});
+
+export const changeTheme = (theme: string): HOME_ACTIONS => ({
+  type: CHANGE_THEME,
+  theme
+});

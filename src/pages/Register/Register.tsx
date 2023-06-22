@@ -50,6 +50,7 @@ const Register: FC<RegistracionProps> = ({ isRegister, setIsRegister }) => {
       const { data } = await userlogin(user);
       localStorage.setItem('AccessToken', data.AccessToken);
       localStorage.setItem('User', JSON.stringify(data.User));
+      window.location.reload();
     }
   };
   return (

@@ -3,12 +3,13 @@ import {
   createTheme,
   Palette,
   PaletteColorOptions,
-  SimplePaletteColorOptions,
+  SimplePaletteColorOptions
 } from '@mui/material/styles';
 import { ThemeOptions } from '@mui/material';
 import { ReactElement, ReactNode } from 'react';
 import palette, { CustomPaletteOptions } from './palette';
 import typography from './typography';
+import { useAppSelector } from '../redux/hooks';
 
 interface AppThemeProps {
   children: ReactNode;
@@ -55,28 +56,28 @@ export type CustomThemeOptions = ThemeOptions & {
 
 const theme: CustomThemeOptions = {
   typography,
-  palette: palette as CustomPaletteOptions,
+  palette: palette as CustomPaletteOptions
 };
 
 // "primary" | "secondary" | "error" ....
 export type PaletteKey = keyof {
-  [Key in keyof Palette as Palette[Key] extends PaletteColorOptions
-    ? Key
-    : never]: true;
+  [Key in keyof Palette as Palette[Key] extends PaletteColorOptions ? Key : never]: true;
 };
 
 export type PaletteColorKey = keyof SimplePaletteColorOptions;
 
-export const appTheme = createTheme({
-  ...theme,
-  // palette: {
-  //   ...theme.palette,
-  //   mode: 'light'
-  // },
-}) as unknown as CustomThemeOptions;
-
 export const AppTheme = (props: AppThemeProps): ReactElement => {
   const { children } = props;
+  const { themeMode } = useAppSelector<HomeState>((state) => state.homeReducer);
+
+  const appTheme = createTheme({
+    ...theme,
+    palette: {
+      ...theme.palette,
+      mode: themeMode === 'dark' ? 'dark' : 'light'
+    }
+  }) as unknown as CustomThemeOptions;
+
   return <ThemeProvider theme={appTheme}>{children}</ThemeProvider>;
 };
 

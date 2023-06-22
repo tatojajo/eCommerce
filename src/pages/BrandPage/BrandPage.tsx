@@ -45,7 +45,12 @@ const BrandPage = () => {
   useEffect(() => {
     const getSelectedBrandProducts = async () => {
       try {
-        const { data } = await selectedBrandProducts(selectedBrand, brandItem, startIndex);
+        const { data } = await selectedBrandProducts(
+          selectedBrand,
+          brandItem,
+          startIndex,
+          productsQuantityOnPage()
+        );
         dispatch(setSelectedBrandProducts(data.products));
         setTotalBrandsProducts(data.total_found);
       } catch (error) {}

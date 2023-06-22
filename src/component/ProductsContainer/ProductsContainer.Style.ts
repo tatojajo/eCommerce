@@ -25,7 +25,7 @@ export const ProductContainer = styled(Box)`
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 676px) {
     grid-template-columns: repeat(2, 1fr);
   }
 

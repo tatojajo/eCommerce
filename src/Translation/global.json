@@ -1,7 +1,7 @@
 {
   "en": {
     "is": "Is",
-    "home":"Home",
+    "home": "Home",
     "empty": "Empty",
     "my_cart": " My Cart",
     "summary": "Summary",
@@ -90,13 +90,16 @@
     "send": "Send",
     "contact us": "Contact Us",
     "message successfully sent, we will contact you soon": "Message successfully sent, we will contact you soon",
-    "message":"Message",
-    "back to shop":"Back to Shop",
-    "you don't have a favorite products" :"You don't have a favorite Products"
+    "message": "Message",
+    "back to shop": "Back to Shop",
+    "you don't have a favorite products": "You don't have a favorite Products",
+    "publish": "Publish",
+    "feature will be added soon": "feature will be added soon",
+    "dashboard": "Dashboard"
   },
   "ge": {
     "is": "არის",
-    "home":"მთავარი",
+    "home": "მთავარი",
     "empty": "ცარიელი",
     "my_cart": "ჩემი კალათა",
     "summary": "შეჯამება",
@@ -168,7 +171,7 @@
     "details": "დეტალები",
     "product_added_to_cart_check_your_cart_to_complete_your_purchase": "პროდუქტი დამატებულია კალათაში. შეამოწმეთ თქვენი კალათა შესყიდვის დასასრულებლად.",
     "see_more": "მეტის ნახვა",
-    "favorites": "სასურველი პროდუქტები",
+    "favorites": "ფავორიტი",
     "close": "დახურვა",
     "brand_is_not_selected": "ბრენდი არა არის არჩეული",
     "category_is_not_selected": "კატეგორია არ არის არჩეული",
@@ -180,8 +183,11 @@
     "send": "გაგზავნა",
     "contact us": "დაგვიკავშირდით",
     "message successfully sent, we will contact you soon": "შეტყობინება წარმატებით გაიგზავნა, ჩვენ მალე დაგიკავშირდებით",
-    "message":"შეტყობინება",
-    "back to shop":"მაღაზიაში დაბრუნება",
-    "you don't have a favorite products":"თქვენ არ გაქვთ სასურველი პროდუქტები"
+    "message": "შეტყობინება",
+    "back to shop": "მაღაზიაში დაბრუნება",
+    "you don't have a favorite products": "თქვენ არ გაქვთ სასურველი პროდუქტები",
+    "publish": "გამოქვეყნება",
+    "feature will be added soon": "ფუნქცია მალე დაემატება",
+    "dashboard": "დაფა"
   }
 }

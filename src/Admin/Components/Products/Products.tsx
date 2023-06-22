@@ -21,7 +21,9 @@ import {
   IconButton,
   TextField,
   InputAdornment,
-  Container
+  Container,
+  Pagination,
+  Stack
 } from '@mui/material';
 import { ArrowLeft, ArrowRight, DeleteForever, Edit, Search } from '@mui/icons-material';
 import { t } from 'i18next';
@@ -53,18 +55,19 @@ const TruncatedText = ({ text, maxLength }: any) => {
 
 const Products = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(1);
   const [isEditingOpen, setIsEditingOpen] = useState<boolean>(false);
   const [confirmDelete, setConfirmDelete] = useState<boolean>(false);
   const [productToDelete, setProductToDelete] = useState<ProductItem | null>(null);
+  const [totalProducts, setTotalProducts] = useState<number>(0);
   const debounceValue = useDebounce(searchValue);
   const { isAdmin } = isAuthenticated();
   const dispatch = useAppDispatch();
   const { allProducts } = useAppSelector<AdminState>((state) => state.adminReducer);
-  const startIndex = pageNumber * 20;
+  const startIndex = (pageNumber - 1) * 20;
 
   const handleChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    if (debounceValue === '') setPageNumber(0);
+    if (debounceValue === '') setPageNumber(1);
     setSearchValue(e.target.value);
   };
 
@@ -75,10 +78,16 @@ const Products = () => {
   const nextPage = () => {
     setPageNumber((prev) => prev + 1);
   };
+
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPageNumber(value);
+  };
+  console.log(startIndex);
   useEffect(() => {
     let isCanceled = false;
     const getAllProducts = async () => {
       const { data } = await getProductList(debounceValue, startIndex);
+      setTotalProducts(data.total_found);
       if (!isCanceled && debounceValue === '') dispatch(saveProductsList(data.products));
       if (!isCanceled && debounceValue)
         dispatch(saveSearchedProductList(data.products, data.total_found));
@@ -92,27 +101,28 @@ const Products = () => {
     return () => {
       isCanceled = true;
     };
-  }, [isAdmin, debounceValue, startIndex]);
+  }, [isAdmin, debounceValue, startIndex, pageNumber]);
   return (
     <Box>
       <Box
         sx={{
+          width: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-        <Typography variant="h4" color="initial">
+        <Typography variant="h3Montserrat" color="initial">
           {t('global.product')}
         </Typography>
 
-        <Container maxWidth="md" sx={{ mt: 2, mb: 2 }}>
+        <Container maxWidth="sm" sx={{ mt: 2, mb: 2 }}>
           <TextField
             id="search"
             type="search"
             label="Search"
             // value={searchTerm}
             onChange={handleChangeValue}
-            sx={{ width: 600 }}
+            sx={{ width: 400 }}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -122,7 +132,7 @@ const Products = () => {
             }}
           />
         </Container>
-        <Button color="success">Add New Products</Button>
+        {/* <Button variant='outlined' color="success">Add New Products</Button> */}
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="products table">
@@ -145,7 +155,6 @@ const Products = () => {
               <TableCell align="right">Brand</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Amount</TableCell>
-              {/* <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -204,6 +213,17 @@ const Products = () => {
             product={productToDelete}
           />
         )}
+        {!debounceValue && (
+          <Stack spacing={2} mt={4}>
+            <Pagination
+              count={Math.ceil(totalProducts / 20)}
+              page={pageNumber}
+              variant="outlined"
+              shape="rounded"
+              onChange={handleChangePage}
+            />
+          </Stack>
+        )}
         {debounceValue && (
           <Box
             sx={{
@@ -218,7 +238,7 @@ const Products = () => {
             </Button>
             {allProducts.length > 0 ? (
               <Typography variant="h6" color="initial">
-                Page: {pageNumber + 1}
+                Page: {pageNumber}
               </Typography>
             ) : (
               <Typography variant="h6" color="error">

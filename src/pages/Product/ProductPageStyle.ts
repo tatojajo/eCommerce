@@ -2,13 +2,13 @@ type ImageProps = {
   index: number;
   productImage: number;
 };
-import { Button, DialogContentText, Paper, Typography } from '@mui/material';
-import { styled, Box, Container } from '@mui/system';
+import { Paper, Typography } from '@mui/material';
+import { styled, Box } from '@mui/system';
 
 export const ProductConatiner = styled(Paper)`
   width: 90%;
   padding: 10px;
-  margin: 120px auto;
+  margin: 20px auto;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -183,17 +183,6 @@ export const QuantityContainer = styled(Box)`
     width: 100%;
     justify-content: center;
   }
-`;
-
-export const MoreInfo = styled(Button)`
-  border: 1px solid;
-  max-width: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  border-radius: 15px;
-  cursor: pointer;
 `;
 
 export const SimilarProductsButtons = styled(Box)`

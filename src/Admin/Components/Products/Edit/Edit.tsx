@@ -47,9 +47,9 @@ const productValidationSchema = yup.object().shape({
   amount: yup.string().required('amount is required')
 });
 const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen }) => {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [newImage, setNewImage] = useState<string>('');
   const [addingImage, setAddingImage] = useState<boolean>(false);
-  const [consfirmEditing, setConfirmEditing] = useState<boolean>(false);
   const { editabeProduct, brands } = useAppSelector<AdminState>((state) => state.adminReducer);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -64,10 +64,17 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
   });
 
   const onSubmit: SubmitHandler<ProductItem> = async (product) => {
+    const updatedProduct = {
+      ...product,
+      categories: selectedCategories
+    };
     try {
-      const { data } = await editProductInfo(product);
+      const { data } = await editProductInfo(updatedProduct);
+      console.log(data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsEditingOpen(false);
     }
   };
   const handleCloseEditing = () => {
@@ -77,6 +84,11 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
   const handleAddNewImage = () => {
     setAddingImage((prev) => !prev);
   };
+
+  const handleCategoryChange = (event: any, value: any) => {
+    setSelectedCategories(value);
+  };
+
   useEffect(() => {
     const getBrands = async () => {
       const { data } = await getAllBrands();
@@ -87,12 +99,12 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
     setValue('title', editabeProduct!.title);
     setValue('description', editabeProduct!.description);
     setValue('brand', editabeProduct!.brand);
-    setValue('categories', editabeProduct!.categories);
+    setSelectedCategories(editabeProduct!.categories);
     setValue('price', editabeProduct!.price);
     setValue('rating', editabeProduct!.rating);
     setValue('amount', editabeProduct!.amount);
     setValue('images', editabeProduct!.images);
-  }, [editabeProduct, setValue]);
+  }, [editabeProduct, setValue, isEditingOpen]);
 
   return (
     <Dialog open={isEditingOpen} onClose={handleCloseEditing} fullWidth={true} maxWidth={'xl'}>
@@ -108,9 +120,9 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
                 multiple={false}
                 options={brands}
                 fullWidth
-                defaultValue={editabeProduct!.brand}
+                value={editabeProduct!.brand}
+                onChange={(event, value: any) => setValue('brand', value)}
                 renderInput={(params) => <TextField {...params} label="Brands" />}
-                {...register('brand')}
               />
             </Grid>
             <Grid item xs={12} sm={12}>
@@ -122,9 +134,10 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
                 options={categories}
                 fullWidth
                 renderInput={(params) => <TextField {...params} label="Categories" />}
-                defaultValue={editabeProduct!.categories}
-                {...register('categories')}
+                value={selectedCategories}
+                onChange={handleCategoryChange}
               />
+              {errors.categories && <span>{errors.categories.message}</span>}
             </Grid>
             <Grid item xs={12} sm={4}>
               <TextField fullWidth label="Price" {...register('price')} />
@@ -190,23 +203,10 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
               Add New Image
             </Button>
           )}
-
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={() => {
-              setConfirmEditing(true);
-              // handleSubmit(onSubmit)
-            }}>
+          <Button onClick={() => handleSubmit(onSubmit)()} variant="outlined" color="secondary">
             {t('global.submit')}
           </Button>
         </DialogActions>
-        <Dialog open={consfirmEditing}>
-          <DialogTitle>Confirm Editing</DialogTitle>
-          <DialogContent>
-            <Button>hello</Button>
-          </DialogContent>
-        </Dialog>
       </DialogContent>
     </Dialog>
   );

@@ -41,12 +41,16 @@ import {
   Settings,
   Storefront,
   Favorite,
-  FavoriteBorder
+  FavoriteBorder,
+  Dashboard,
+  LightMode,
+  DarkMode
 } from '@mui/icons-material';
 import i18next from 'i18next';
 import { useRef, useState } from 'react';
 import {
   changePageNumber,
+  changeTheme,
   saveSearchedProducts
 } from '../../pages/Home/redux/HomeActions/HomeActions';
 import SignIn from '../../pages/SignIn';
@@ -66,7 +70,9 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { cartItems, favorites } = useAppSelector<HomeState>((state) => state.homeReducer);
+  const { cartItems, favorites, themeMode } = useAppSelector<HomeState>(
+    (state) => state.homeReducer
+  );
 
   const handleUserMenu = () => {
     setIsUserMenuOpen(true);
@@ -178,8 +184,19 @@ const Header = () => {
             </FormControl>
           </Box>
           <UserContainer>
+            <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+              {themeMode === 'dark' ? (
+                <IconButton onClick={() => dispatch(changeTheme('light'))}>
+                  <LightMode />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => dispatch(changeTheme('dark'))}>
+                  <DarkMode />
+                </IconButton>
+              )}
+            </Box>
             <FavCartContainer sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              <Box >
+              <Box sx={{ display: { sm: 'none', md: 'flex' } }}>
                 <IconButton
                   onClick={() => {
                     setIsFavOpen(true);
@@ -203,7 +220,8 @@ const Header = () => {
               sx={{ display: { xs: 'none', sm: 'flex' } }}
               alignItems="center"
               onClick={() => {
-                if (!isAuthenticated().isUser) setIsSignInOpen(true);
+                if (!isAuthenticated().isUser && !isAuthenticated().isAdmin)
+                  setIsSignInOpen((prev) => !prev);
               }}>
               <Button
                 ref={anchorRef}
@@ -212,7 +230,7 @@ const Header = () => {
                 aria-expanded={isUserMenuOpen ? 'true' : undefined}
                 aria-haspopup="true"
                 onClick={() => {
-                  if (isAuthenticated().isUser) handleUserMenu();
+                  if (isAuthenticated().isUser || isAuthenticated().isAdmin) handleUserMenu();
                 }}>
                 <Avatar>{user?.firstName[0]}</Avatar>
 
@@ -220,7 +238,7 @@ const Header = () => {
                   {user?.firstName}
                 </Typography>
               </Button>
-              {isAuthenticated().isUser && (
+              {(isAuthenticated().isUser || isAuthenticated().isAdmin) && (
                 <Menu
                   anchorEl={anchorRef.current}
                   id="account-menu"
@@ -257,12 +275,25 @@ const Header = () => {
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
                   <MenuItem
                     onClick={() => {
-                      isAuthenticated().isUser && navigate(`/user/${user.firstName}`);
+                      if (isAuthenticated().isUser || isAuthenticated().isAdmin) {
+                        navigate(`/user`);
+                      }
                       setIsUserMenuOpen(false);
                     }}>
                     <Avatar /> My account
                   </MenuItem>
                   <Divider />
+                  {isAuthenticated().isAdmin && (
+                    <MenuItem
+                      onClick={() => {
+                        navigate('/admin-page');
+                      }}>
+                      <ListItemIcon>
+                        <Dashboard fontSize="small" />
+                      </ListItemIcon>
+                      {t('global.dashboard')}
+                    </MenuItem>
+                  )}
                   <MenuItem onClick={handleCloseUserMenu}>
                     <ListItemIcon>
                       <Settings fontSize="small" />

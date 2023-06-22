@@ -1,5 +1,5 @@
-import { styled, Box, Modal, Dialog } from "@mui/material";
-import SignInImg from "../../images/sign_in.jpg";
+import { styled, Box, Modal, Dialog, IconButton } from '@mui/material';
+import SignInImg from '../../images/sign_in.jpg';
 
 export const LoginDialoglBox = styled(Dialog)`
   display: flex;
@@ -13,8 +13,7 @@ export const SignInContainer = styled(Box)`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.3)),
-    url(${SignInImg});
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${SignInImg});
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -24,6 +23,21 @@ export const SignInContainer = styled(Box)`
   border: 2px solid #000;
   border-radius: 20px;
   padding: 30px;
+  @media (max-width: 900px) {
+    width: 350px;
+  }
+  @media (max-width: 80px) {
+    width: 280pxpx;
+  }
+  @media (max-width: 600px) {
+    width: 280px;
+    height: 500px;
+  }
+  @media (max-width: 400px) {
+    width: 240px;
+    height: 500px;
+  }
+  
 `;
 
 export const TextFieldContainer = styled(Box)`
@@ -33,4 +47,21 @@ export const TextFieldContainer = styled(Box)`
   gap: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+`;
+
+export const RegisterLink = styled(Box)`
+  @media (max-width: 600px) {
+    position: absolute;
+    bottom: -1px;
+  }
+`;
+
+export const MobileSignInClose = styled(IconButton)`
+  display: none;
+  @media (max-width: 600px) {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
 `;

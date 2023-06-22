@@ -144,7 +144,7 @@ console.log(selectedProduct?.categories[1])
           <MainImageWrapper>
             <ProductImage
               src={selectedProduct?.images[productImage]}
-              alt=""
+              alt={selectedProduct?.title}
               style={{
                 backgroundColor: `${color}`
               }}

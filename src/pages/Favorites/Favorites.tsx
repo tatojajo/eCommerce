@@ -1,6 +1,7 @@
-import { FC, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useLocation } from 'react-router-dom';
 
 import {
   Box,
@@ -11,8 +12,12 @@ import {
   DialogContentText,
   DialogProps,
   DialogTitle,
-} from "@mui/material";
-import ProductCard from "../../component/ProductCard";
+  Typography,
+  Grid,
+  IconButton
+} from '@mui/material';
+import ProductCard from '../../component/ProductCard';
+import { Clear } from '@mui/icons-material';
 
 type FavProps = {
   isFavOpen: boolean;
@@ -28,17 +33,31 @@ const Favorites: FC<FavProps> = ({ isFavOpen, setIsFavOpen }) => {
 
   return (
     <Box>
-      <Dialog open={isFavOpen} onClose={handleClose} scroll={"paper"}>
-        <DialogTitle>{t("global.favorites")}</DialogTitle>
-        <DialogContent dividers={true} sx={{display:'flex'}}>
-          {favorites.map((favProduct) => {
-            return <ProductCard key={favProduct.id} product={favProduct} />;
-          })}
+      <Dialog open={isFavOpen} onClose={handleClose} scroll={'paper'} fullWidth>
+        <DialogTitle>{t('global.favorites')}</DialogTitle>
+        <DialogContent dividers={true}>
+          {favorites.length === 0 ? (
+            <Typography variant="h2Montserrat" color="initial">
+              {t("global.you don't have a favorite products")}
+            </Typography>
+          ) : (
+            <Grid container spacing={2}>
+              {favorites.map((favProduct) => {
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <ProductCard key={favProduct.id} product={favProduct} />
+                  </Grid>
+                );
+              })}
+            </Grid>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
         </DialogActions>
+        <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 0, right: 0 }}>
+          <Clear />
+        </IconButton>
       </Dialog>
     </Box>
   );

@@ -66,7 +66,6 @@ const EditProduct: FC<EditProductProdps> = ({ isEditingOpen, setIsEditingOpen })
   const onSubmit: SubmitHandler<ProductItem> = async (product) => {
     try {
       const { data } = await editProductInfo(product);
-      // console.log(data);
     } catch (error) {
       console.log(error);
     }

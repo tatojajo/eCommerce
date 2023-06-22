@@ -27,13 +27,11 @@ export const getSearchedProductsNextPage = (value: string, page_number: number) 
     page_number: page_number
   });
 
-export const getSelectedProduct = (productId: string) => ajax.get(`product/${productId}`);
-
-export const selectedBrandProducts = (page_size: number, startIndex: number, category: string) =>
+export const selectedBrandProducts = (brand: string, category: string, startIndex: number) =>
   ajax.post('products', {
     keyword: category,
-    filter: { brand: '' },
-    page_size: page_size,
+    filter: { brand: brand },
+    page_size: 10,
     page_number: startIndex
   });
 

@@ -28,7 +28,7 @@ const App = () => {
         {!isAdmin && (
           <>
             <Route path="/" element={<Home />} />
-            <Route path="/user" element={<User />} />
+            <Route path="/user/:name" element={<User />} />
             <Route path="/product/:category/:title" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/brand/:brand" element={<BrandPage />} />
@@ -43,7 +43,7 @@ const App = () => {
           </>
         )}
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </Box>
   );
 };

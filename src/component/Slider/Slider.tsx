@@ -54,7 +54,7 @@ const MainSlider = () => {
   };
 
   return (
-    <Box sx={{ position: 'relative', mt: 10 }}>
+    <Box sx={{ position: 'relative' }}>
       <CategoryDisplayOnSlide
         sx={{
           zIndex: searchedResults.length > 0 ? 0 : 1

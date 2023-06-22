@@ -54,15 +54,16 @@ const MobileMenu: FC<MobileMenuProps> = ({
   setIsMobileMenuOpen,
   setIsSignInOpen,
   setSearchValue,
-  isUserMenuOpen,
-  setIsUserMenuOpen,
+  // isUserMenuOpen,
+  // setIsUserMenuOpen,
   handleLogout,
   setIsFavOpen
 }) => {
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
   const [category, setCategory] = useState<null | HTMLElement>(null);
   const categoryOpen = Boolean(category);
-  const [brand, setBrand] = useState<null | HTMLElement>(null);
-  const brandOpen = Boolean(brand);
+  // const [brand, setBrand] = useState<null | HTMLElement>(null);
+  // const brandOpen = Boolean(brand);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -84,12 +85,12 @@ const MobileMenu: FC<MobileMenuProps> = ({
   const handleCategoryClose = () => {
     setCategory(null);
   };
-  const handleBrand = (event: React.MouseEvent<HTMLElement>) => {
-    setCategory(event.currentTarget);
-  };
-  const handleBradnClose = () => {
-    setCategory(null);
-  };
+  // const handleBrand = (event: React.MouseEvent<HTMLElement>) => {
+  //   setCategory(event.currentTarget);
+  // };
+  // const handleBradnClose = () => {
+  //   setCategory(null);
+  // };
   return (
     <CustomDrawer open={isMobileMenuOpen} onClose={handleCloseMobileMenu} anchor="left">
       <Box sx={{ width: '300px' }}>
@@ -104,11 +105,19 @@ const MobileMenu: FC<MobileMenuProps> = ({
           <IconButton>
             <Storefront />
           </IconButton>
-          <Typography variant="h5" color="white" sx={{ cursor: 'pointer' }}>
+          <Typography variant="h2Montserrat" sx={{ cursor: 'pointer' }}>
             T-shop
           </Typography>
         </LogoTitle>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '20px',
+            borderBottom: '1px solid',
+            paddingBottom: '5px'
+          }}>
           <Box
             display="flex"
             alignItems="center"
@@ -167,8 +176,8 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
                 <MenuItem
                   onClick={() => {
-                    isAuthenticated().isUser && navigate('/user');
-                    // setIsUserMenuOpen(false);
+                    isAuthenticated().isUser && navigate(`/user/${user?.firstName}`);
+                    setIsMobileMenuOpen(false);
                   }}>
                   <Avatar /> My account
                 </MenuItem>
@@ -183,6 +192,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 <MenuItem
                   onClick={() => {
                     handleLogout();
+                    setIsMobileMenuOpen(false);
                     navigate('/');
                   }}>
                   <ListItemIcon>
@@ -202,8 +212,10 @@ const MobileMenu: FC<MobileMenuProps> = ({
                   const value = e.target.value;
                   if (value === 'ENG') {
                     i18next.changeLanguage('en');
+                    setIsMobileMenuOpen(false);
                   } else if (value === 'GEO') {
                     i18next.changeLanguage('ge');
+                    setIsMobileMenuOpen(false);
                   }
                 }}>
                 <option value="ENG">ENG</option>
@@ -245,6 +257,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                   <MenuItem
                     key={category}
                     onClick={() => {
+                      setCategory(null);
                       setIsMobileMenuOpen(false);
                       navigate(`/category/${category}`);
                     }}>
@@ -254,7 +267,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
               })}
             </Menu>
           </Box>
-          <Box>
+          {/* <Box>
             <Button variant="outlined" color="primary" onClick={handleBrand}>
               Brands <ArrowDropDown />
             </Button>
@@ -263,7 +276,7 @@ const MobileMenu: FC<MobileMenuProps> = ({
                 return <MenuItem key={brand.brand}>{brand.brand}</MenuItem>;
               })}
             </Menu>
-          </Box>
+          </Box> */}
         </Box>
         <Divider />
       </Box>

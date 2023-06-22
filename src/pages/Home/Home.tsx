@@ -12,7 +12,6 @@ const Home = () => {
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
-        marginTop:'20px'
       }}>
       <MainSlider />
       <ProductsContainer />

@@ -2,10 +2,8 @@ import { Box, Drawer, Paper, Typography, styled } from '@mui/material';
 
 export const CategoyPageContainer = styled(Box)`
   display: flex;
-  margin-top: 100px;
   overflow-y: hidden;
   @media (max-width: 1039px) {
-    margin-top: 120px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -72,8 +70,8 @@ export const FIlteredProductsContainer = styled(Box)`
   align-items: center;
   flex-direction: column;
   flex-grow: 1;
-  margin-left: 100px;
-  @media (max-width: 900px) {
+  margin-left: 120px;
+  @media (max-width: 1039px) {
     margin-left: 0px;
   }
 `;
@@ -110,7 +108,7 @@ export const FilteredproductsGridContainer = styled(Paper)`
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto;
   gap: 10px;
-  padding:10px;
+  padding: 10px;
   @media (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }

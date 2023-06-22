@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 import {
   decreaseQuantity,
@@ -9,35 +10,34 @@ import {
 } from '../Home/redux/CartActions/CartActions';
 import {
   Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   IconButton,
   Paper,
-  Button,
-  Checkbox
-} from '@mui/material';
-import { ArrowDropDown, ArrowDropUp, CheckBox, Clear } from '@mui/icons-material';
+  Button} from '@mui/material';
+import { ArrowDropDown, ArrowDropUp, Clear } from '@mui/icons-material';
 import {
   AmountInfo,
-  CartItemName,
   CartItems,
   CartItemsContainer,
   CartTitle,
   CheckoutBtn,
   ItemQUantity,
+  MobileCheckoutSummary,
+  PriceDetailsFlex,
+  PriceInfo,
+  ProductCard,
+  ProductImage,
+  ProductImageTitleContainer,
   ProductLink,
+  ProductQuntityContainer,
   ProductRemoveButton,
+  ProductTotalPrice,
   SummaryContainer
-} from './CartStyle';
+} from './cartStyle';
 import { moveToProductPage } from '../Home/redux/HomeActions/HomeActions';
-import { isAuthenticated } from '../../Helpers/Auth/isAuthenticated';
 
 const Cart = () => {
+  const navigate = useNavigate()
   const { t } = useTranslation();
   const { cartItems } = useAppSelector<HomeState>((state) => state.homeReducer);
   const dispatch = useAppDispatch();
@@ -94,83 +94,69 @@ const Cart = () => {
           {t('global.my_cart')}
         </Typography>
         {cartItems.length === 0 && (
-          <Typography fontWeight={700} mt={3} color="error">
-            {`${t('global.cart')} ${t('global.is')} ${t('global.empty')}!`}
-          </Typography>
+          <Box>
+            <Typography fontWeight={700} mt={3} color="error">
+              {`${t('global.cart')} ${t('global.is')} ${t('global.empty')}!`}
+            </Typography>
+            <Button variant="outlined" color="warning" onClick={()=>navigate('/')}>
+              {t('global.back to shop')}
+            </Button>
+          </Box>
         )}
       </CartTitle>
       <CartItemsContainer>
         <CartItems elevation={7}>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">
-                    <Checkbox
-                      // checked={checked}
-                      // onChange={handleChange}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  </TableCell>
-                  <TableCell align="left">{t('global.product')}</TableCell>
-                  <TableCell align="left">{t('global.price')}</TableCell>
-                  <TableCell align="left">{t('global.quantity')}</TableCell>
-                  <TableCell align="left">{t('global.total')}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cartItems.map((item: CartProductItem) => (
-                  <TableRow
-                    key={item.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell align="left" component="th" scope="row">
-                      <Checkbox
-                        // checked={checked}
-                        // onChange={handleChange}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                      />
-                    </TableCell>
-                    <TableCell align="left" component="th" scope="row">
-                      <CartItemName>
-                        <ProductRemoveButton color="error" onClick={() => dispatch(removeCartItem(item))}>
-                          <Clear />
-                        </ProductRemoveButton>
-                        <img src={item.images[0]} width="50px" height="50px" alt={item.brand} />
-                        <ProductLink
-                          to={`/product/${item.id}/${item.title}`}
-                          onClick={() => dispatch(moveToProductPage(item))}>
-                          {item.title}
-                        </ProductLink>
-                      </CartItemName>
-                    </TableCell>
-                    <TableCell align="left">${Number(item.price).toFixed(2)}</TableCell>
-                    <TableCell align="left">
-                      <ItemQUantity>
-                        <IconButton onClick={() => dispatch(decreaseQuantity(item))}>
-                          <ArrowDropDown />
-                        </IconButton>
-                        <Typography variant="subtitle2" color="initial">
-                          {item.quantity}
-                        </Typography>
-                        <IconButton onClick={() => dispatch(increaseQuantity(item))}>
-                          <ArrowDropUp />
-                        </IconButton>
-                      </ItemQUantity>
-                    </TableCell>
-                    <TableCell align="left">
-                      ${(item.quantity * Number(item.price)).toFixed(2)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          {cartItems.map((cartProduct) => {
+            return (
+              <ProductCard key={cartProduct.id} elevation={3}>
+                <ProductRemoveButton
+                  color="error"
+                  onClick={() => dispatch(removeCartItem(cartProduct))}>
+                  <Clear />
+                </ProductRemoveButton>
+                <ProductImageTitleContainer>
+                  <ProductImage src={cartProduct.images[0]} alt={cartProduct.title} />
+                  <ProductLink
+                    to={`/product/${cartProduct.categories}/${cartProduct.brand}}`}
+                    onClick={() => dispatch(moveToProductPage(cartProduct))}>
+                    {cartProduct.title}
+                  </ProductLink>
+                </ProductImageTitleContainer>
+                <ProductQuntityContainer>
+                  <Typography
+                    variant="h4Montserrat"
+                    color="initial"
+                    sx={{ fontSize: { xs: '12px', md: '16px', lg: '20px' } }}>
+                    QTY:
+                  </Typography>
+                  <ItemQUantity>
+                    <IconButton onClick={() => dispatch(decreaseQuantity(cartProduct))}>
+                      <ArrowDropDown sx={{ fontSize: { xs: '12px', md: '16px', lg: '20px' } }} />
+                    </IconButton>
+                    <Typography variant="subtitle2" color="initial">
+                      {cartProduct.quantity}
+                    </Typography>
+                    <IconButton onClick={() => dispatch(increaseQuantity(cartProduct))}>
+                      <ArrowDropUp sx={{ fontSize: { xs: '12px', md: '16px', lg: '20px' } }} />
+                    </IconButton>
+                  </ItemQUantity>
+                </ProductQuntityContainer>
+                <Box>
+                  <ProductTotalPrice variant="h4Montserrat" color="initial">
+                    <span style={{ color: 'red', fontSize: '17px' }}>$</span>
+                    {(cartProduct.quantity * Number(cartProduct.price)).toFixed(2)}
+                  </ProductTotalPrice>
+                </Box>
+              </ProductCard>
+            );
+          })}
         </CartItems>
         <SummaryContainer>
           <Paper sx={{ padding: '20px' }}>
             <Typography textAlign="center" mb="20px" variant="h5" color="initial">
               {t('global.summary')}
             </Typography>
+
             <AmountInfo>
               <Typography variant="body1" color="initial">
                 {t('global.total')}:
@@ -184,17 +170,21 @@ const Cart = () => {
                 {t('global.shipping')}:
               </Typography>
               <Typography variant="body1" color="initial">
-                ${5}
+                ${0}
               </Typography>
             </AmountInfo>
-            <AmountInfo>
-              <Typography variant="body1" color="initial">
-                {t('global.subtotal')}:
-              </Typography>
-              <Typography variant="body1" color="initial">
-                ${totalAmount.toFixed(3)}
-              </Typography>
-            </AmountInfo>
+
+            <Box>
+              <AmountInfo>
+                <Typography variant="body1" color="initial">
+                  {t('global.subtotal')}:
+                </Typography>
+                <Typography variant="body1" color="initial">
+                  ${totalAmount.toFixed(3)}
+                </Typography>
+              </AmountInfo>
+            </Box>
+
             <CheckoutBtn>
               <Button variant="outlined" color="success" onClick={handleCheckout}>
                 {t('global.checkout')}
@@ -202,6 +192,46 @@ const Cart = () => {
             </CheckoutBtn>
           </Paper>
         </SummaryContainer>
+        <MobileCheckoutSummary>
+          <Box>
+            <Typography variant="h1Montserrat" color="initial">
+              {t('global.summary')}
+            </Typography>
+          </Box>
+          <PriceInfo>
+            <PriceDetailsFlex>
+              <Typography variant="h4Montserrat" color="initial">
+                {t('global.total')}
+              </Typography>
+              <Typography variant="h4Montserrat" color="initial">
+                ${Number(totalAmount).toFixed(2)}
+              </Typography>
+            </PriceDetailsFlex>
+            <PriceDetailsFlex>
+              <Typography variant="h4Montserrat" color="initial">
+                {t('global.shipping')}
+              </Typography>
+              <Typography variant="h4Montserrat" color="initial">
+                ${0}
+              </Typography>
+            </PriceDetailsFlex>
+            <PriceDetailsFlex>
+              <Typography variant="h2Montserrat" color="initial">
+                {' '}
+                {t('global.subtotal')}
+              </Typography>
+              <Typography variant="h2Montserrat" color="initial">
+                {' '}
+                ${totalAmount.toFixed(3)}
+              </Typography>
+            </PriceDetailsFlex>
+          </PriceInfo>
+          <CheckoutBtn>
+            <Button variant="outlined" color="success" onClick={handleCheckout}>
+              {t('global.checkout')}
+            </Button>
+          </CheckoutBtn>
+        </MobileCheckoutSummary>
       </CartItemsContainer>
     </Box>
   );

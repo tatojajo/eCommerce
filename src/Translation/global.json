@@ -1,6 +1,7 @@
 {
   "en": {
     "is": "Is",
+    "home":"Home",
     "empty": "Empty",
     "my_cart": " My Cart",
     "summary": "Summary",
@@ -90,10 +91,12 @@
     "contact us": "Contact Us",
     "message successfully sent, we will contact you soon": "Message successfully sent, we will contact you soon",
     "message":"Message",
-    "back to shop":"back to shop"
+    "back to shop":"Back to Shop",
+    "you don't have a favorite products" :"You don't have a favorite Products"
   },
   "ge": {
     "is": "არის",
+    "home":"მთავარი",
     "empty": "ცარიელი",
     "my_cart": "ჩემი კალათა",
     "summary": "შეჯამება",
@@ -178,6 +181,7 @@
     "contact us": "დაგვიკავშირდით",
     "message successfully sent, we will contact you soon": "შეტყობინება წარმატებით გაიგზავნა, ჩვენ მალე დაგიკავშირდებით",
     "message":"შეტყობინება",
-    "back to shop":"მაღაზიაში დაბრუნება"
+    "back to shop":"მაღაზიაში დაბრუნება",
+    "you don't have a favorite products":"თქვენ არ გაქვთ სასურველი პროდუქტები"
   }
 }

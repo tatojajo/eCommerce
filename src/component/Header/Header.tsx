@@ -35,9 +35,7 @@ import {
 // * icons
 import {
   Search as SearchIcon,
-  StarBorderOutlined,
   ShoppingCart,
-  Star,
   Logout,
   Menu as MenuIcon,
   Settings,
@@ -89,10 +87,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar
-      color="secondary"
-      style={{ flexGrow:1}}
-      >
+    <AppBar position="sticky" color="secondary" style={{ flexGrow: 1 }}>
       <Container maxWidth="xl">
         <HeaderWraper>
           <LogoTitle
@@ -106,18 +101,24 @@ const Header = () => {
             <IconButton>
               <Storefront />
             </IconButton>
-            <Typography variant="h5" color="white" sx={{ cursor: 'pointer' }}>
+            <Typography variant="h1Montserrat" sx={{ cursor: 'pointer' }}>
               T-shop
             </Typography>
           </LogoTitle>
 
           <Box>
             <IconButton
-              sx={{ display: { xs: 'flex', md: 'none' } }}
+              sx={{
+                display: { xs: 'flex', md: 'none' },
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '5px',
+                width: '100px'
+              }}
               onClick={() => setIsMobileMenuOpen(true)}>
-              <MenuIcon />
+              <MenuIcon sx={{ fontSize: '30px' }} />
 
-              <Typography variant="h6" color="error" sx={{ cursor: 'pointer' }}>
+              <Typography variant="h3Montserrat" sx={{ cursor: 'pointer' }}>
                 T-shop
               </Typography>
             </IconButton>
@@ -149,13 +150,16 @@ const Header = () => {
                   onChange={(e) => setSearchValue(e.target.value)}
                   value={searchValue}
                   placeholder={`${t('global.search')}...`}
-                  inputProps={{ 'aria-label': 'search' }}
                 />
               </form>
             </SearchInput>
           </Box>
 
-          <Box sx={{ minWidth: 50, display: { xs: 'none', sm: 'flex' } }}>
+          <Box
+            sx={{
+              minWidth: 50,
+              display: { xs: 'none', sm: 'flex' }
+            }}>
             <FormControl fullWidth>
               <NativeSelect
                 title="Select Language"
@@ -174,8 +178,8 @@ const Header = () => {
             </FormControl>
           </Box>
           <UserContainer>
-            <FavCartContainer>
-              <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+            <FavCartContainer sx={{ display: { xs: 'none', sm: 'flex' } }}>
+              <Box >
                 <IconButton
                   onClick={() => {
                     setIsFavOpen(true);
@@ -194,6 +198,7 @@ const Header = () => {
                 </IconButton>
               </Box>
             </FavCartContainer>
+
             <Box
               sx={{ display: { xs: 'none', sm: 'flex' } }}
               alignItems="center"
@@ -252,7 +257,7 @@ const Header = () => {
                   anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
                   <MenuItem
                     onClick={() => {
-                      isAuthenticated().isUser && navigate('/user');
+                      isAuthenticated().isUser && navigate(`/user/${user.firstName}`);
                       setIsUserMenuOpen(false);
                     }}>
                     <Avatar /> My account
@@ -280,6 +285,13 @@ const Header = () => {
             </Box>
             <SignIn isSignInOpen={isSignInOpen} setIsSignInOpen={setIsSignInOpen} />
           </UserContainer>
+          <Box sx={{ display: { xs: 'block', sm: 'none' }, marginRight: '10px' }}>
+            <IconButton onClick={() => navigate('/cart')}>
+              <Badge badgeContent={cartItems.length} color="error">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+          </Box>
         </HeaderWraper>
       </Container>
       <BreadCrumbs />

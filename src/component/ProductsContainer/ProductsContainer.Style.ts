@@ -46,10 +46,6 @@ export const HotOffersContainer = styled(Box)`
   margin-top: 30px;
   display: flex;
   flex-direction: column;
-
-  @media (max-width: 900px) {
-    padding: 40px;
-  }
 `;
 
 export const HotOffers = styled(Box)`

@@ -2,7 +2,7 @@ const express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const stripe = require('stripe')(
-  'sk_test_51NAheHE8Dco8JzGT2FRyjMVbCiatGciZIIqFkf8AHWTzQ1lwianhA9qwtxaKoip4zGQ8YDYPmIIv7qtiFpQKf5EP00qJviZgKI'
+  'API KEY'
 );
 
 // Middleware
